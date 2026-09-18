@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2026-1 회계원리 오리엔테이션</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        /* CSS Reset 및 기본 설정 */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { background-color: #f1f5f9; display: grid; gap: 40px; grid-template-columns: 1fr; place-items: center; padding: 40px 0; }
+        
+        /* 슬라이드 컨테이너 */
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+            font-family: 'Noto Sans KR', sans-serif;
+            color: #334155;
+        }
+
+        /* 공통 헤더 스타일 */
+        .header-bar {
+            width: 100%;
+            height: 80px;
+            padding: 0 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 2px solid #f1f5f9;
+        }
+        .usw-logo-fallback { font-weight: 900; color: #005088; font-size: 24px; letter-spacing: -1px; }
+        .usw-logo-fallback span { color: #f3c300; }
+        .course-info-tag { font-size: 14px; color: #64748b; font-weight: 700; }
+
+        /* 슬라이드 내부 레이아웃 */
+        .content-area {
+            flex-grow: 1;
+            padding: 40px 60px 60px;
+            display: flex;
+            flex-direction: column;
+        }
+        .slide-title {
+            font-size: 44px;
+            font-weight: 700;
+            color: #005088;
+            margin-bottom: 40px;
+            border-left: 8px solid #f3c300;
+            padding-left: 20px;
+        }
+
+        /* 타이틀 슬라이드 레이아웃 */
+        .title-layout {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: linear-gradient(135deg, #005088 0%, #003366 100%);
+            color: #fff;
+        }
+        .title-layout h1 { font-family: 'Playfair Display', serif; font-size: 80px; margin-bottom: 20px; color: #f3c300; }
+        .title-layout p { font-size: 24px; opacity: 0.9; font-weight: 300; }
+        
+        /* 로고 이미지 Fallback 처리 */
+        .logo-img { max-height: 80px; margin-bottom: 40px; }
+
+        /* 2단 레이아웃 */
+        .two-column { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; height: 100%; }
+        
+        /* 이미지 스타일링 */
+        .image-box { width: 100%; height: 400px; border-radius: 20px; overflow: hidden; border: 1px solid #e2e8f0; background: #f8fafc; }
+        .image-box img { width: 100%; height: 100%; object-fit: cover; }
+        .image-box.contain img { object-fit: contain; padding: 20px; }
+
+        /* 리스트 스타일링 */
+        .styled-list { list-style: none; }
+        .styled-list li { margin-bottom: 15px; display: flex; align-items: flex-start; font-size: 20px; line-height: 1.6; }
+        .styled-list i { color: #f3c300; margin-right: 15px; margin-top: 5px; font-size: 22px; }
+
+        /* T-계정 스타일 */
+        .t-account { width: 100%; max-width: 400px; margin: 20px auto; border-top: 3px solid #334155; }
+        .t-title { text-align: center; font-weight: 700; padding: 5px; border-bottom: 2px solid #334155; }
+        .t-grid { display: grid; grid-template-columns: 1fr 1px 1fr; }
+        .t-side { padding: 10px; min-height: 100px; font-size: 16px; }
+        .t-divider { background-color: #334155; }
+        .t-label { font-size: 12px; color: #64748b; margin-bottom: 5px; }
+
+        /* 표 스타일링 */
+        .table-box { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        .table-box th { background-color: #005088; color: #fff; padding: 15px; text-align: center; }
+        .table-box td { padding: 15px; border-bottom: 1px solid #e2e8f0; text-align: center; }
+
+        .highlight-card { background: #f8fafc; border-radius: 15px; padding: 30px; border-top: 5px solid #005088; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .bg-shape { position: absolute; bottom: -50px; right: -50px; width: 300px; height: 300px; background: #f3c300; border-radius: 50%; opacity: 0.1; }
+    </style>
+</head>
+<body>
+
+    <!-- 슬라이드 1: 타이틀 -->
+    <div class="slide-container" id="slide1">
+        <div class="title-layout">
+            <div class="logo-img">
+                <div class="usw-logo-fallback" style="font-size: 48px; color: #fff;">THE UNIVERSITY OF <span>SUWON</span></div>
+            </div>
+            <p>2026학년도 1학기 경영공학대학</p>
+            <h1>회계원리 (Principles of Accounting)</h1>
+            <p style="margin-top: 20px; letter-spacing: 5px;">ORIENTATION</p>
+            <div style="margin-top: 40px; font-weight: 700; font-size: 20px;">김동선 교수</div>
+        </div>
+    </div>
+
+    <!-- 슬라이드 2: AI 조교 소개 -->
+    <div class="slide-container" id="slide2">
+        <div class="header-bar">
+            <div class="usw-logo-fallback">SUWON <span>UNIVERSITY</span></div>
+            <div class="course-info-tag">김동선 교수님의 회계원리 강의</div>
+        </div>
+        <div class="content-area">
+            <h2 class="slide-title">반갑습니다, 여러분!</h2>
+            <div class="two-column">
+                <div>
+                    <p style="font-size: 22px; line-height: 1.8; color: #475569; margin-bottom: 30px;">
+                        "저는 이번 학기 여러분의 학습을 도울 <br><strong>김동선 교수</strong>입니다.<br><br>
+                        복잡한 숫자를 <strong>'경영의 언어'</strong>로 바꾸는 과정, <br>제가 여러분 곁에서 친절하게 돕겠습니다."
+                    </p>
+                    <div class="highlight-card">
+                        <ul class="styled-list">
+                            <li><i class="fa-solid fa-lightbulb"></i> 실생활 비유를 통한 개념 파악</li>
+                            <li><i class="fa-solid fa-magnifying-glass"></i> DART 실무 데이터 분석 가이드</li>
+                            <li><i class="fa-solid fa-headset"></i> 상시 Q&A 대응 및 학습 지원</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="image-box">
+                    <img src="https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&q=80&w=800" alt="Education Tech">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 슬라이드 3: 회계의 비유 -->
+    <div class="slide-container" id="slide3">
+        <div class="header-bar"><div class="usw-logo-fallback">SUWON <span>UNIVERSITY</span></div></div>
+        <div class="content-area">
+            <h2 class="slide-title">회계는 '기록'과 '소통'입니다</h2>
+            <div class="two-column">
+                <div class="image-box">
+                    <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&q=80&w=800" alt="Finance/Wallet">
+                </div>
+                <div>
+                    <div class="highlight-card">
+                        <h3>지갑과 저수지의 원리</h3>
+                        <p style="font-size: 19px; line-height: 1.7;">
+                            어려운 용어 대신 <strong>'지갑'</strong>을 생각해보세요. <br>
+                            나의 재산이 얼마인지(자산), 남에게 갚을 돈은 얼마인지(부채), 순수한 내 돈은 얼마인지(자본)를 기록하는 것이 회계의 시작입니다.
+                        </p>
+                    </div>
+                    <div style="margin-top: 30px;">
+                        <p style="font-weight: 700; margin-bottom: 10px; color: #005088;">시각적 이해: T-계정 예시</p>
+                        <div class="t-account">
+                            <div class="t-title">자산 (현금)</div>
+                            <div class="t-grid">
+                                <div class="t-side">
+                                    <div class="t-label">차변 (Debit) - 증가</div>
+                                    <p>₩ 1,000,000</p>
+                                </div>
+                                <div class="t-divider"></div>
+                                <div class="t-side">
+                                    <div class="t-label">대변 (Credit) - 감소</div>
+                                    <p>₩ 300,000</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 슬라이드 4: 교재 안내 (수정됨) -->
+    <div class="slide-container" id="slide4">
+        <div class="header-bar"><div class="usw-logo-fallback">SUWON <span>UNIVERSITY</span></div></div>
+        <div class="content-area">
+            <h2 class="slide-title">학습 교재 및 준비물</h2>
+            <div class="two-column">
+                <div>
+                    <div class="highlight-card" style="margin-bottom: 30px;">
+                        <h3>주교재: IFRS 회계원리</h3>
+                        <p style="font-size: 20px; margin: 10px 0;"><strong>최관 · 백원선 · 최영수 공저</strong></p>
+                        <p style="color: #64748b;">신영사, 제12판 수정판</p>
+                    </div>
+                    <ul class="styled-list">
+                        <li><i class="fa-solid fa-file-pdf"></i> 강의 자료: LMS 매주 업로드</li>
+                        <li><i class="fa-solid fa-calculator"></i> <strong>계산기 필수:</strong> 일반 사무용 계산기</li>
+                        <li><i class="fa-solid fa-pencil"></i> 예습보다는 <strong>복습 중심</strong>의 학습</li>
+                    </ul>
+                </div>
+                <div class="image-box contain">
+                    <!-- 요청하신 교재 이미지로 교체 -->
+                    <img src="https://contents.kyobobook.co.kr/sih/fit-in/200x0/pdt/9788955019094.jpg" alt="IFRS 회계원리 교재 표지">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 슬라이드 5: 성적 평가 -->
+    <div class="slide-container" id="slide5">
+        <div class="header-bar"><div class="usw-logo-fallback">SUWON <span>UNIVERSITY</span></div></div>
+        <div class="content-area">
+            <h2 class="slide-title">성적 평정 기준</h2>
+            <div class="two-column">
+                <div>
+                    <table class="table-box">
+                        <thead>
+                            <tr><th>항목</th><th>비율</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><strong>출석</strong></td><td>25%</td></tr>
+                            <tr><td><strong>중간시험</strong></td><td>25%</td></tr>
+                            <tr><td><strong>기말시험</strong></td><td>35%</td></tr>
+                            <tr><td><strong>레포트/퀴즈</strong></td><td>10%</td></tr>
+                            <tr><td><strong>평소점수</strong></td><td>5%</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div>
+                    <div class="highlight-card">
+                        <h3>Tip!</h3>
+                        <p style="line-height: 1.6;">
+                            회계는 <strong>연속성</strong>이 중요합니다. <br>
+                            출석 비중(25%)이 높은 이유는 한 번 빠지면 다음 수업 이해가 어렵기 때문입니다. <br><br>
+                            결석 없이 꾸준히 참여하는 것만으로도 좋은 점수의 기초를 다질 수 있습니다.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 슬라이드 6: 주차별 계획 (1~8) -->
+    <div class="slide-container" id="slide6">
+        <div class="header-bar"><div class="usw-logo-fallback">SUWON <span>UNIVERSITY</span></div></div>
+        <div class="content-area">
+            <h2 class="slide-title">강의 일정 (1~8주차)</h2>
+            <table class="table-box">
+                <tr style="background:#f1f5f9"><th>주차</th><th>주요 학습 내용</th><th>비고</th></tr>
+                <tr><td>1주</td><td>회계의 개념 및 오리엔테이션</td><td>개괄</td></tr>
+                <tr><td>2주</td><td>재무보고와 재무제표의 이해</td><td>DART 기초</td></tr>
+                <tr><td>3주</td><td>회계거래의 분석과 기록</td><td>분개 시작</td></tr>
+                <tr><td>4주</td><td>회계순환과정: 기중거래</td><td>T-계정 활용</td></tr>
+                <tr><td>5주</td><td>회계순환과정: 결산정리분개(1)</td><td>발생주의</td></tr>
+                <tr><td>6주</td><td>회계순환과정: 결산정리분개(2)</td><td>수정분개</td></tr>
+                <tr><td>7주</td><td>재무제표의 작성 및 연습</td><td>실습</td></tr>
+                <tr style="background:#fff7ed"><td>8주</td><td><strong>중간고사</strong></td><td>지필평가</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <!-- 슬라이드 7: 실무 역량 강조 -->
+    <div class="slide-container" id="slide8">
+        <div class="header-bar"><div class="usw-logo-fallback">SUWON <span>UNIVERSITY</span></div></div>
+        <div class="content-area">
+            <h2 class="slide-title">실제 데이터를 분석하는 수업</h2>
+            <div class="two-column">
+                <div>
+                    <div class="highlight-card">
+                        <h3>DART 시스템 활용 실습</h3>
+                        <p style="font-size: 18px; line-height: 1.7;">
+                            단순히 문제집의 숫자만 더하는 수업이 아닙니다. <br><br>
+                            금융감독원 <strong>전자공시시스템(DART)</strong>에서 실제 상장 기업들의 재무제표를 내려받아 분석하며, 기업의 건강 상태를 스스로 진단하는 <strong>자기주도역량</strong>을 키웁니다.
+                        </p>
+                    </div>
+                </div>
+                <div class="image-box">
+                    <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=800" alt="Data Analysis">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 슬라이드 8: 마무리 -->
+    <div class="slide-container" id="slide10">
+        <div class="title-layout">
+            <h2 style="font-size: 60px; color: #f3c300; margin-bottom: 30px;">기초가 탄탄한 경영학도를 위하여</h2>
+            <p style="font-size: 26px; max-width: 800px; line-height: 1.6;">
+                "회계는 어렵지만, 한 번 깨우치면 평생의 무기가 됩니다.<br>
+                제가 여러분의 페이스메이커가 되어드리겠습니다."
+            </p>
+            <div style="margin-top: 60px;">
+                <div class="usw-logo-fallback" style="font-size: 32px; color: #fff;">THE UNIVERSITY OF <span>SUWON</span></div>
+            </div>
+        </div>
+        <div class="bg-shape" style="opacity: 0.05;"></div>
+    </div>
+
+</body>
+</html>

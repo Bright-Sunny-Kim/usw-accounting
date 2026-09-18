@@ -1,0 +1,17 @@
+﻿# OS & System Files
+desktop.ini
+Thumbs.db
+.DS_Store
+
+# Google Drive Sync Link Files
+*.gsheet
+*.gdoc
+
+# Confidential Exam Papers & Private Documents (시험 문제지 및 비공개 파일)
+*문제지*
+*중간고사*
+*기말고사*
+*.pdf
+
+# PPTX Original Files (대용량 원본)
+강의자료_pptx/

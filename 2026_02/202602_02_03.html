@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[3교시] 회계기준, 감사제도 및 ROE 재무분석 | 회계원리</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Noto Sans KR', sans-serif; }
+        .tab-btn.active { border-bottom: 3px solid #059669; color: #047857; font-weight: 700; }
+        .slide-page { display: none; }
+        .slide-page.active { display: block; animation: fadeIn 0.3s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+        .page-dot.active { background-color: #059669; color: white; font-weight: bold; }
+
+        /* PDF 인쇄 및 다운로드 최적화 스타일 */
+        @media print {
+            @page {
+                size: A4 landscape;
+                margin: 10mm 12mm;
+            }
+            body {
+                background-color: #ffffff !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+                padding: 0 !important;
+            }
+            header, .sticky, #section-practice, .no-print, #page-nav-controller {
+                display: none !important;
+            }
+            main {
+                max-width: 100% !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+            #section-lecture {
+                display: block !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                space-y: 0 !important;
+            }
+            .slide-page {
+                display: block !important;
+                opacity: 1 !important;
+                page-break-after: always !important;
+                break-after: page !important;
+                page-break-inside: avoid !important;
+                break-inside: avoid !important;
+                min-height: 180mm !important;
+                margin-bottom: 0 !important;
+                border: 1px solid #cbd5e1 !important;
+                box-shadow: none !important;
+                border-radius: 12px !important;
+                padding: 24px 28px !important;
+            }
+            .slide-page:last-child {
+                page-break-after: auto !important;
+                break-after: auto !important;
+            }
+        }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-800 min-h-screen flex flex-col">
+
+    <!-- Top Header -->
+    <header class="bg-emerald-950 text-white shadow-md sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 py-2.5 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <div class="bg-emerald-500 p-2 rounded-lg text-white shadow">
+                    <i class="fa-solid fa-scale-balanced text-lg"></i>
+                </div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-[11px] bg-emerald-800 text-emerald-200 px-2 py-0.5 rounded font-semibold">3교시</span>
+                        <span class="text-xs text-slate-300">수원대학교 경영공학대학 | 회계원리</span>
+                    </div>
+                    <h1 class="text-base md:text-lg font-bold">Ch.01 회계기준 체계와 재무정보 활용(ROE)</h1>
+                </div>
+            </div>
+            <div class="flex items-center gap-2">
+                <button onclick="downloadPDF()" class="bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold px-3 py-1.5 rounded-lg shadow transition flex items-center gap-1.5 cursor-pointer">
+                    <i class="fa-solid fa-file-pdf text-sm"></i> PDF 다운로드
+                </button>
+                <span class="hidden sm:flex bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-xs px-3 py-1 rounded-full items-center gap-1.5 font-medium">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                    40분 강의 (10 Pages) + 10분 실습
+                </span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Tab Navigation -->
+    <div class="bg-white border-b border-slate-200 shadow-sm sticky top-[57px] z-40 no-print">
+        <div class="max-w-6xl mx-auto px-4 flex justify-between items-center">
+            <div class="flex space-x-4">
+                <button onclick="switchMainTab('lecture')" id="tab-lecture" class="tab-btn active py-3 px-3 text-sm md:text-base font-semibold flex items-center gap-2 text-slate-600 hover:text-emerald-600 transition">
+                    <i class="fa-solid fa-chalkboard-user"></i> [40분] 3교시 강의노트 (10 Pages)
+                </button>
+                <button onclick="switchMainTab('practice')" id="tab-practice" class="tab-btn py-3 px-3 text-sm md:text-base font-semibold flex items-center gap-2 text-slate-600 hover:text-emerald-600 transition">
+                    <i class="fa-solid fa-chart-line"></i> [10분] ROE 분석 실습실
+                </button>
+            </div>
+            <div class="flex items-center gap-3">
+                <button onclick="downloadPDF()" class="hidden md:flex text-xs bg-slate-100 hover:bg-rose-50 text-slate-700 hover:text-rose-700 border border-slate-300 hover:border-rose-300 font-bold px-2.5 py-1 rounded-md transition items-center gap-1.5 cursor-pointer">
+                    <i class="fa-solid fa-file-pdf text-rose-600"></i> PDF 저장
+                </button>
+                <div class="hidden md:flex items-center gap-1 text-xs font-medium text-slate-500">
+                    <span class="text-emerald-700 font-bold" id="current-page-num">1</span> / 10 페이지
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <main class="max-w-6xl mx-auto px-4 py-6 flex-1 w-full">
+
+        <!-- ========================================================================= -->
+        <!-- TAB 1: 40분 강의 (10 Pages 슬라이드 뷰어) -->
+        <!-- ========================================================================= -->
+        <section id="section-lecture" class="space-y-4">
+
+            <!-- Page Navigation Controller -->
+            <div id="page-nav-controller" class="bg-white rounded-xl p-3 border border-slate-200 shadow-sm flex flex-wrap justify-between items-center gap-3 no-print">
+                <div class="flex items-center gap-2">
+                    <button onclick="prevPage()" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-bold transition flex items-center gap-1">
+                        <i class="fa-solid fa-chevron-left"></i> 이전
+                    </button>
+                    <button onclick="nextPage()" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold transition flex items-center gap-1 shadow-sm">
+                        다음 <i class="fa-solid fa-chevron-right"></i>
+                    </button>
+                </div>
+
+                <!-- Page Dots/Numbers -->
+                <div class="flex flex-wrap gap-1.5 items-center text-xs">
+                    <button onclick="goToPage(1)" class="page-dot active w-7 h-7 rounded-lg border border-slate-200 hover:bg-emerald-50 flex items-center justify-center transition" id="dot-1">1</button>
+                    <button onclick="goToPage(2)" class="page-dot w-7 h-7 rounded-lg border border-slate-200 hover:bg-emerald-50 flex items-center justify-center transition" id="dot-2">2</button>
+                    <button onclick="goToPage(3)" class="page-dot w-7 h-7 rounded-lg border border-slate-200 hover:bg-emerald-50 flex items-center justify-center transition" id="dot-3">3</button>
+                    <button onclick="goToPage(4)" class="page-dot w-7 h-7 rounded-lg border border-slate-200 hover:bg-emerald-50 flex items-center justify-center transition" id="dot-4">4</button>
+                    <button onclick="goToPage(5)" class="page-dot w-7 h-7 rounded-lg border border-slate-200 hover:bg-emerald-50 flex items-center justify-center transition" id="dot-5">5</button>
+                    <button onclick="goToPage(6)" class="page-dot w-7 h-7 rounded-lg border border-slate-200 hover:bg-emerald-50 flex items-center justify-center transition" id="dot-6">6</button>
+                    <button onclick="goToPage(7)" class="page-dot w-7 h-7 rounded-lg border border-slate-200 hover:bg-emerald-50 flex items-center justify-center transition" id="dot-7">7</button>
+                    <button onclick="goToPage(8)" class="page-dot w-7 h-7 rounded-lg border border-slate-200 hover:bg-emerald-50 flex items-center justify-center transition" id="dot-8">8</button>
+                    <button onclick="goToPage(9)" class="page-dot w-7 h-7 rounded-lg border border-slate-200 hover:bg-emerald-50 flex items-center justify-center transition" id="dot-9">9</button>
+                    <button onclick="goToPage(10)" class="page-dot w-7 h-7 rounded-lg border border-slate-200 hover:bg-emerald-50 flex items-center justify-center transition" id="dot-10">10</button>
+                </div>
+            </div>
+
+            <!-- SLIDE 1 / 10 -->
+            <div class="slide-page active bg-white rounded-2xl p-6 md:p-8 border border-slate-200 shadow-sm" id="page-1">
+                <div class="flex items-center justify-between border-b pb-4 mb-6">
+                    <span class="text-xs font-bold uppercase tracking-wider text-emerald-600 bg-emerald-50 px-3 py-1 rounded-full">Page 01 / 10 • 단원 개요</span>
+                    <span class="text-xs text-slate-400">Slide 25 매핑</span>
+                </div>
+                <h2 class="text-2xl font-extrabold text-slate-900 mb-4">3교시 학습 목표: 제도적 인프라와 재무분석</h2>
+                <p class="text-slate-600 text-sm md:text-base leading-relaxed mb-6">
+                    회계정보가 자본시장에서 신뢰를 얻으려면 **엄격한 작성 규칙(GAAP/IFRS)**과 **독립된 검증(외부감사제도)**이 뒷받침되어야 합니다.
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="p-4 bg-emerald-50/60 rounded-xl border border-emerald-100">
+                        <div class="font-bold text-emerald-950 flex items-center gap-2 mb-2 text-sm">
+                            <i class="fa-solid fa-bullseye text-emerald-600"></i> 핵심 학습 내용
+                        </div>
+                        <ul class="text-xs md:text-sm text-slate-700 space-y-2 list-disc list-inside">
+                            <li>일반적으로 인정된 회계원칙(GAAP)의 의의</li>
+                            <li>국제회계기준(IFRS) 도입 배경과 한국의 3단계 회계기준 체계</li>
+                            <li>공인회계사(CPA)와 외부감사인 감사의견 4종의 의미</li>
+                            <li>실전 재무비율 분석: 자기자본이익률(ROE) 원리와 엔터사(JYP vs YG) 분석</li>
+                        </ul>
+                    </div>
+                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 flex flex-col justify-center">
+                        <div class="text-xs text-slate-500 font-semibold mb-1">워런 버핏의 투자 명언</div>
+                        <p class="text-slate-800 text-xs md:text-sm italic font-medium">
+                            "기업의 가치를 판단할 때 가장 먼저 봐야 할 단 하나의 지표를 꼽으라면 나는 주저 없이 **자기자본이익률(ROE)**을 선택할 것이다."
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 2 / 10 -->
+            <div class="slide-page bg-white rounded-2xl p-6 md:p-8 border border-slate-200 shadow-sm" id="page-2">
+                <div class="flex items-center justify-between border-b pb-4 mb-6">
+                    <span class="text-xs font-bold uppercase tracking-wider text-emerald-600 bg-emerald-50 px-3 py-1 rounded-full">Page 02 / 10 • 회계의 발전 역사</span>
+                    <span class="text-xs text-slate-400">Slide 28, 29 매핑</span>
+                </div>
+                <h2 class="text-2xl font-extrabold text-slate-900 mb-4">회계의 역사적 발전 4대 이정표</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-xs md:text-sm">
+                    <div class="p-4 bg-slate-50 border rounded-xl">
+                        <div class="font-bold text-slate-900 mb-1">1. 복식부기의 탄생 (1494년)</div>
+                        <p class="text-slate-600 text-xs">이탈리아 수학자 루카 파치올리가 대차평형 원리를 정리하여 근대 회계의 기틀 마련</p>
+                    </div>
+                    <div class="p-4 bg-slate-50 border rounded-xl">
+                        <div class="font-bold text-slate-900 mb-1">2. 동방무역과 주식회사 (1602년)</div>
+                        <p class="text-slate-600 text-xs">네덜란드 동인도회사 설립으로 소유와 경영 분리 $ightarrow$ 기간별 결산 및 배당 회계 발달</p>
+                    </div>
+                    <div class="p-4 bg-slate-50 border rounded-xl">
+                        <div class="font-bold text-slate-900 mb-1">3. 산업혁명과 원가회계 (18~19C)</div>
+                        <p class="text-slate-600 text-xs">대규모 공장제 기계공업 출현으로 제품 제조원가 계산 및 감가상각 회계 발전</p>
+                    </div>
+                    <div class="p-4 bg-slate-50 border rounded-xl">
+                        <div class="font-bold text-slate-900 mb-1">4. 대공황과 공시제도 (1930년대)</div>
+                        <p class="text-slate-600 text-xs">미국 대공황 이후 증권거래법 제정 $ightarrow$ GAAP 제정 및 강제 공시제도 도입</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 3 / 10 -->
+            <div class="slide-page bg-white rounded-2xl p-6 md:p-8 border border-slate-200 shadow-sm" id="page-3">
+                <div class="flex items-center justify-between border-b pb-4 mb-6">
+                    <span class="text-xs font-bold uppercase tracking-wider text-emerald-600 bg-emerald-50 px-3 py-1 rounded-full">Page 03 / 10 • IFRS 탄생 배경</span>
+                    <span class="text-xs text-slate-400">Slide 31 매핑</span>
+                </div>
+                <h2 class="text-2xl font-extrabold text-slate-900 mb-4">국제회계기준(IFRS)의 탄생과 전면 수용</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs md:text-sm">
+                    <div class="p-5 bg-sky-50/60 border border-sky-200 rounded-xl">
+                        <div class="font-bold text-sky-950 mb-2 flex items-center gap-2">
+                            <i class="fa-solid fa-globe text-sky-600"></i> 자본시장의 세계화와 단일 기준 요구
+                        </div>
+                        <p class="text-slate-700 leading-relaxed">
+                            글로벌 투자자들이 전 세계 기업의 재무제표를 동일한 잣대로 비교할 수 있도록 **단 하나의 글로벌 회계기준**이 필요해졌습니다. 2005년 EU 전면 도입 이후 현재 169개국 이상이 IFRS를 수용했습니다.
+                        </p>
+                    </div>
+                    <div class="p-5 bg-emerald-50/60 border border-emerald-200 rounded-xl">
+                        <div class="font-bold text-emerald-950 mb-2 flex items-center gap-2">
+                            <i class="fa-solid fa-flag text-emerald-600"></i> 한국의 K-IFRS 의무 도입 (2011년)
+                        </div>
+                        <p class="text-slate-700 leading-relaxed">
+                            한국은 2011년부터 **모든 상장기업과 금융회사**에 대해 한국채택국제회계기준(K-IFRS) 적용을 의무화하였습니다. 이를 통해 회계 투명성을 제고하고 코리아 디스카운트 해소에 기여하고 있습니다.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 4 / 10 -->
+            <div class="slide-page bg-white rounded-2xl p-6 md:p-8 border border-slate-200 shadow-sm" id="page-4">
+                <div class="flex items-center justify-between border-b pb-4 mb-6">
+                    <span class="text-xs font-bold uppercase tracking-wider text-emerald-600 bg-emerald-50 px-3 py-1 rounded-full">Page 04 / 10 • 한국의 회계기준 체계</span>
+                    <span class="text-xs text-slate-400">Slide 33, 34 매핑</span>
+                </div>
+                <h2 class="text-2xl font-extrabold text-slate-900 mb-4">한국회계기준원(KASB)과 3단계 회계기준</h2>
+                <div class="overflow-x-auto mb-4">
+                    <table class="w-full text-xs md:text-sm text-left border-collapse">
+                        <thead>
+                            <tr class="bg-slate-100 text-slate-800 border-b">
+                                <th class="p-3">회계기준 명칭</th>
+                                <th class="p-3">제정 주체</th>
+                                <th class="p-3">적용 대상 기업</th>
+                                <th class="p-3">주요 특징</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-200 text-slate-700 bg-white">
+                            <tr>
+                                <td class="p-3 font-bold text-blue-900">한국채택국제회계기준 (K-IFRS)</td>
+                                <td class="p-3">한국회계기준원 (번역·제정)</td>
+                                <td class="p-3 font-semibold text-blue-800">모든 상장기업 및 금융사</td>
+                                <td class="p-3">원칙 중심, 연결 재무제표 중심, 공정가치 평가 확대</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-bold text-emerald-900">일반기업회계기준 (K-GAAP)</td>
+                                <td class="p-3">한국회계기준원</td>
+                                <td class="p-3 font-semibold text-emerald-800">외감 대상 비상장기업</td>
+                                <td class="p-3">규칙 중심, 실무 적용 부담 완화</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-bold text-amber-900">중소기업회계기준</td>
+                                <td class="p-3">한국회계기준원</td>
+                                <td class="p-3 font-semibold text-amber-800">소규모 비상장 중소기업</td>
+                                <td class="p-3">간편 회계처리 규정 제공</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- SLIDE 5 / 10 -->
+            <div class="slide-page bg-white rounded-2xl p-6 md:p-8 border border-slate-200 shadow-sm" id="page-5">
+                <div class="flex items-center justify-between border-b pb-4 mb-6">
+                    <span class="text-xs font-bold uppercase tracking-wider text-emerald-600 bg-emerald-50 px-3 py-1 rounded-full">Page 05 / 10 • 외부감사제도</span>
+                    <span class="text-xs text-slate-400">Slide 26 매핑</span>
+                </div>
+                <h2 class="text-2xl font-extrabold text-slate-900 mb-4">외부감사제도(External Auditing)와 4대 감사의견</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-xs md:text-sm">
+                    <div class="p-4 bg-emerald-50 border border-emerald-200 rounded-xl">
+                        <div class="font-bold text-emerald-900 mb-1">1. 적정의견 (Unqualified)</div>
+                        <p class="text-slate-600 text-xs">재무제표가 중요성 관점에서 회계기준에 따라 적정하게 표시됨을 의미 (합격 신호)</p>
+                    </div>
+                    <div class="p-4 bg-amber-50 border border-amber-200 rounded-xl">
+                        <div class="font-bold text-amber-900 mb-1">2. 한정의견 (Qualified)</div>
+                        <p class="text-slate-600 text-xs">일부 중요 항목에 회계기준 위배나 감사범위 제한이 있으나 전반적으론 왜곡되지 않음</p>
+                    </div>
+                    <div class="p-4 bg-rose-50 border border-rose-200 rounded-xl">
+                        <div class="font-bold text-rose-900 mb-1">3. 부적정의견 (Adverse)</div>
+                        <p class="text-slate-600 text-xs">재무제표가 너무 심각하게 왜곡 표시되어 전체적으로 신뢰할 수 없음 (불합격)</p>
+                    </div>
+                    <div class="p-4 bg-slate-100 border border-slate-300 rounded-xl">
+                        <div class="font-bold text-slate-900 mb-1">4. 의견거절 (Disclaimer)</div>
+                        <p class="text-slate-600 text-xs">감사 증거를 입수할 수 없어 의견 표명 자체가 불가능 (즉각적 상장폐지 사유)</p>
+                    </div>
+                </div>
+                <div class="mt-4 p-3 bg-slate-50 border rounded-xl text-xs text-slate-600">
+                    ⚠️ <strong>주의:</strong> '적정의견'은 회계기준에 맞게 적었음을 보증하는 것이지, 그 회사의 경영 상태가 우수하거나 부도 위험이 없음을 보증하는 것이 아닙니다.
+                </div>
+            </div>
+
+            <!-- SLIDE 6 / 10 -->
+            <div class="slide-page bg-white rounded-2xl p-6 md:p-8 border border-slate-200 shadow-sm" id="page-6">
+                <div class="flex items-center justify-between border-b pb-4 mb-6">
+                    <span class="text-xs font-bold uppercase tracking-wider text-emerald-600 bg-emerald-50 px-3 py-1 rounded-full">Page 06 / 10 • CPA 시험제도</span>
+                    <span class="text-xs text-slate-400">Slide 27 매핑</span>
+                </div>
+                <h2 class="text-2xl font-extrabold text-slate-900 mb-4">2025 개편 공인회계사(CPA) 시험제도</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs md:text-sm">
+                    <div class="p-5 bg-slate-50 border rounded-xl">
+                        <div class="font-bold text-slate-900 mb-2 flex items-center gap-2">
+                            <span class="bg-blue-600 text-white px-2 py-0.5 rounded text-xs">제1차 시험</span> 객관식 필기 (매년 2월말)
+                        </div>
+                        <ul class="text-slate-600 space-y-1.5 list-disc list-inside">
+                            <li><strong>회계학:</strong> 재무회계, 원가관리회계, 정부회계</li>
+                            <li><strong>경영학 & IT:</strong> 경영학 기초 및 정보기술 실무 소양</li>
+                            <li><strong>경제원론 & 기업법 & 세법개론</strong></li>
+                            <li><strong>공인어학성적 대체</strong> (토익, 토플, 텝스, 지텔프 등)</li>
+                        </ul>
+                    </div>
+                    <div class="p-5 bg-slate-50 border rounded-xl">
+                        <div class="font-bold text-slate-900 mb-2 flex items-center gap-2">
+                            <span class="bg-emerald-600 text-white px-2 py-0.5 rounded text-xs">제2차 시험</span> 주관식 논술 (매년 6월말)
+                        </div>
+                        <ul class="text-slate-600 space-y-1.5 list-disc list-inside">
+                            <li><strong>재무회계 I (중급회계) & 재무회계 II (고급회계)</strong></li>
+                            <li><strong>원가관리회계</strong></li>
+                            <li><strong>회계감사</strong></li>
+                            <li><strong>세법 & 재무관리</strong></li>
+                            <li>※ 과목별 부분합격제도 시행</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 7 / 10 -->
+            <div class="slide-page bg-white rounded-2xl p-6 md:p-8 border border-slate-200 shadow-sm" id="page-7">
+                <div class="flex items-center justify-between border-b pb-4 mb-6">
+                    <span class="text-xs font-bold uppercase tracking-wider text-emerald-600 bg-emerald-50 px-3 py-1 rounded-full">Page 07 / 10 • 정보 사이트 활용</span>
+                    <span class="text-xs text-slate-400">Slide 35 매핑</span>
+                </div>
+                <h2 class="text-2xl font-extrabold text-slate-900 mb-4">실무 회계정보 웹사이트 활용 가이드</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-xs md:text-sm">
+                    <a href="https://dart.fss.or.kr" target="_blank" class="p-4 bg-blue-50/60 border border-blue-200 rounded-xl hover:bg-blue-100/60 transition block">
+                        <div class="font-bold text-blue-900 mb-1 flex items-center gap-1.5">
+                            <i class="fa-solid fa-magnifying-glass"></i> DART (전자공시)
+                        </div>
+                        <p class="text-slate-600 text-xs">모든 상장사의 사업보고서 및 감사보고서 원문 조회</p>
+                    </a>
+                    <a href="https://www.kasb.or.kr" target="_blank" class="p-4 bg-emerald-50/60 border border-emerald-200 rounded-xl hover:bg-emerald-100/60 transition block">
+                        <div class="font-bold text-emerald-900 mb-1 flex items-center gap-1.5">
+                            <i class="fa-solid fa-book"></i> 한국회계기준원
+                        </div>
+                        <p class="text-slate-600 text-xs">K-IFRS 및 일반기업회계기준 기준서 원문 및 질의회신</p>
+                    </a>
+                    <a href="https://www.krx.co.kr" target="_blank" class="p-4 bg-purple-50/60 border border-purple-200 rounded-xl hover:bg-purple-100/60 transition block">
+                        <div class="font-bold text-purple-900 mb-1 flex items-center gap-1.5">
+                            <i class="fa-solid fa-chart-line"></i> 한국거래소 (KRX)
+                        </div>
+                        <p class="text-slate-600 text-xs">상장기업 주가, 시가총액, 투자 지표 통합 공시</p>
+                    </a>
+                    <a href="https://www.kicpa.or.kr" target="_blank" class="p-4 bg-amber-50/60 border border-amber-200 rounded-xl hover:bg-amber-100/60 transition block">
+                        <div class="font-bold text-amber-900 mb-1 flex items-center gap-1.5">
+                            <i class="fa-solid fa-user-tie"></i> 한국공인회계사회
+                        </div>
+                        <p class="text-slate-600 text-xs">회계감사 실무 지침, 회계 투명성 연구 보고서</p>
+                    </a>
+                </div>
+            </div>
+
+            <!-- SLIDE 8 / 10 -->
+            <div class="slide-page bg-white rounded-2xl p-6 md:p-8 border border-slate-200 shadow-sm" id="page-8">
+                <div class="flex items-center justify-between border-b pb-4 mb-6">
+                    <span class="text-xs font-bold uppercase tracking-wider text-emerald-600 bg-emerald-50 px-3 py-1 rounded-full">Page 08 / 10 • ROE의 원리</span>
+                    <span class="text-xs text-slate-400">Slide 36 매핑</span>
+                </div>
+                <h2 class="text-2xl font-extrabold text-slate-900 mb-4">재무분석의 핵심: 자기자본이익률(ROE, Return on Equity)</h2>
+                <div class="p-6 bg-gradient-to-r from-emerald-900 to-teal-950 rounded-2xl text-white text-center shadow mb-6">
+                    <div class="text-xs text-emerald-200 uppercase font-semibold mb-1">Return on Equity Formula</div>
+                    <div class="text-2xl md:text-3xl font-extrabold tracking-wide text-yellow-300">
+                        ROE ＝ 당기순이익 ÷ 평균자기자본 × 100 (%)
+                    </div>
+                    <div class="text-xs text-slate-300 mt-2">
+                        평균자기자본 ＝ (기초자기자본 ＋ 기말자기자본) ÷ 2
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs md:text-sm">
+                    <div class="p-4 bg-slate-50 border rounded-xl">
+                        <div class="font-bold text-slate-900 mb-1">ROE의 경제적 직관</div>
+                        <p class="text-slate-600">"주주가 투자한 종잣돈 100원을 가지고 1년 동안 얼마의 순이익을 창출했는가?"를 나타내는 <strong>자본의 수익성/효율성 지표</strong>입니다.</p>
+                    </div>
+                    <div class="p-4 bg-slate-50 border rounded-xl">
+                        <div class="font-bold text-slate-900 mb-1">우수 기업 판정 기준</div>
+                        <p class="text-slate-600">일반적으로 ROE가 <strong>15% 이상</strong> 꾸준히 유지되는 기업은 강력한 경제적 해자(Moat)를 가진 초우량 기업으로 평가받습니다.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 9 / 10 -->
+            <div class="slide-page bg-white rounded-2xl p-6 md:p-8 border border-slate-200 shadow-sm" id="page-9">
+                <div class="flex items-center justify-between border-b pb-4 mb-6">
+                    <span class="text-xs font-bold uppercase tracking-wider text-emerald-600 bg-emerald-50 px-3 py-1 rounded-full">Page 09 / 10 • 실전 사례 비교</span>
+                    <span class="text-xs text-slate-400">Slide 37 매핑</span>
+                </div>
+                <h2 class="text-2xl font-extrabold text-slate-900 mb-4">실전 엔터사 분석: JYP Ent vs YG Ent ROE 추이</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs md:text-sm mb-4">
+                    <div class="p-5 bg-purple-50/70 border border-purple-200 rounded-xl">
+                        <div class="flex justify-between items-center mb-3">
+                            <span class="font-extrabold text-purple-900 text-base">JYP Entertainment</span>
+                            <span class="text-xs bg-purple-200 text-purple-800 px-2 py-0.5 rounded font-bold">K-IFRS 연결</span>
+                        </div>
+                        <div class="space-y-2 text-slate-700">
+                            <div class="flex justify-between border-b pb-1"><span>2023년 ROE:</span><span class="font-bold">29.90%</span></div>
+                            <div class="flex justify-between border-b pb-1"><span>2024년 ROE:</span><span class="font-bold text-purple-700">22.18%</span></div>
+                            <p class="text-xs text-slate-600 pt-1">글로벌 팬덤 기반 음반·음원·공연 매출 호조로 20% 이상의 초우량 수익성을 지속 유지함.</p>
+                        </div>
+                    </div>
+
+                    <div class="p-5 bg-slate-50 border border-slate-300 rounded-xl">
+                        <div class="flex justify-between items-center mb-3">
+                            <span class="font-extrabold text-slate-900 text-base">YG Entertainment</span>
+                            <span class="text-xs bg-slate-200 text-slate-800 px-2 py-0.5 rounded font-bold">K-IFRS 연결</span>
+                        </div>
+                        <div class="space-y-2 text-slate-700">
+                            <div class="flex justify-between border-b pb-1"><span>2023년 ROE:</span><span class="font-bold">13.85%</span></div>
+                            <div class="flex justify-between border-b pb-1"><span>2024년 ROE:</span><span class="font-bold text-rose-600">3.37%</span></div>
+                            <p class="text-xs text-slate-600 pt-1">주요 간판 아티스트 활동 공백 및 신인 개발 비용 증가로 일시적 순이익 급감.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 10 / 10 -->
+            <div class="slide-page bg-white rounded-2xl p-6 md:p-8 border border-slate-200 shadow-sm" id="page-10">
+                <div class="flex items-center justify-between border-b pb-4 mb-6">
+                    <span class="text-xs font-bold uppercase tracking-wider text-emerald-600 bg-emerald-50 px-3 py-1 rounded-full">Page 10 / 10 • 1장 전체 총정리</span>
+                    <span class="text-xs text-slate-400">1장 완강 & 2장 예고</span>
+                </div>
+                <h2 class="text-2xl font-extrabold text-slate-900 mb-4">Ch.01 전체 완강 총정리 및 차시 예고</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs md:text-sm mb-6">
+                    <div class="p-4 bg-emerald-50 border border-emerald-200 rounded-xl space-y-2 text-slate-700">
+                        <div class="font-bold text-emerald-950 text-sm">🏆 Ch.01 완강 핵심 요약</div>
+                        <div>1. 회계는 의사결정을 위한 비즈니스의 언어이다.</div>
+                        <div>2. 4대 재무제표(B/S, I/S, SCE, SCF)는 유기적으로 연결된다.</div>
+                        <div>3. 상장사는 K-IFRS를 따르며, 외부감사를 통해 신뢰성을 확보한다.</div>
+                        <div>4. ROE를 통해 기업의 자본 운용 효율성을 측정할 수 있다.</div>
+                    </div>
+                    <div class="p-4 bg-indigo-50 border border-indigo-200 rounded-xl space-y-2 text-slate-700">
+                        <div class="font-bold text-indigo-950 text-sm">📅 다음 주차 예고: Ch.02 회계거래의 기록</div>
+                        <p class="text-xs text-slate-600">
+                            다음 주에는 회계의 심장인 **복식부기(차변과 대변의 원리), 분개(Journalizing), 총계정원장 전기(Posting)**를 본격적으로 실습합니다!
+                        </p>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <button onclick="switchMainTab('practice')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-6 py-2.5 rounded-xl shadow transition">
+                        지금 바로 [10분 실습실]로 이동하기 <i class="fa-solid fa-arrow-right ml-1"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Bottom Navigation Bar -->
+            <div class="flex justify-between items-center pt-2">
+                <button onclick="prevPage()" class="px-4 py-2 bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-sm">
+                    <i class="fa-solid fa-arrow-left"></i> 이전 페이지
+                </button>
+                <span class="text-xs text-slate-500 font-medium" id="bottom-page-num">1 / 10 Pages (키보드 ← / → 방향키 지원)</span>
+                <button onclick="nextPage()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-sm">
+                    다음 페이지 <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
+
+        </section>
+
+        <!-- ========================================================================= -->
+        <!-- TAB 2: 10분 실습실 (ROE 시뮬레이터 & 비교 분석) -->
+        <!-- ========================================================================= -->
+        <section id="section-practice" class="space-y-6 hidden">
+
+            <!-- Simulator 1: Dynamic ROE Calculator -->
+            <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
+                <div class="border-b pb-3 mb-4">
+                    <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+                        <i class="fa-solid fa-calculator text-emerald-600"></i>
+                        [실습 1] 인터랙티브 ROE(자기자본이익률) 동적 시뮬레이터
+                    </h2>
+                    <p class="text-xs text-slate-500">슬라이더를 조절하여 당기순이익과 자본 규모에 따라 기업의 ROE가 어떻게 변하는지 관찰해보세요.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+                    
+                    <!-- Sliders -->
+                    <div class="space-y-4 text-xs">
+                        <div>
+                            <div class="flex justify-between mb-1 font-semibold">
+                                <span>당기순이익: <strong class="text-blue-700" id="val-ni">￦150억원</strong></span>
+                            </div>
+                            <input type="range" id="slider-ni" min="-50" max="500" step="5" value="150" class="w-full" oninput="updateROE()">
+                        </div>
+
+                        <div>
+                            <div class="flex justify-between mb-1 font-semibold">
+                                <span>기초자기자본: <strong class="text-slate-700" id="val-beg">￦800억원</strong></span>
+                            </div>
+                            <input type="range" id="slider-beg" min="100" max="2000" step="50" value="800" class="w-full" oninput="updateROE()">
+                        </div>
+
+                        <div>
+                            <div class="flex justify-between mb-1 font-semibold">
+                                <span>기말자기자본: <strong class="text-slate-700" id="val-end">￦1,000억원</strong></span>
+                            </div>
+                            <input type="range" id="slider-end" min="100" max="2000" step="50" value="1000" class="w-full" oninput="updateROE()">
+                        </div>
+                    </div>
+
+                    <!-- Display Board -->
+                    <div class="bg-slate-900 text-white rounded-2xl p-6 text-center shadow">
+                        <div class="text-xs text-slate-400 mb-1">평균자기자본: <span id="val-avg">￦900억원</span></div>
+                        <div class="text-xs text-slate-300">계산된 자기자본이익률 (ROE)</div>
+                        <div class="text-4xl font-extrabold my-2 text-emerald-400" id="display-roe">16.67%</div>
+                        <div id="roe-status" class="inline-block px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                            ★ 최우수 수익성 (15% 이상)
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Practice 2: Real Case (JYP vs YG) -->
+            <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
+                <div class="border-b pb-3 mb-4">
+                    <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+                        <i class="fa-solid fa-music text-purple-600"></i>
+                        [실습 2] 실전 분석: JYP Ent vs YG Ent ROE 분석 리포트
+                    </h2>
+                    <p class="text-xs text-slate-500">교재 및 슬라이드 37에 제시된 실제 엔터사 데이터를 바탕으로 ROE를 산출하고 분석 결과를 확인하세요.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                    
+                    <!-- JYP Card -->
+                    <div class="p-4 bg-purple-50/50 border border-purple-200 rounded-xl">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="font-bold text-sm text-purple-900">JYP Ent.</span>
+                            <span class="px-2 py-0.5 rounded text-[10px] bg-purple-200 text-purple-800 font-bold">K-IFRS 연결</span>
+                        </div>
+                        <div class="space-y-1 text-slate-600 mb-3">
+                            <div class="flex justify-between"><span>2023년 ROE</span><span class="font-semibold text-slate-900">29.90%</span></div>
+                            <div class="flex justify-between"><span>2024년 ROE</span><span class="font-bold text-purple-700">22.18%</span></div>
+                            <div class="text-[11px] text-slate-500 pt-1 border-t">수익성 여전히 최상위권 유지 (팬덤 기반 견고한 앨범·공연 매출)</div>
+                        </div>
+                    </div>
+
+                    <!-- YG Card -->
+                    <div class="p-4 bg-slate-50 border border-slate-300 rounded-xl">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="font-bold text-sm text-slate-900">YG Ent.</span>
+                            <span class="px-2 py-0.5 rounded text-[10px] bg-slate-200 text-slate-800 font-bold">K-IFRS 연결</span>
+                        </div>
+                        <div class="space-y-1 text-slate-600 mb-3">
+                            <div class="flex justify-between"><span>2023년 ROE</span><span class="font-semibold text-slate-900">13.85%</span></div>
+                            <div class="flex justify-between"><span>2024년 ROE</span><span class="font-bold text-rose-600">3.37%</span></div>
+                            <div class="text-[11px] text-slate-500 pt-1 border-t">주요 아티스트 활동 공백 및 신인 개발 비용으로 일시적 급감</div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Final Mini-Quiz -->
+                <div class="mt-4 p-4 bg-slate-50 rounded-xl border border-slate-200 text-xs">
+                    <div class="font-bold text-slate-800 mb-2">Q. 위 두 회사의 ROE 추이를 분석한 결론으로 가장 타당한 것은?</div>
+                    <div class="space-y-2">
+                        <button onclick="checkFinalQuiz('A', this)" class="fin-q w-full text-left p-2.5 bg-white border rounded-lg hover:border-emerald-500 transition">
+                            <strong>A.</strong> 2024년 기준 주주자본을 활용하여 더 높은 수익성을 창출한 회사는 <strong>JYP Ent(22.18%)</strong>이다.
+                        </button>
+                        <button onclick="checkFinalQuiz('B', this)" class="fin-q w-full text-left p-2.5 bg-white border rounded-lg hover:border-emerald-500 transition">
+                            <strong>B.</strong> YG Ent는 자본이 급감하여 ROE가 하락한 것이다.
+                        </button>
+                    </div>
+                    <div id="fin-fb" class="hidden text-xs mt-2 p-2.5 rounded"></div>
+                </div>
+
+            </div>
+
+            <!-- Complete Badge -->
+            <div class="bg-gradient-to-r from-slate-900 to-emerald-950 text-white p-6 rounded-2xl shadow text-center">
+                <h3 class="text-lg font-bold mb-1">🎉 1장 전체 강의 및 실습 완료!</h3>
+                <p class="text-xs text-emerald-200 mb-2">재무제표와 회계보고시스템의 모든 핵심 기초를 성공적으로 이수하셨습니다.</p>
+                <div class="text-xs text-yellow-300 font-semibold">다음 주차 예습: Ch.02 회계거래와 회계등식의 기록</div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-200 border-t border-slate-300 py-4 text-center text-xs text-slate-600">
+        회계원리 강의자료 | 수원대학교 경영공학대학 | Ch.01 재무제표와 회계보고시스템
+    </footer>
+
+    <!-- Interactive Script -->
+    <script>
+        let curPage = 1;
+        const totalPages = 10;
+
+        function switchMainTab(tab) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            if (tab === 'lecture') {
+                document.getElementById('tab-lecture').classList.add('active');
+                document.getElementById('section-lecture').classList.remove('hidden');
+                document.getElementById('section-practice').classList.add('hidden');
+            } else {
+                document.getElementById('tab-practice').classList.add('active');
+                document.getElementById('section-lecture').classList.add('hidden');
+                document.getElementById('section-practice').classList.remove('hidden');
+            }
+        }
+
+        function goToPage(pageNum) {
+            if (pageNum < 1 || pageNum > totalPages) return;
+            curPage = pageNum;
+            document.querySelectorAll('.slide-page').forEach(page => page.classList.remove('active'));
+            document.getElementById(`page-${curPage}`).classList.add('active');
+
+            document.querySelectorAll('.page-dot').forEach(dot => dot.classList.remove('active'));
+            document.getElementById(`dot-${curPage}`).classList.add('active');
+
+            document.getElementById('current-page-num').innerText = curPage;
+            document.getElementById('bottom-page-num').innerText = `${curPage} / ${totalPages} Pages (키보드 ← / → 방향키 지원)`;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function nextPage() {
+            if (curPage < totalPages) goToPage(curPage + 1);
+            else switchMainTab('practice');
+        }
+
+        function prevPage() {
+            if (curPage > 1) goToPage(curPage - 1);
+        }
+
+        window.addEventListener('keydown', (e) => {
+            if (!document.getElementById('section-lecture').classList.contains('hidden')) {
+                if (e.key === 'ArrowRight') nextPage();
+                if (e.key === 'ArrowLeft') prevPage();
+            }
+        });
+
+        function updateROE() {
+            const ni = Number(document.getElementById('slider-ni').value);
+            const beg = Number(document.getElementById('slider-beg').value);
+            const end = Number(document.getElementById('slider-end').value);
+
+            document.getElementById('val-ni').innerText = `￦${ni}억원`;
+            document.getElementById('val-beg').innerText = `￦${beg.toLocaleString()}억원`;
+            document.getElementById('val-end').innerText = `￦${end.toLocaleString()}억원`;
+
+            const avg = (beg + end) / 2;
+            document.getElementById('val-avg').innerText = `￦${avg.toLocaleString()}억원`;
+
+            const roe = (ni / avg) * 100;
+            const display = document.getElementById('display-roe');
+            const status = document.getElementById('roe-status');
+
+            display.innerText = roe.toFixed(2) + '%';
+
+            if (roe >= 15) {
+                display.className = "text-4xl font-extrabold my-2 text-emerald-400";
+                status.className = "inline-block px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30";
+                status.innerText = "★ 최우수 수익성 (15% 이상)";
+            } else if (roe >= 8) {
+                display.className = "text-4xl font-extrabold my-2 text-sky-400";
+                status.className = "inline-block px-3 py-1 rounded-full text-xs font-bold bg-sky-500/20 text-sky-300 border border-sky-500/30";
+                status.innerText = "보통 수준의 수익성 (8% ~ 15%)";
+            } else if (roe >= 0) {
+                display.className = "text-4xl font-extrabold my-2 text-amber-400";
+                status.className = "inline-block px-3 py-1 rounded-full text-xs font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30";
+                status.innerText = "저조한 수익성 (0% ~ 8%)";
+            } else {
+                display.className = "text-4xl font-extrabold my-2 text-rose-400";
+                status.className = "inline-block px-3 py-1 rounded-full text-xs font-bold bg-rose-500/20 text-rose-300 border border-rose-500/30";
+                status.innerText = "당기순손실 발생 (마이너스 ROE)";
+            }
+        }
+
+        function checkFinalQuiz(choice, btn) {
+            document.querySelectorAll('.fin-q').forEach(b => b.className = "fin-q w-full text-left p-2.5 bg-white border rounded-lg transition");
+            const fb = document.getElementById('fin-fb');
+            fb.classList.remove('hidden');
+
+            if (choice === 'A') {
+                btn.classList.add('bg-emerald-100', 'border-emerald-500', 'text-emerald-900', 'font-bold');
+                fb.className = "text-xs mt-2 p-2.5 rounded bg-emerald-50 text-emerald-900 border border-emerald-200 block";
+                fb.innerHTML = "<i class='fa-solid fa-circle-check text-emerald-600'></i> <strong>정답입니다!</strong> JYP는 2024년에도 22.18%의 높은 ROE를 기록하며 자기자본을 매우 효율적으로 운용하여 이익을 창출했습니다.";
+            } else {
+                btn.classList.add('bg-rose-100', 'border-rose-500', 'text-rose-900');
+                fb.className = "text-xs mt-2 p-2.5 rounded bg-rose-50 text-rose-900 border border-rose-200 block";
+                fb.innerHTML = "<i class='fa-solid fa-circle-xmark text-rose-600'></i> <strong>오답입니다.</strong> YG의 ROE 급감은 자본 감소가 아닌 당기순이익의 큰 폭 감소가 주원인입니다.";
+            }
+        }
+
+        // PDF 다운로드 (인쇄 기능 연동)
+        function downloadPDF() {
+            // 강의노트 탭으로 자동 전환하여 10페이지 전체가 출력되도록 함
+            switchMainTab('lecture');
+            setTimeout(() => {
+                window.print();
+            }, 300);
+        }
+    </script>
+</body>
+</html>

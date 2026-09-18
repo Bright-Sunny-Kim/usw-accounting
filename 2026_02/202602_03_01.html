@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[1교시] 회계거래의 식별과 기본 회계등식 | 회계원리</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Google Fonts: Noto Sans KR -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Noto Sans KR', sans-serif; }
+        .tab-btn.active { border-bottom: 3px solid #2563eb; color: #1d4ed8; font-weight: 700; }
+        .slide-page { display: none; }
+        .slide-page.active { display: block; animation: fadeIn 0.3s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+        .page-dot.active { background-color: #2563eb; color: white; font-weight: bold; }
+
+        /* PDF 인쇄 및 다운로드 최적화 스타일 */
+        @media print {
+            @page {
+                size: A4 landscape;
+                margin: 10mm 12mm;
+            }
+            body {
+                background-color: #ffffff !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+                padding: 0 !important;
+            }
+            header, .sticky, #section-practice, .no-print, #page-nav-controller {
+                display: none !important;
+            }
+            main {
+                max-width: 100% !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+            #section-lecture {
+                display: block !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                space-y: 0 !important;
+            }
+            .slide-page {
+                display: block !important;
+                opacity: 1 !important;
+                page-break-after: always !important;
+                break-after: page !important;
+                page-break-inside: avoid !important;
+                break-inside: avoid !important;
+                min-height: 180mm !important;
+                margin-bottom: 0 !important;
+                border: 1px solid #cbd5e1 !important;
+                box-shadow: none !important;
+                border-radius: 12px !important;
+                padding: 24px 28px !important;
+            }
+            .slide-page:last-child {
+                page-break-after: auto !important;
+                break-after: auto !important;
+            }
+        }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-800 min-h-screen flex flex-col">
+
+    <!-- Top Header -->
+    <header class="bg-slate-900 text-white shadow-md sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 py-2.5 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <div class="bg-blue-600 p-2 rounded-lg text-white shadow">
+                    <i class="fa-solid fa-scale-balanced text-lg"></i>
+                </div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-[11px] bg-blue-800 text-blue-200 px-2 py-0.5 rounded font-semibold">1교시</span>
+                        <span class="text-xs text-slate-300">수원대학교 경영공학대학 | 회계원리 (3주차)</span>
+                    </div>
+                    <h1 class="text-base md:text-lg font-bold">Ch.02 회계거래와 회계등식: 거래의 식별과 기본 등식</h1>
+                </div>
+            </div>
+            <div class="flex items-center gap-2">
+                <button onclick="downloadPDF()" class="bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold px-3 py-1.5 rounded-lg shadow transition flex items-center gap-1.5 cursor-pointer">
+                    <i class="fa-solid fa-file-pdf text-sm"></i> PDF 다운로드
+                </button>
+                <span class="hidden sm:flex bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-xs px-3 py-1 rounded-full items-center gap-1.5 font-medium">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                    40분 강의 (10 Pages) + 10분 실습
+                </span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Tab Navigation -->
+    <div class="bg-white border-b border-slate-200 shadow-sm sticky top-[57px] z-40 no-print">
+        <div class="max-w-6xl mx-auto px-4 flex justify-between items-center">
+            <div class="flex space-x-4">
+                <button onclick="switchMainTab('lecture')" id="tab-lecture" class="tab-btn active py-3 px-3 text-sm md:text-base font-semibold flex items-center gap-2 text-slate-600 hover:text-blue-600 transition">
+                    <i class="fa-solid fa-chalkboard-user"></i> [40분] 1교시 강의노트 (10 Pages)
+                </button>
+                <button onclick="switchMainTab('practice')" id="tab-practice" class="tab-btn py-3 px-3 text-sm md:text-base font-semibold flex items-center gap-2 text-slate-600 hover:text-blue-600 transition">
+                    <i class="fa-solid fa-laptop-code"></i> [10분] 인터랙티브 실습실
+                </button>
+            </div>
+            <div class="flex items-center gap-3">
+                <button onclick="downloadPDF()" class="hidden md:flex text-xs bg-slate-100 hover:bg-rose-50 text-slate-700 hover:text-rose-700 border border-slate-300 hover:border-rose-300 font-bold px-2.5 py-1 rounded-md transition items-center gap-1.5 cursor-pointer">
+                    <i class="fa-solid fa-file-pdf text-rose-600"></i> PDF 저장
+                </button>
+                <div id="lecture-page-indicator" class="hidden md:flex items-center gap-1 text-xs font-medium text-slate-500">
+                    <span class="text-blue-700 font-bold" id="current-page-num">1</span> / 10 페이지
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <main class="max-w-6xl mx-auto px-4 py-6 flex-1 w-full">
+
+        <!-- ========================================================================= -->
+        <!-- TAB 1: 40분 강의 (10 Pages 슬라이드 뷰어) -->
+        <!-- ========================================================================= -->
+        <section id="section-lecture" class="space-y-4">
+
+            <!-- Page Navigation Controller -->
+            <div id="page-nav-controller" class="bg-white rounded-xl p-3 border border-slate-200 shadow-sm flex flex-wrap justify-between items-center gap-3 no-print">
+                <div class="flex items-center gap-2">
+                    <button onclick="prevPage()" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-bold transition flex items-center gap-1">
+                        <i class="fa-solid fa-chevron-left"></i> 이전
+                    </button>
+                    <button onclick="nextPage()" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-bold transition flex items-center gap-1 shadow-sm">
+                        다음 <i class="fa-solid fa-chevron-right"></i>
+                    </button>
+                </div>
+
+                <!-- Page Dots/Numbers -->
+                <div class="flex flex-wrap gap-1.5 items-center text-xs">
+                    <button onclick="goToPage(1)" class="page-dot active w-7 h-7 rounded-lg border border-slate-200 hover:bg-blue-50 flex items-center justify-center transition" id="dot-1">1</button>
+                    <button onclick="goToPage(2)" class="page-dot w-7 h-7 rounded-lg border border-slate-200 hover:bg-blue-50 flex items-center justify-center transition" id="dot-2">2</button>
+                    <button onclick="goToPage(3)" class="page-dot w-7 h-7 rounded-lg border border-slate-200 hover:bg-blue-50 flex items-center justify-center transition" id="dot-3">3</button>
+                    <button onclick="goToPage(4)" class="page-dot w-7 h-7 rounded-lg border border-slate-200 hover:bg-blue-50 flex items-center justify-center transition" id="dot-4">4</button>
+                    <button onclick="goToPage(5)" class="page-dot w-7 h-7 rounded-lg border border-slate-200 hover:bg-blue-50 flex items-center justify-center transition" id="dot-5">5</button>
+                    <button onclick="goToPage(6)" class="page-dot w-7 h-7 rounded-lg border border-slate-200 hover:bg-blue-50 flex items-center justify-center transition" id="dot-6">6</button>
+                    <button onclick="goToPage(7)" class="page-dot w-7 h-7 rounded-lg border border-slate-200 hover:bg-blue-50 flex items-center justify-center transition" id="dot-7">7</button>
+                    <button onclick="goToPage(8)" class="page-dot w-7 h-7 rounded-lg border border-slate-200 hover:bg-blue-50 flex items-center justify-center transition" id="dot-8">8</button>
+                    <button onclick="goToPage(9)" class="page-dot w-7 h-7 rounded-lg border border-slate-200 hover:bg-blue-50 flex items-center justify-center transition" id="dot-9">9</button>
+                    <button onclick="goToPage(10)" class="page-dot w-7 h-7 rounded-lg border border-slate-200 hover:bg-blue-50 flex items-center justify-center transition" id="dot-10">10</button>
+                </div>
+            </div>
+
+            <!-- SLIDE 1 / 10 -->
+            <div class="slide-page active bg-white rounded-2xl p-6 md:p-8 border border-slate-200 shadow-sm" id="page-1">
+                <div class="flex items-center justify-between border-b pb-4 mb-6">
+                    <span class="text-xs font-bold uppercase tracking-wider text-blue-600 bg-blue-50 px-3 py-1 rounded-full">Page 01 / 10 • 단원 개요</span>
+                    <span class="text-xs text-slate-400">Ch.02 회계거래와 회계등식 (Slide 2-3)</span>
+                </div>
+                <h2 class="text-2xl font-extrabold text-slate-900 mb-4">1교시 학습 목표 및 강의 로드맵</h2>
+                <p class="text-slate-600 text-sm md:text-base leading-relaxed mb-6">
+                    기업 경영에서 발생하는 수많은 사건 중 무엇을 회계장부에 기록해야 할까요? 1교시에서는 <strong>회계상 거래의 정의와 식별 기준</strong>을 배우고, 기업의 근간이 되는 <strong>기본 회계등식 (자산 = 부채 + 자본)</strong>의 메커니즘을 실제 기업 사례를 통해 체득합니다.
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="p-4 bg-blue-50/70 rounded-xl border border-blue-100">
+                        <div class="font-bold text-blue-900 flex items-center gap-2 mb-2 text-sm">
+                            <i class="fa-solid fa-bullseye text-blue-600"></i> 1교시 핵심 학습 목표
+                        </div>
+                        <ul class="text-xs md:text-sm text-slate-700 space-y-2 list-disc list-inside">
+                            <li>일반적인 일상 거래와 <strong>회계상 거래(Accounting Transaction)</strong>의 차이 식별</li>
+                            <li><strong>외부거래</strong>와 <strong>내부거래</strong>의 개념 및 구체적 사례 이해</li>
+                            <li><strong>기본 회계등식 (자산 = 부채 + 자본)</strong>의 원리와 항상 성립하는 균형 메커니즘 파악</li>
+                            <li>글로벌세탁(주) 창업 및 초기 자산 취득·차입 거래의 재무상태표 반영 실습</li>
+                        </ul>
+                    </div>
+                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                        <div class="font-bold text-slate-900 flex items-center gap-2 mb-2 text-sm">
+                            <i class="fa-solid fa-clock text-blue-600"></i> 1교시 시간 계획 (50분)
+                        </div>
+                        <div class="space-y-2 text-xs md:text-sm text-slate-600">
+                            <div class="flex justify-between border-b pb-1"><span>1~10분: 회계거래의 정의와 식별 요건</span><span class="font-semibold text-slate-800">Page 1 ~ 4</span></div>
+                            <div class="flex justify-between border-b pb-1"><span>11~22분: 기본 회계등식과 창업 거래</span><span class="font-semibold text-slate-800">Page 5 ~ 7</span></div>
+                            <div class="flex justify-between border-b pb-1"><span>23~40분: 자산취득, 외상, 차입 및 재무상태표</span><span class="font-semibold text-slate-800">Page 8 ~ 10</span></div>
+                            <div class="flex justify-between text-blue-600 font-bold pt-1"><span>41~50분: 인터랙티브 거래 판별 및 등식 실습</span><span>실습 탭</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 2 / 10 -->
+            <div class="slide-page bg-white rounded-2xl p-6 md:p-8 border border-slate-200 shadow-sm" id="page-2">
+                <div class="flex items-center justify-between border-b pb-4 mb-6">
+                    <span class="text-xs font-bold uppercase tracking-wider text-blue-600 bg-blue-50 px-3 py-1 rounded-full">Page 02 / 10 • 개념 정의</span>
+                    <span class="text-xs text-slate-400">Slide 4 매핑</span>
+                </div>
+                <h2 class="text-2xl font-extrabold text-slate-900 mb-4">회계거래(Accounting Transaction)란?</h2>
+                <div class="p-4 bg-blue-50 border-l-4 border-blue-600 rounded-r-xl mb-6">
+                    <p class="text-blue-950 font-medium text-sm md:text-base leading-relaxed">
+                        "기업의 재무상태 요소인 <strong>자산(Assets), 부채(Liabilities), 자본(Equity)에 변동(증감)</strong>을 가져오는 경제적 사건으로서, 그 금액을 <strong>신뢰성 있게 화폐단위로 측정</strong>할 수 있는 사건"
+                    </p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs md:text-sm">
+                    <div class="p-4 bg-white border border-slate-200 rounded-xl shadow-xs">
+                        <div class="font-bold text-slate-900 mb-2 flex items-center gap-2 text-sm">
+                            <span class="w-6 h-6 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold text-xs">1</span>
+                            재무상태 3요소의 실질적 변동
+                        </div>
+                        <p class="text-slate-600 leading-relaxed">
+                            기업의 자산, 부채, 자본 중 최소 하나 이상의 항목에 수량적·금액적 변화가 실제로 발생해야 합니다. 단순한 의사표시나 구두 약속은 변동이 발생한 것으로 보지 않습니다.
+                        </p>
+                    </div>
+                    <div class="p-4 bg-white border border-slate-200 rounded-xl shadow-xs">
+                        <div class="font-bold text-slate-900 mb-2 flex items-center gap-2 text-sm">
+                            <span class="w-6 h-6 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold text-xs">2</span>
+                            화폐단위의 신뢰성 있는 측정 가능성
+                        </div>
+                        <p class="text-slate-600 leading-relaxed">
+                            변동된 가치를 원화(₩) 등 객관적인 화폐 단위로 합리적으로 측정할 수 있어야 합니다. 가치가 크더라도 객관적 금액 산정이 불가능하면 회계상 거래로 기록할 수 없습니다.
+                        </p>
+                    </div>
+                </div>
+                <div class="mt-4 p-3 bg-amber-50 rounded-lg border border-amber-200 text-xs text-amber-900 flex items-center gap-2">
+                    <i class="fa-solid fa-lightbulb text-amber-600 text-sm shrink-0"></i>
+                    <span><strong>핵심 포인트:</strong> 일상생활에서의 '계약 체결', '종업원 채용' 등은 법률적 사건이지만 재무상태의 즉각적인 화폐 변동이 없으므로 회계상 거래가 아닙니다!</span>
+                </div>
+            </div>
+
+            <!-- SLIDE 3 / 10 -->
+            <div class="slide-page bg-white rounded-2xl p-6 md:p-8 border border-slate-200 shadow-sm" id="page-3">
+                <div class="flex items-center justify-between border-b pb-4 mb-6">
+                    <span class="text-xs font-bold uppercase tracking-wider text-blue-600 bg-blue-50 px-3 py-1 rounded-full">Page 03 / 10 • 거래의 유형</span>
+                    <span class="text-xs text-slate-400">Slide 4-5 매핑</span>
+                </div>
+                <h2 class="text-2xl font-extrabold text-slate-900 mb-4">외부거래(External)와 내부거래(Internal)</h2>
+                <p class="text-slate-600 text-sm leading-relaxed mb-6">
+                    회계거래는 거래 상대방의 유무에 따라 기업 외부와의 교환활동인 <strong>외부거래</strong>와 기업 내부에서 재무상태 변동이 일어나는 <strong>내부거래</strong>로 구분됩니다.
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <div class="p-5 bg-gradient-to-br from-slate-50 to-blue-50/40 rounded-xl border border-blue-200">
+                        <div class="flex items-center gap-2 text-blue-900 font-bold mb-3 text-base">
+                            <i class="fa-solid fa-handshake text-blue-600"></i> 외부거래 (External Transaction)
+                        </div>
+                        <p class="text-xs text-slate-600 mb-3 leading-relaxed">
+                            기업이 독립된 외부의 제3자(고객, 공급자, 은행, 주주 등)와 계약을 이행하거나 재화·용역 및 화폐를 교환하는 통상적 영업활동
+                        </p>
+                        <ul class="text-xs text-slate-700 space-y-1.5 list-disc list-inside bg-white p-3 rounded-lg border border-blue-100">
+                            <li>상품 및 원재료의 현금/외상 매입</li>
+                            <li>고객에 대한 제품 판매 및 용역 제공</li>
+                            <li>은행으로부터의 자금 차입 및 이자 지급</li>
+                            <li>주주로부터의 출자금 수령 및 배당금 지급</li>
+                        </ul>
+                    </div>
+                    <div class="p-5 bg-gradient-to-br from-slate-50 to-emerald-50/40 rounded-xl border border-emerald-200">
+                        <div class="flex items-center gap-2 text-emerald-900 font-bold mb-3 text-base">
+                            <i class="fa-solid fa-building-user text-emerald-600"></i> 내부거래 (Internal Transaction)
+                        </div>
+                        <p class="text-xs text-slate-600 mb-3 leading-relaxed">
+                            외부 제3자와의 직접 교환은 없으나, 기업 내부에서 자산이 소비되거나 가치가 감소하여 재무상태에 실질적 영향을 미치는 사건
+                        </p>
+                        <ul class="text-xs text-slate-700 space-y-1.5 list-disc list-inside bg-white p-3 rounded-lg border border-emerald-100">
+                            <li>구입해둔 소모품의 업무상 소비 (자산 → 비용 전환)</li>
+                            <li>기계장치·건물의 사용에 따른 감가상각비 발생</li>
+                            <li>화재·도난·침수로 인한 상품 재고자산의 소실</li>
+                            <li>원재료를 공정에 투입하여 제품을 제조하는 과정</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 4 / 10 -->
+            <div class="slide-page bg-white rounded-2xl p-6 md:p-8 border border-slate-200 shadow-sm" id="page-4">
+                <div class="flex items-center justify-between border-b pb-4 mb-6">
+                    <span class="text-xs font-bold uppercase tracking-wider text-blue-600 bg-blue-50 px-3 py-1 rounded-full">Page 04 / 10 • 판별 비교</span>
+                    <span class="text-xs text-slate-400">Slide 7 WHY NOT 심화</span>
+                </div>
+                <h2 class="text-2xl font-extrabold text-slate-900 mb-4">일상의 사건 vs 회계상 거래 비교 분석</h2>
+                <div class="overflow-x-auto mb-6">
+                    <table class="w-full text-xs md:text-sm text-left border-collapse border border-slate-200 rounded-lg">
+                        <thead class="bg-slate-100 text-slate-700 font-bold">
+                            <tr>
+                                <th class="p-3 border">사건 내용</th>
+                                <th class="p-3 border text-center">일상적 사건</th>
+                                <th class="p-3 border text-center">회계상 거래</th>
+                                <th class="p-3 border">회계상 거래 여부 판단 이유</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-200">
+                            <tr class="hover:bg-slate-50">
+                                <td class="p-3 border font-semibold text-slate-800">사무용 컴퓨터 ₩1,500,000 현금 구입</td>
+                                <td class="p-3 border text-center text-emerald-600 font-bold">O</td>
+                                <td class="p-3 border text-center text-emerald-600 font-bold">O</td>
+                                <td class="p-3 border text-slate-600">현금(자산) 감소, 비품(자산) 증가로 재무상태 변동 발생</td>
+                            </tr>
+                            <tr class="hover:bg-slate-50 bg-rose-50/30">
+                                <td class="p-3 border font-semibold text-slate-800">신입사원 월급 ₩3,000,000에 고용계약 체결</td>
+                                <td class="p-3 border text-center text-emerald-600 font-bold">O</td>
+                                <td class="p-3 border text-center text-rose-600 font-bold">X</td>
+                                <td class="p-3 border text-slate-600">근무 전이므로 채권·채무 및 자산의 증감이 아직 발생하지 않음</td>
+                            </tr>
+                            <tr class="hover:bg-slate-50 bg-rose-50/30">
+                                <td class="p-3 border font-semibold text-slate-800">상품 ₩10,000,000 공급계약(주문서 발송)</td>
+                                <td class="p-3 border text-center text-emerald-600 font-bold">O</td>
+                                <td class="p-3 border text-center text-rose-600 font-bold">X</td>
+                                <td class="p-3 border text-slate-600">계약만 체결되었을 뿐 재화의 인도나 계약금 수수가 없음</td>
+                            </tr>
+                            <tr class="hover:bg-slate-50">
+                                <td class="p-3 border font-semibold text-slate-800">창고에 화재 발생으로 상품 ₩5,000,000 소실</td>
+                                <td class="p-3 border text-center text-rose-600 font-bold">X</td>
+                                <td class="p-3 border text-center text-emerald-600 font-bold">O</td>
+                                <td class="p-3 border text-slate-600">상대방과의 거래는 아니지만 상품(자산)이 소실되어 자산 감소 발생 (내부 사건)</td>
+                            </tr>
+                            <tr class="hover:bg-slate-50 bg-rose-50/30">
+                                <td class="p-3 border font-semibold text-slate-800">부동산 담보를 제공하고 대출 한도 설정</td>
+                                <td class="p-3 border text-center text-emerald-600 font-bold">O</td>
+                                <td class="p-3 border text-center text-rose-600 font-bold">X</td>
+                                <td class="p-3 border text-slate-600">실제 현금을 차입(인출)하기 전까지는 부채가 발생하지 않음</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- SLIDE 5 / 10 -->
+            <div class="slide-page bg-white rounded-2xl p-6 md:p-8 border border-slate-200 shadow-sm" id="page-5">
+                <div class="flex items-center justify-between border-b pb-4 mb-6">
+                    <span class="text-xs font-bold uppercase tracking-wider text-blue-600 bg-blue-50 px-3 py-1 rounded-full">Page 05 / 10 • 기본 등식</span>
+                    <span class="text-xs text-slate-400">Slide 6 매핑</span>
+                </div>
+                <h2 class="text-2xl font-extrabold text-slate-900 mb-4">기본 회계등식 (The Accounting Equation)</h2>
+                <div class="p-6 bg-slate-900 text-white rounded-2xl text-center mb-6 shadow-md">
+                    <div class="text-xs text-slate-400 uppercase tracking-widest mb-2 font-bold">Fundamental Accounting Equation</div>
+                    <div class="text-2xl md:text-3xl font-black flex justify-center items-center gap-3">
+                        <span class="text-blue-400">자산 (Assets)</span>
+                        <span class="text-slate-400">=</span>
+                        <span class="text-rose-400">부채 (Liabilities)</span>
+                        <span class="text-slate-400">+</span>
+                        <span class="text-emerald-400">자본 (Equity)</span>
+                    </div>
+                    <p class="text-xs md:text-sm text-slate-300 mt-3">"기업이 보유한 총 경제적 자원(자산)은 타인에게 조달한 몫(부채)과 소유주에게 조달한 몫(자본)의 합과 항상 일치한다."</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs md:text-sm">
+                    <div class="p-4 bg-blue-50/60 rounded-xl border border-blue-200">
+                        <div class="font-bold text-blue-950 mb-1 text-sm"><i class="fa-solid fa-coins text-blue-600 mr-1.5"></i>자산 (자원의 운용)</div>
+                        <p class="text-slate-600">과거 사건의 결과로 기업이 통제하고 있으며 미래에 경제적 효익이 유입될 것으로 기대되는 자원 (현금, 소모품, 매출채권, 비품 등)</p>
+                    </div>
+                    <div class="p-4 bg-rose-50/60 rounded-xl border border-rose-200">
+                        <div class="font-bold text-rose-950 mb-1 text-sm"><i class="fa-solid fa-hand-holding-dollar text-rose-600 mr-1.5"></i>부채 (타인자본/채권자 청구권)</div>
+                        <p class="text-slate-600">과거 사건에 의해 발생한 현재의 의무로서 미래에 경제적 효익을 갖는 자원이 유출될 것으로 예상되는 채무 (차입금, 미지급금 등)</p>
+                    </div>
+                    <div class="p-4 bg-emerald-50/60 rounded-xl border border-emerald-200">
+                        <div class="font-bold text-emerald-950 mb-1 text-sm"><i class="fa-solid fa-gem text-emerald-600 mr-1.5"></i>자본 (자기자본/소유주 지분)</div>
+                        <p class="text-slate-600">기업의 총자산에서 모든 부채를 차감한 후의 잔여청구권(순자산, Net Assets). 주주의 납입자본(자본금)과 유보이익(이익잉여금)으로 구성</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 6 / 10 -->
+            <div class="slide-page bg-white rounded-2xl p-6 md:p-8 border border-slate-200 shadow-sm" id="page-6">
+                <div class="flex items-center justify-between border-b pb-4 mb-6">
+                    <span class="text-xs font-bold uppercase tracking-wider text-blue-600 bg-blue-50 px-3 py-1 rounded-full">Page 06 / 10 • 실전 사례 ①</span>
+                    <span class="text-xs text-slate-400">Slide 7-9 글로벌세탁(주) 9/1 설립</span>
+                </div>
+                <h2 class="text-2xl font-extrabold text-slate-900 mb-2">[사례 ①] 9월 1일: 회사 설립 및 자본금 납입</h2>
+                <p class="text-slate-600 text-sm mb-4">
+                    20×1년 9월 1일, 세탁용역업을 영위하는 <strong>글로벌세탁(주)</strong>가 설립되었습니다. 주당 액면 ₩5,000의 주식 60주를 발행하고 주주들로부터 현금 <strong>₩300,000</strong>을 납입받았습니다.
+                </p>
+                <div class="p-4 bg-slate-50 border rounded-xl mb-4">
+                    <div class="text-xs font-bold text-slate-500 uppercase mb-2">거래 분석 & 회계등식 영향</div>
+                    <div class="flex flex-wrap items-center justify-around gap-4 text-center">
+                        <div class="p-3 bg-blue-100 rounded-lg">
+                            <span class="text-xs text-blue-800 font-bold block">자산 (현금)</span>
+                            <span class="text-lg font-extrabold text-blue-900">+₩300,000</span>
+                        </div>
+                        <span class="text-xl font-bold text-slate-400">=</span>
+                        <div class="p-3 bg-slate-200 rounded-lg">
+                            <span class="text-xs text-slate-700 font-bold block">부채</span>
+                            <span class="text-lg font-extrabold text-slate-700">₩0</span>
+                        </div>
+                        <span class="text-xl font-bold text-slate-400">+</span>
+                        <div class="p-3 bg-emerald-100 rounded-lg">
+                            <span class="text-xs text-emerald-800 font-bold block">자본 (자본금)</span>
+                            <span class="text-lg font-extrabold text-emerald-900">+₩300,000</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs md:text-sm">
+                    <div class="p-3 bg-white border rounded-xl">
+                        <div class="font-bold text-slate-800 mb-1">회계등식의 변화표 (Slide 8)</div>
+                        <table class="w-full text-center border">
+                            <tr class="bg-slate-100 font-bold"><th class="p-1 border">구분</th><th class="p-1 border">자산(현금)</th><th class="p-1 border">=</th><th class="p-1 border">부채</th><th class="p-1 border">+</th><th class="p-1 border">자본(자본금)</th></tr>
+                            <tr><td class="p-1 border">거래 전</td><td class="p-1 border">₩0</td><td class="p-1 border"></td><td class="p-1 border">₩0</td><td class="p-1 border"></td><td class="p-1 border">₩0</td></tr>
+                            <tr class="bg-blue-50 font-bold text-blue-700"><td class="p-1 border">거래 영향</td><td class="p-1 border">+300,000</td><td class="p-1 border"></td><td class="p-1 border">0</td><td class="p-1 border"></td><td class="p-1 border">+300,000</td></tr>
+                            <tr class="bg-slate-50 font-extrabold"><td class="p-1 border">거래 후 잔액</td><td class="p-1 border">₩300,000</td><td class="p-1 border">=</td><td class="p-1 border">₩0</td><td class="p-1 border">+</td><td class="p-1 border">₩300,000</td></tr>
+                        </table>
+                    </div>
+                    <div class="p-3 bg-white border rounded-xl">
+                        <div class="font-bold text-slate-800 mb-1">9월 1일 현재 재무상태표 (표 2-1)</div>
+                        <table class="w-full text-xs border">
+                            <tr class="bg-indigo-900 text-white font-bold"><th colspan="2" class="p-1 border">자산</th><th colspan="2" class="p-1 border">부채 및 자본</th></tr>
+                            <tr><td class="p-1 border font-semibold">현금</td><td class="p-1 border text-right">₩300,000</td><td class="p-1 border font-semibold">부채:</td><td class="p-1 border text-right">₩0</td></tr>
+                            <tr><td class="p-1 border"></td><td class="p-1 border"></td><td class="p-1 border font-semibold">자본금</td><td class="p-1 border text-right">₩300,000</td></tr>
+                            <tr class="bg-slate-100 font-bold"><td class="p-1 border">자산총계</td><td class="p-1 border text-right text-blue-700">₩300,000</td><td class="p-1 border">부채와자본총계</td><td class="p-1 border text-right text-blue-700">₩300,000</td></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 7 / 10 -->
+            <div class="slide-page bg-white rounded-2xl p-6 md:p-8 border border-slate-200 shadow-sm" id="page-7">
+                <div class="flex items-center justify-between border-b pb-4 mb-6">
+                    <span class="text-xs font-bold uppercase tracking-wider text-blue-600 bg-blue-50 px-3 py-1 rounded-full">Page 07 / 10 • 실전 사례 ②</span>
+                    <span class="text-xs text-slate-400">Slide 7 계약 체결 (WHY NOT?)</span>
+                </div>
+                <h2 class="text-2xl font-extrabold text-slate-900 mb-3">[사례 ②] 9월 2일~4일: 계약 체결 사건 (WHY NOT?)</h2>
+                <p class="text-slate-600 text-sm leading-relaxed mb-4">
+                    글로벌세탁(주)는 9월 초 다음과 같은 활발한 영업 및 운영 계약을 체결하였습니다. 과연 이 사건들은 회계장부에 기록될까요?
+                </p>
+                <div class="space-y-3 text-xs md:text-sm">
+                    <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl flex items-start gap-3">
+                        <div class="bg-slate-800 text-white font-bold px-2.5 py-1 rounded text-xs shrink-0">9월 2일</div>
+                        <div class="flex-1">
+                            <div class="font-bold text-slate-900">성지제조회사와 세탁용역계약 체결 (벌당 ₩800 수령 약정)</div>
+                            <p class="text-slate-600 mt-0.5">실제 세탁물을 수령하여 세탁용역을 제공하기 전이며, 계약금 수수도 없으므로 재무상태 변동 없음 → <span class="text-rose-600 font-bold">회계거래 아님 (장부 기록 안 함)</span></p>
+                        </div>
+                    </div>
+                    <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl flex items-start gap-3">
+                        <div class="bg-slate-800 text-white font-bold px-2.5 py-1 rounded text-xs shrink-0">9월 3일</div>
+                        <div class="flex-1">
+                            <div class="font-bold text-slate-900">세탁소 건물 및 기계 임차계약 체결 (월 ₩400,000 지급 약정)</div>
+                            <p class="text-slate-600 mt-0.5">임차하여 효익을 소비하거나 임차료를 지급한 시점이 아니므로 현시점에서는 부채나 비용이 아님 → <span class="text-rose-600 font-bold">회계거래 아님 (장부 기록 안 함)</span></p>
+                        </div>
+                    </div>
+                    <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl flex items-start gap-3">
+                        <div class="bg-slate-800 text-white font-bold px-2.5 py-1 rounded text-xs shrink-0">9월 4일</div>
+                        <div class="flex-1">
+                            <div class="font-bold text-slate-900">세탁기술자 1명 고용 (월 급여 ₩300,000, 매월 20일 지급 약정)</div>
+                            <p class="text-slate-600 mt-0.5">근무(용역 제공)가 아직 발생하지 않았고 급여를 지급한 것도 아니므로 재무상태 영향 없음 → <span class="text-rose-600 font-bold">회계거래 아님 (장부 기록 안 함)</span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg text-xs text-blue-900">
+                    <strong>결론:</strong> 계약의 체결 자체는 미래의 이행을 약속한 법률 행위일 뿐, 구체적인 재화나 용역의 수수, 대금의 지급이 이루어지지 않았으므로 회계상 기록할 거래가 아닙니다.
+                </div>
+            </div>
+
+            <!-- SLIDE 8 / 10 -->
+            <div class="slide-page bg-white rounded-2xl p-6 md:p-8 border border-slate-200 shadow-sm" id="page-8">
+                <div class="flex items-center justify-between border-b pb-4 mb-6">
+                    <span class="text-xs font-bold uppercase tracking-wider text-blue-600 bg-blue-50 px-3 py-1 rounded-full">Page 08 / 10 • 실전 사례 ③</span>
+                    <span class="text-xs text-slate-400">Slide 10 글로벌세탁(주) 9/9 소모품 구입</span>
+                </div>
+                <h2 class="text-2xl font-extrabold text-slate-900 mb-2">[사례 ③] 9월 9일: 소모품 복합 취득 (현금 + 외상)</h2>
+                <p class="text-slate-600 text-sm mb-4">
+                    세탁 영업에 필요한 세제 등 <strong>소모품 ₩100,000</strong>을 구입하면서, 구입 시 현금으로 <strong>₩50,000</strong>을 지급하고 나머지 <strong>₩50,000은 1개월 후</strong>에 지급하기로 약정하였습니다.
+                </p>
+                <div class="p-4 bg-slate-50 border rounded-xl mb-4">
+                    <div class="text-xs font-bold text-slate-500 uppercase mb-2">거래 분석 & 회계등식 영향</div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs md:text-sm">
+                        <div class="p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                            <span class="font-bold text-blue-900 block mb-1"><i class="fa-solid fa-plus-minus text-blue-600"></i> 자산의 변동</span>
+                            <ul class="space-y-1 text-slate-700">
+                                <li>• 소모품 (자산 증가): <strong class="text-blue-700">+₩100,000</strong></li>
+                                <li>• 현금 (자산 감소): <strong class="text-rose-700">-₩50,000</strong></li>
+                                <li>→ 자산 순증가 합계: <strong>+₩50,000</strong></li>
+                            </ul>
+                        </div>
+                        <div class="p-3 bg-rose-50 border border-rose-200 rounded-lg">
+                            <span class="font-bold text-rose-900 block mb-1"><i class="fa-solid fa-file-invoice-dollar text-rose-600"></i> 부채의 변동</span>
+                            <ul class="space-y-1 text-slate-700">
+                                <li>• 미지급금 (부채 증가): <strong class="text-rose-700">+₩50,000</strong></li>
+                                <li>• 자본: <strong>변동 없음 (₩0)</strong></li>
+                                <li>→ 부채+자본 증가 합계: <strong>+₩50,000</strong></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-3 bg-white border rounded-xl overflow-x-auto text-xs md:text-sm">
+                    <div class="font-bold text-slate-800 mb-1">회계등식의 누적 변화표 (Slide 10)</div>
+                    <table class="w-full text-center border">
+                        <tr class="bg-slate-100 font-bold">
+                            <th class="p-1 border">구분</th>
+                            <th class="p-1 border">현금</th>
+                            <th class="p-1 border">+</th>
+                            <th class="p-1 border">소모품</th>
+                            <th class="p-1 border">=</th>
+                            <th class="p-1 border">미지급금</th>
+                            <th class="p-1 border">+</th>
+                            <th class="p-1 border">자본금</th>
+                        </tr>
+                        <tr>
+                            <td class="p-1 border font-semibold">거래 전(9/1)</td>
+                            <td class="p-1 border">₩300,000</td><td class="p-1 border"></td><td class="p-1 border">₩0</td><td class="p-1 border">=</td><td class="p-1 border">₩0</td><td class="p-1 border"></td><td class="p-1 border">₩300,000</td>
+                        </tr>
+                        <tr class="bg-amber-50 font-bold text-amber-900">
+                            <td class="p-1 border">9/9 거래 영향</td>
+                            <td class="p-1 border text-rose-600">-50,000</td><td class="p-1 border"></td><td class="p-1 border text-blue-600">+100,000</td><td class="p-1 border">=</td><td class="p-1 border text-rose-600">+50,000</td><td class="p-1 border"></td><td class="p-1 border">0</td>
+                        </tr>
+                        <tr class="bg-slate-50 font-extrabold">
+                            <td class="p-1 border">거래 후 잔액</td>
+                            <td class="p-1 border text-blue-700">₩250,000</td><td class="p-1 border"></td><td class="p-1 border text-blue-700">₩100,000</td><td class="p-1 border">=</td><td class="p-1 border text-rose-700">₩50,000</td><td class="p-1 border"></td><td class="p-1 border text-emerald-700">₩300,000</td>
+                        </tr>
+                    </table>
+                    <div class="text-right text-[11px] text-slate-500 mt-1 font-semibold">총자산 ₩350,000 = 부채 ₩50,000 + 자본 ₩300,000 (양변 일치)</div>
+                </div>
+            </div>
+
+            <!-- SLIDE 9 / 10 -->
+            <div class="slide-page bg-white rounded-2xl p-6 md:p-8 border border-slate-200 shadow-sm" id="page-9">
+                <div class="flex items-center justify-between border-b pb-4 mb-6">
+                    <span class="text-xs font-bold uppercase tracking-wider text-blue-600 bg-blue-50 px-3 py-1 rounded-full">Page 09 / 10 • 실전 사례 ④</span>
+                    <span class="text-xs text-slate-400">Slide 11 글로벌세탁(주) 9/10 은행 차입</span>
+                </div>
+                <h2 class="text-2xl font-extrabold text-slate-900 mb-2">[사례 ④] 9월 10일: 은행으로부터 현금 차입</h2>
+                <p class="text-slate-600 text-sm mb-4">
+                    운영자금 확보를 위해 거래은행으로부터 <strong>현금 ₩200,000</strong>을 만기 1년 조건으로 차입하여 통장에 입금받았습니다.
+                </p>
+                <div class="p-4 bg-slate-50 border rounded-xl mb-4">
+                    <div class="text-xs font-bold text-slate-500 uppercase mb-2">거래 분석 & 회계등식 영향</div>
+                    <div class="flex flex-wrap items-center justify-around gap-4 text-center">
+                        <div class="p-3 bg-blue-100 rounded-lg">
+                            <span class="text-xs text-blue-800 font-bold block">자산 (현금 증가)</span>
+                            <span class="text-lg font-extrabold text-blue-900">+₩200,000</span>
+                        </div>
+                        <span class="text-xl font-bold text-slate-400">=</span>
+                        <div class="p-3 bg-rose-100 rounded-lg">
+                            <span class="text-xs text-rose-800 font-bold block">부채 (차입금 증가)</span>
+                            <span class="text-lg font-extrabold text-rose-900">+₩200,000</span>
+                        </div>
+                        <span class="text-xl font-bold text-slate-400">+</span>
+                        <div class="p-3 bg-slate-200 rounded-lg">
+                            <span class="text-xs text-slate-700 font-bold block">자본</span>
+                            <span class="text-lg font-extrabold text-slate-700">₩0</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-3 bg-white border rounded-xl overflow-x-auto text-xs md:text-sm">
+                    <div class="font-bold text-slate-800 mb-1">회계등식의 누적 변화표 (Slide 11)</div>
+                    <table class="w-full text-center border">
+                        <tr class="bg-slate-100 font-bold text-[11px] md:text-xs">
+                            <th class="p-1 border">구분</th>
+                            <th class="p-1 border">현금</th>
+                            <th class="p-1 border">+</th>
+                            <th class="p-1 border">소모품</th>
+                            <th class="p-1 border">=</th>
+                            <th class="p-1 border">미지급금</th>
+                            <th class="p-1 border">+</th>
+                            <th class="p-1 border">차입금</th>
+                            <th class="p-1 border">+</th>
+                            <th class="p-1 border">자본금</th>
+                        </tr>
+                        <tr>
+                            <td class="p-1 border font-semibold">거래 전(9/9)</td>
+                            <td class="p-1 border">₩250,000</td><td class="p-1 border"></td><td class="p-1 border">₩100,000</td><td class="p-1 border">=</td><td class="p-1 border">₩50,000</td><td class="p-1 border"></td><td class="p-1 border">₩0</td><td class="p-1 border"></td><td class="p-1 border">₩300,000</td>
+                        </tr>
+                        <tr class="bg-blue-50 font-bold text-blue-700">
+                            <td class="p-1 border">9/10 차입 영향</td>
+                            <td class="p-1 border">+200,000</td><td class="p-1 border"></td><td class="p-1 border">0</td><td class="p-1 border">=</td><td class="p-1 border">0</td><td class="p-1 border"></td><td class="p-1 border text-rose-600">+200,000</td><td class="p-1 border"></td><td class="p-1 border">0</td>
+                        </tr>
+                        <tr class="bg-slate-50 font-extrabold">
+                            <td class="p-1 border">거래 후 잔액</td>
+                            <td class="p-1 border text-blue-700">₩450,000</td><td class="p-1 border"></td><td class="p-1 border text-blue-700">₩100,000</td><td class="p-1 border">=</td><td class="p-1 border text-rose-700">₩50,000</td><td class="p-1 border"></td><td class="p-1 border text-rose-700">₩200,000</td><td class="p-1 border"></td><td class="p-1 border text-emerald-700">₩300,000</td>
+                        </tr>
+                    </table>
+                    <div class="text-right text-[11px] text-slate-500 mt-1 font-semibold">총자산 ₩550,000 = 총부채 ₩250,000 + 총자본 ₩300,000 (완전 균형)</div>
+                </div>
+            </div>
+
+            <!-- SLIDE 10 / 10 -->
+            <div class="slide-page bg-white rounded-2xl p-6 md:p-8 border border-slate-200 shadow-sm" id="page-10">
+                <div class="flex items-center justify-between border-b pb-4 mb-6">
+                    <span class="text-xs font-bold uppercase tracking-wider text-blue-600 bg-blue-50 px-3 py-1 rounded-full">Page 10 / 10 • 중간 결산</span>
+                    <span class="text-xs text-slate-400">Slide 12 재무상태표 (표 2-2)</span>
+                </div>
+                <h2 class="text-2xl font-extrabold text-slate-900 mb-3">9월 10일 현재 재무상태표 및 1교시 요약</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-6">
+                    <!-- 표 2-2 재무상태표 -->
+                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                        <div class="text-center font-bold text-slate-800 text-sm mb-2">[표 2-2] 글로벌세탁㈜ 재무상태표 (20×1년 9월 10일 현재)</div>
+                        <div class="text-right text-[11px] text-slate-500 mb-1">(단위: 원)</div>
+                        <table class="w-full text-xs border bg-white shadow-xs">
+                            <thead class="bg-slate-800 text-white font-bold">
+                                <tr><th colspan="2" class="p-2 border">자산</th><th colspan="2" class="p-2 border">부채 및 자본</th></tr>
+                            </thead>
+                            <tbody class="divide-y">
+                                <tr>
+                                    <td class="p-2 font-medium">현금</td>
+                                    <td class="p-2 text-right font-mono">₩450,000</td>
+                                    <td class="p-2 font-medium text-rose-700">미지급금</td>
+                                    <td class="p-2 text-right font-mono text-rose-700">₩50,000</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2 font-medium">소모품</td>
+                                    <td class="p-2 text-right font-mono">₩100,000</td>
+                                    <td class="p-2 font-medium text-rose-700">차입금</td>
+                                    <td class="p-2 text-right font-mono text-rose-700">200,000</td>
+                                </tr>
+                                <tr class="bg-rose-50/50">
+                                    <td class="p-2"></td>
+                                    <td class="p-2"></td>
+                                    <td class="p-2 font-bold text-rose-900">부채총계</td>
+                                    <td class="p-2 text-right font-mono font-bold text-rose-900">₩250,000</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2"></td>
+                                    <td class="p-2"></td>
+                                    <td class="p-2 font-bold text-emerald-800">자본금</td>
+                                    <td class="p-2 text-right font-mono font-bold text-emerald-800">₩300,000</td>
+                                </tr>
+                                <tr class="bg-blue-100/70 font-extrabold text-blue-950">
+                                    <td class="p-2 border-t-2 border-blue-400">자산총계</td>
+                                    <td class="p-2 text-right font-mono border-t-2 border-blue-400">₩550,000</td>
+                                    <td class="p-2 border-t-2 border-blue-400">부채와자본총계</td>
+                                    <td class="p-2 text-right font-mono border-t-2 border-blue-400">₩550,000</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- 핵심 요약 노트 -->
+                    <div class="p-4 bg-blue-50/70 rounded-xl border border-blue-200 flex flex-col justify-between">
+                        <div>
+                            <div class="font-bold text-blue-900 mb-2 text-sm flex items-center gap-2">
+                                <i class="fa-solid fa-check-double text-blue-600"></i> 1교시 핵심 강의 요약
+                            </div>
+                            <ul class="text-xs text-slate-700 space-y-2 list-disc list-inside leading-relaxed">
+                                <li><strong>회계거래 식별:</strong> 재무상태 3요소(자산, 부채, 자본)의 실질적 증감이 발생하고 화폐적 측정이 가능해야 함 (단순 계약·주문·고용은 제외).</li>
+                                <li><strong>등식의 항상성:</strong> 모든 거래는 [자산 = 부채 + 자본]이라는 회계등식의 양변을 동일하게 변동시키므로 항상 균형을 유지함.</li>
+                                <li><strong>복합 거래의 영향:</strong> 소모품 매입처럼 자산 간 교환과 부채 증가가 동시에 일어나는 거래도 등식의 평형을 완벽히 유지함.</li>
+                            </ul>
+                        </div>
+                        <div class="p-3 bg-white rounded-lg border border-blue-100 mt-3 text-xs text-slate-600">
+                            <strong>다음 2교시 예고:</strong> 세탁 서비스를 제공하고 수익을 벌거나 비용을 지출할 때 자본(이익잉여금)과 회계등식은 어떻게 확장될까요?
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- ========================================================================= -->
+        <!-- TAB 2: 10분 인터랙티브 실습실 -->
+        <!-- ========================================================================= -->
+        <section id="section-practice" class="hidden space-y-6">
+
+            <!-- 실습 1: 거래 판별 인터랙티브 시뮬레이터 -->
+            <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
+                <div class="flex justify-between items-center mb-4">
+                    <div>
+                        <h3 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+                            <i class="fa-solid fa-list-check text-blue-600"></i> [실습 1] 회계상 거래 vs 비거래 판별 시뮬레이터
+                        </h3>
+                        <p class="text-xs text-slate-500">다음 제시된 경영 사건이 회계장부에 기록되는 '회계거래'인지 판별해 보세요.</p>
+                    </div>
+                    <span id="trans-score" class="text-xs font-bold bg-blue-50 text-blue-700 border border-blue-200 px-3 py-1 rounded-full">진행: 0 / 4</span>
+                </div>
+
+                <div class="space-y-3" id="transaction-list">
+                    <!-- Q1 -->
+                    <div class="p-4 border rounded-xl border-slate-200 bg-slate-50" id="item-box-1">
+                        <div class="flex justify-between items-center text-xs md:text-sm font-semibold text-slate-800">
+                            <span>1. 우주복 개발업체와 1회 세탁비 ₩800에 세탁용역 계약을 정식 체결하였다.</span>
+                            <div class="flex gap-2 shrink-0">
+                                <button onclick="judgeTransaction(1, true, this)" class="px-3 py-1 bg-white border border-slate-300 rounded hover:bg-slate-100 text-xs font-bold transition">회계거래 O</button>
+                                <button onclick="judgeTransaction(1, false, this)" class="px-3 py-1 bg-white border border-slate-300 rounded hover:bg-slate-100 text-xs font-bold transition">회계거래 X</button>
+                            </div>
+                        </div>
+                        <div id="item-desc-1" class="hidden text-xs mt-2 p-2.5 rounded"></div>
+                    </div>
+
+                    <!-- Q2 -->
+                    <div class="p-4 border rounded-xl border-slate-200 bg-slate-50" id="item-box-2">
+                        <div class="flex justify-between items-center text-xs md:text-sm font-semibold text-slate-800">
+                            <span>2. 세탁용 소모품 ₩100,000을 구입하고 ₩50,000은 현금 지급, 잔액은 외상으로 하였다.</span>
+                            <div class="flex gap-2 shrink-0">
+                                <button onclick="judgeTransaction(2, true, this)" class="px-3 py-1 bg-white border border-slate-300 rounded hover:bg-slate-100 text-xs font-bold transition">회계거래 O</button>
+                                <button onclick="judgeTransaction(2, false, this)" class="px-3 py-1 bg-white border border-slate-300 rounded hover:bg-slate-100 text-xs font-bold transition">회계거래 X</button>
+                            </div>
+                        </div>
+                        <div id="item-desc-2" class="hidden text-xs mt-2 p-2.5 rounded"></div>
+                    </div>
+
+                    <!-- Q3 -->
+                    <div class="p-4 border rounded-xl border-slate-200 bg-slate-50" id="item-box-3">
+                        <div class="flex justify-between items-center text-xs md:text-sm font-semibold text-slate-800">
+                            <span>3. 세탁기술자 1명을 월 급여 ₩300,000에 채용하고 근로계약서를 작성하였다.</span>
+                            <div class="flex gap-2 shrink-0">
+                                <button onclick="judgeTransaction(3, true, this)" class="px-3 py-1 bg-white border border-slate-300 rounded hover:bg-slate-100 text-xs font-bold transition">회계거래 O</button>
+                                <button onclick="judgeTransaction(3, false, this)" class="px-3 py-1 bg-white border border-slate-300 rounded hover:bg-slate-100 text-xs font-bold transition">회계거래 X</button>
+                            </div>
+                        </div>
+                        <div id="item-desc-3" class="hidden text-xs mt-2 p-2.5 rounded"></div>
+                    </div>
+
+                    <!-- Q4 -->
+                    <div class="p-4 border rounded-xl border-slate-200 bg-slate-50" id="item-box-4">
+                        <div class="flex justify-between items-center text-xs md:text-sm font-semibold text-slate-800">
+                            <span>4. 창고에 보관 중이던 세탁세제 ₩30,000 어치를 세탁 작업에 소비하였다.</span>
+                            <div class="flex gap-2 shrink-0">
+                                <button onclick="judgeTransaction(4, true, this)" class="px-3 py-1 bg-white border border-slate-300 rounded hover:bg-slate-100 text-xs font-bold transition">회계거래 O</button>
+                                <button onclick="judgeTransaction(4, false, this)" class="px-3 py-1 bg-white border border-slate-300 rounded hover:bg-slate-100 text-xs font-bold transition">회계거래 X</button>
+                            </div>
+                        </div>
+                        <div id="item-desc-4" class="hidden text-xs mt-2 p-2.5 rounded"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 실습 2: 회계등식 균형 인터랙티브 계산기 -->
+            <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
+                <h3 class="text-lg font-bold text-slate-900 mb-2 flex items-center gap-2">
+                    <i class="fa-solid fa-calculator text-indigo-600"></i> [실습 2] 회계등식 실시간 밸런서 (자산 = 부채 + 자본)
+                </h3>
+                <p class="text-xs text-slate-500 mb-4">거래를 직접 클릭하여 등식의 양변이 어떻게 항상 균형을 유지하는지 눈으로 확인해 보세요.</p>
+                
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-2 mb-4">
+                    <button onclick="applySimTransaction('stock')" class="p-2.5 bg-blue-50 hover:bg-blue-100 border border-blue-200 text-blue-900 rounded-lg text-xs font-bold text-left transition">
+                        ① 주주 출자 (+30만)
+                    </button>
+                    <button onclick="applySimTransaction('supplies')" class="p-2.5 bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-800 rounded-lg text-xs font-bold text-left transition">
+                        ② 소모품 구입 (현금5만+외상5만)
+                    </button>
+                    <button onclick="applySimTransaction('loan')" class="p-2.5 bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-800 rounded-lg text-xs font-bold text-left transition">
+                        ③ 은행 차입 (+20만)
+                    </button>
+                    <button onclick="resetSim()" class="p-2.5 bg-rose-50 hover:bg-rose-100 border border-rose-200 text-rose-800 rounded-lg text-xs font-bold text-center transition">
+                        <i class="fa-solid fa-rotate-left"></i> 초기화
+                    </button>
+                </div>
+
+                <div class="p-4 bg-slate-900 text-white rounded-xl">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center items-center">
+                        <div class="p-3 bg-blue-950/80 border border-blue-500/50 rounded-lg">
+                            <span class="text-xs text-blue-300 font-semibold block">총자산 (현금+소모품)</span>
+                            <span id="sim-asset" class="text-2xl font-black text-blue-400 font-mono">₩0</span>
+                            <div id="sim-asset-detail" class="text-[11px] text-slate-400 mt-1">현금: ₩0 | 소모품: ₩0</div>
+                        </div>
+                        <div class="text-xl font-bold text-slate-400">
+                            =
+                        </div>
+                        <div class="p-3 bg-indigo-950/80 border border-indigo-500/50 rounded-lg">
+                            <span class="text-xs text-indigo-300 font-semibold block">부채 + 자본 총계</span>
+                            <span id="sim-total-eq" class="text-2xl font-black text-emerald-400 font-mono">₩0</span>
+                            <div id="sim-equity-detail" class="text-[11px] text-slate-400 mt-1">부채: ₩0 | 자본: ₩0</div>
+                        </div>
+                    </div>
+                    <div id="sim-balance-status" class="mt-3 text-center text-xs font-bold text-emerald-400 py-1 bg-emerald-950/50 rounded border border-emerald-800">
+                        <i class="fa-solid fa-circle-check"></i> 회계등식이 완벽하게 균형을 이루고 있습니다.
+                    </div>
+                </div>
+            </div>
+
+            <!-- 실습 3: 1교시 확인 퀴즈 -->
+            <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
+                <h3 class="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-circle-question text-emerald-600"></i> [10분 퀴즈] 1교시 핵심 이해도 점검
+                </h3>
+                <div class="space-y-4">
+                    <!-- Q1 -->
+                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                        <div class="font-bold text-slate-900 text-sm mb-2">Q1. 다음 중 회계장부에 기록되는 '회계거래'에 해당하는 것은?</div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs">
+                            <button onclick="checkQuiz(1, 'A', this)" class="q-btn-1 p-2.5 bg-white border rounded-lg text-left hover:bg-blue-50 transition">A. 세탁소 건물에 대한 1년 임차 계약을 맺고 월 ₩400,000을 다음 달부터 지급하기로 약정함</button>
+                            <button onclick="checkQuiz(1, 'B', this)" class="q-btn-1 p-2.5 bg-white border rounded-lg text-left hover:bg-blue-50 transition">B. 업무에 사용할 세탁세제 ₩100,000을 현금으로 구입하여 창고에 입고함</button>
+                            <button onclick="checkQuiz(1, 'C', this)" class="q-btn-1 p-2.5 bg-white border rounded-lg text-left hover:bg-blue-50 transition">C. 우수 세탁기술자를 영입하기 위해 월 급여 ₩350,000에 고용계약서를 체결함</button>
+                            <button onclick="checkQuiz(1, 'D', this)" class="q-btn-1 p-2.5 bg-white border rounded-lg text-left hover:bg-blue-50 transition">D. 신규 고객사와 연간 ₩5,000,000 규모의 세탁용역 공급 MOU를 체결함</button>
+                        </div>
+                        <div id="q-feedback-1" class="hidden text-xs mt-2 p-2.5 rounded"></div>
+                    </div>
+
+                    <!-- Q2 -->
+                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                        <div class="font-bold text-slate-900 text-sm mb-2">Q2. 글로벌세탁(주)가 소모품 ₩100,000을 구입하면서 현금 ₩50,000을 지급하고 잔액 ₩50,000을 외상(미지급금)으로 했을 때, 회계등식의 변화로 올바른 것은?</div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs">
+                            <button onclick="checkQuiz(2, 'A', this)" class="q-btn-2 p-2.5 bg-white border rounded-lg text-left hover:bg-blue-50 transition">A. 자산총계 100,000 증가, 부채총계 50,000 증가, 자본총계 50,000 증가</button>
+                            <button onclick="checkQuiz(2, 'B', this)" class="q-btn-2 p-2.5 bg-white border rounded-lg text-left hover:bg-blue-50 transition">B. 자산총계 50,000 증가, 부채총계 50,000 증가, 자본총계 변동 없음</button>
+                            <button onclick="checkQuiz(2, 'C', this)" class="q-btn-2 p-2.5 bg-white border rounded-lg text-left hover:bg-blue-50 transition">C. 자산총계 변동 없음, 부채총계 50,000 감소, 자본총계 50,000 증가</button>
+                            <button onclick="checkQuiz(2, 'D', this)" class="q-btn-2 p-2.5 bg-white border rounded-lg text-left hover:bg-blue-50 transition">D. 자산총계 50,000 감소, 부채총계 50,000 증가, 자본총계 100,000 감소</button>
+                        </div>
+                        <div id="q-feedback-2" class="hidden text-xs mt-2 p-2.5 rounded"></div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 py-4 mt-8 text-center text-xs text-slate-500 no-print">
+        <div class="max-w-6xl mx-auto px-4">
+            수원대학교 경영공학대학 회계원리 강의자료 | 담당교수: 김동선 교수 | Ch.02 회계거래와 회계등식 (1교시)
+        </div>
+    </footer>
+
+    <!-- Logic Script -->
+    <script>
+        let currentPage = 1;
+        const totalPages = 10;
+
+        function updatePagination() {
+            for (let i = 1; i <= totalPages; i++) {
+                const pageEl = document.getElementById(`page-${i}`);
+                const dotEl = document.getElementById(`dot-${i}`);
+                if (pageEl) {
+                    if (i === currentPage) {
+                        pageEl.classList.add('active');
+                    } else {
+                        pageEl.classList.remove('active');
+                    }
+                }
+                if (dotEl) {
+                    if (i === currentPage) {
+                        dotEl.classList.add('active');
+                    } else {
+                        dotEl.classList.remove('active');
+                    }
+                }
+            }
+            const curIndicator = document.getElementById('current-page-num');
+            if (curIndicator) curIndicator.innerText = currentPage;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function nextPage() {
+            if (currentPage < totalPages) {
+                currentPage++;
+                updatePagination();
+            }
+        }
+
+        function prevPage() {
+            if (currentPage > 1) {
+                currentPage--;
+                updatePagination();
+            }
+        }
+
+        function goToPage(pageNum) {
+            if (pageNum >= 1 && pageNum <= totalPages) {
+                currentPage = pageNum;
+                updatePagination();
+            }
+        }
+
+        function switchMainTab(tab) {
+            const lectureSec = document.getElementById('section-lecture');
+            const practiceSec = document.getElementById('section-practice');
+            const tabLecture = document.getElementById('tab-lecture');
+            const tabPractice = document.getElementById('tab-practice');
+
+            if (tab === 'lecture') {
+                lectureSec.classList.remove('hidden');
+                practiceSec.classList.add('hidden');
+                tabLecture.classList.add('active');
+                tabPractice.classList.remove('active');
+            } else {
+                lectureSec.classList.add('hidden');
+                practiceSec.classList.remove('hidden');
+                tabLecture.classList.remove('active');
+                tabPractice.classList.add('active');
+            }
+        }
+
+        // 실습 1: 거래 판별 로직
+        const trData = {
+            1: { isTr: false, exp: "단순 계약 체결은 아직 용역의 수수나 대금 지급이 발생하지 않아 재무상태 3요소 변동이 없으므로 회계거래가 아닙니다." },
+            2: { isTr: true, exp: "소모품(자산) 취득, 현금(자산) 감소, 미지급금(부채) 증가가 동시에 발생하므로 명백한 회계거래입니다." },
+            3: { isTr: false, exp: "근로계약 체결은 채용 약정일 뿐이며, 근로를 제공받고 급여를 지급하기 전까지는 회계거래가 아닙니다." },
+            4: { isTr: true, exp: "외부 거래상대방은 없으나, 내부에서 소모품(자산)이 소비되어 소모품비(비용)로 전환되는 '내부 회계거래'입니다." }
+        };
+
+        function judgeTransaction(id, choice, btn) {
+            const item = trData[id];
+            const box = document.getElementById(`item-box-${id}`);
+            const desc = document.getElementById(`item-desc-${id}`);
+
+            box.querySelectorAll('button').forEach(b => {
+                b.classList.remove('bg-emerald-600', 'bg-rose-600', 'text-white');
+                b.classList.add('bg-white');
+            });
+
+            if (choice === item.isTr) {
+                btn.classList.add('bg-emerald-600', 'text-white');
+                box.className = "p-4 border rounded-xl border-emerald-400 bg-emerald-50/50 transition";
+                desc.innerHTML = `<span class="text-emerald-700 font-bold"><i class="fa-solid fa-circle-check"></i> 정답!</span> ${item.exp}`;
+                desc.className = "text-xs mt-2 p-2.5 rounded bg-emerald-50 text-emerald-900 border border-emerald-200 block";
+            } else {
+                btn.classList.add('bg-rose-600', 'text-white');
+                box.className = "p-4 border rounded-xl border-rose-400 bg-rose-50/50 transition";
+                desc.innerHTML = `<span class="text-rose-700 font-bold"><i class="fa-solid fa-circle-xmark"></i> 오답!</span> ${item.exp}`;
+                desc.className = "text-xs mt-2 p-2.5 rounded bg-rose-50 text-rose-900 border border-rose-200 block";
+            }
+            const trDone = document.querySelectorAll('#transaction-list .block').length;
+            document.getElementById('trans-score').innerText = `진행: ${trDone} / 4`;
+        }
+
+        // 실습 2: 회계등식 시뮬레이터 로직
+        let simCash = 0;
+        let simSupplies = 0;
+        let simPayable = 0;
+        let simLoan = 0;
+        let simCapital = 0;
+
+        function updateSimUI() {
+            const totalAsset = simCash + simSupplies;
+            const totalLiab = simPayable + simLoan;
+            const totalEq = totalLiab + simCapital;
+
+            document.getElementById('sim-asset').innerText = `₩${totalAsset.toLocaleString()}`;
+            document.getElementById('sim-asset-detail').innerText = `현금: ₩${simCash.toLocaleString()} | 소모품: ₩${simSupplies.toLocaleString()}`;
+            document.getElementById('sim-total-eq').innerText = `₩${totalEq.toLocaleString()}`;
+            document.getElementById('sim-equity-detail').innerText = `부채(미지급금+차입금): ₩${totalLiab.toLocaleString()} | 자본금: ₩${simCapital.toLocaleString()}`;
+        }
+
+        function applySimTransaction(type) {
+            if (type === 'stock') {
+                simCash += 300000;
+                simCapital += 300000;
+            } else if (type === 'supplies') {
+                simSupplies += 100000;
+                simCash -= 50000;
+                simPayable += 50000;
+            } else if (type === 'loan') {
+                simCash += 200000;
+                simLoan += 200000;
+            }
+            updateSimUI();
+        }
+
+        function resetSim() {
+            simCash = 0;
+            simSupplies = 0;
+            simPayable = 0;
+            simLoan = 0;
+            simCapital = 0;
+            updateSimUI();
+        }
+
+        // 실습 3: 퀴즈 로직
+        const quizAnswers = {
+            1: { ans: 'B', exp: "소모품을 현금으로 구입하여 입고하는 행위는 자산의 증감이 발생하는 명백한 회계거래입니다. 단순 계약이나 고용, MOU는 거래가 아닙니다." },
+            2: { ans: 'B', exp: "자산은 소모품 +100,000, 현금 -50,000으로 순증 +50,000이며, 부채(미지급금)가 +50,000 증가하므로 자본 변동 없이 양변이 50,000씩 증가합니다." }
+        };
+
+        function checkQuiz(qNum, choice, btn) {
+            const btns = document.querySelectorAll(`.q-btn-${qNum}`);
+            const fb = document.getElementById(`q-feedback-${qNum}`);
+            const correctAns = quizAnswers[qNum].ans;
+
+            btns.forEach(b => {
+                b.className = `q-btn-${qNum} p-2.5 bg-white border rounded-lg text-left transition`;
+            });
+
+            fb.classList.remove('hidden');
+            if (choice === correctAns) {
+                btn.classList.add('bg-emerald-100', 'border-emerald-500', 'text-emerald-900', 'font-bold');
+                fb.className = "text-xs mt-2 p-2.5 rounded bg-emerald-50 text-emerald-900 border border-emerald-200 block";
+                fb.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-600"></i> <strong>정답!</strong> ${quizAnswers[qNum].exp}`;
+            } else {
+                btn.classList.add('bg-rose-100', 'border-rose-500', 'text-rose-900');
+                fb.className = "text-xs mt-2 p-2.5 rounded bg-rose-50 text-rose-900 border border-rose-200 block";
+                fb.innerHTML = `<i class="fa-solid fa-circle-xmark text-rose-600"></i> <strong>다시 생각해보세요!</strong> ${quizAnswers[qNum].exp}`;
+            }
+        }
+
+        function downloadPDF() {
+            switchMainTab('lecture');
+            setTimeout(() => {
+                window.print();
+            }, 300);
+        }
+    </script>
+</body>
+</html>

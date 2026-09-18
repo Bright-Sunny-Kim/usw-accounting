@@ -1,0 +1,1146 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2026-2 회계원리 오리엔테이션 | 수원대학교 경영공학대학</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Playfair+Display:wght@700&family=Pretendard:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        :root {
+            --usw-blue: #005088;
+            --usw-dark-blue: #003366;
+            --usw-gold: #f3c300;
+            --usw-gold-light: #fff9db;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --bg-canvas: #0f172a;
+            --bg-card: #ffffff;
+            --border-color: #e2e8f0;
+            --slide-width: 1280px;
+            --slide-height: 720px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-canvas);
+            font-family: 'Pretendard', 'Noto Sans KR', sans-serif;
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
+            padding: 20px 0;
+        }
+
+        /* 컨트롤러 바 */
+        .controls-top {
+            position: fixed;
+            top: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(10px);
+            padding: 8px 24px;
+            border-radius: 40px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            z-index: 1000;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .controls-top span {
+            color: #fff;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .btn-ctrl {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            padding: 6px 14px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-ctrl:hover {
+            background: var(--usw-gold);
+            color: var(--usw-dark-blue);
+            font-weight: 700;
+            border-color: var(--usw-gold);
+        }
+
+        .view-mode-badge {
+            background: rgba(243, 195, 0, 0.2);
+            color: var(--usw-gold);
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        /* 슬라이드 래퍼 */
+        .slides-container {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            align-items: center;
+            margin-top: 50px;
+            margin-bottom: 50px;
+        }
+
+        /* 단일 슬라이드 카드 */
+        .slide {
+            width: var(--slide-width);
+            height: var(--slide-height);
+            background-color: var(--bg-card);
+            border-radius: 16px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+            scroll-margin-top: 80px;
+        }
+
+        /* 공통 헤더 */
+        .slide-header {
+            width: 100%;
+            height: 70px;
+            padding: 0 50px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 2px solid #f1f5f9;
+            background: #ffffff;
+        }
+
+        .brand-logo {
+            font-weight: 900;
+            color: var(--usw-blue);
+            font-size: 22px;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .brand-logo span {
+            color: var(--usw-gold);
+        }
+
+        .header-meta {
+            font-size: 14px;
+            color: var(--text-muted);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .slide-number {
+            background: #f1f5f9;
+            color: var(--usw-blue);
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 12px;
+        }
+
+        /* 슬라이드 내부 본문 영역 */
+        .slide-body {
+            flex: 1;
+            padding: 35px 50px 40px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            background: #ffffff;
+        }
+
+        .slide-title-wrap {
+            margin-bottom: 25px;
+            border-left: 6px solid var(--usw-gold);
+            padding-left: 16px;
+        }
+
+        .slide-title {
+            font-size: 34px;
+            font-weight: 800;
+            color: var(--usw-blue);
+            line-height: 1.2;
+        }
+
+        .slide-subtitle {
+            font-size: 15px;
+            color: var(--text-muted);
+            margin-top: 4px;
+            font-weight: 500;
+        }
+
+        /* 레이아웃 시스템 */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 35px;
+            flex: 1;
+            align-items: stretch;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+            flex: 1;
+        }
+
+        /* 카드 컴포넌트 */
+        .card {
+            background: #f8fafc;
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .card.primary {
+            border-top: 5px solid var(--usw-blue);
+        }
+
+        .card.accent {
+            border-top: 5px solid var(--usw-gold);
+            background: #fffdf5;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 14px;
+        }
+
+        .card-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: rgba(0, 80, 136, 0.1);
+            color: var(--usw-blue);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .card.accent .card-icon {
+            background: rgba(243, 195, 0, 0.2);
+            color: #b48500;
+        }
+
+        .card-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--usw-blue);
+        }
+
+        .card-content {
+            font-size: 16px;
+            line-height: 1.65;
+            color: #334155;
+            flex: 1;
+        }
+
+        /* 리스트 스타일 */
+        .feature-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .feature-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+        .feature-list i {
+            color: var(--usw-gold);
+            margin-top: 3px;
+            font-size: 16px;
+        }
+
+        /* 테이블 스타일 */
+        .table-custom {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+            background: #ffffff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            border: 1px solid var(--border-color);
+        }
+
+        .table-custom th {
+            background: var(--usw-blue);
+            color: #ffffff;
+            font-weight: 700;
+            padding: 10px 14px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .table-custom td {
+            padding: 9px 12px;
+            border-bottom: 1px solid var(--border-color);
+            text-align: center;
+            color: #334155;
+        }
+
+        .table-custom tr:last-child td {
+            border-bottom: none;
+        }
+
+        .table-custom tr:nth-child(even) {
+            background: #f8fafc;
+        }
+
+        .table-custom .highlight-row {
+            background-color: #fff9db !important;
+            font-weight: 700;
+            color: #855d00;
+        }
+
+        /* T-계정 스타일 */
+        .t-account-box {
+            background: #ffffff;
+            border: 2px solid #cbd5e1;
+            border-radius: 12px;
+            padding: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.04);
+        }
+
+        .t-header {
+            text-align: center;
+            font-weight: 800;
+            font-size: 18px;
+            color: var(--usw-blue);
+            padding-bottom: 8px;
+            border-bottom: 3px solid #334155;
+            margin-bottom: 10px;
+        }
+
+        .t-body {
+            display: grid;
+            grid-template-columns: 1fr 2px 1fr;
+            gap: 10px;
+        }
+
+        .t-col {
+            padding: 5px;
+        }
+
+        .t-line {
+            background: #334155;
+        }
+
+        .t-tag {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+
+        .t-tag.debit { color: #0284c7; }
+        .t-tag.credit { color: #e11d48; }
+
+        /* 타이틀 슬라이드 커스텀 */
+        .slide-title-bg {
+            background: linear-gradient(135deg, #003366 0%, #005088 60%, #002244 100%);
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            padding: 60px;
+        }
+
+        .title-sub {
+            font-size: 20px;
+            color: var(--usw-gold);
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .title-main {
+            font-size: 58px;
+            font-weight: 900;
+            line-height: 1.15;
+            margin-bottom: 16px;
+            color: #ffffff;
+        }
+
+        .title-desc {
+            font-size: 20px;
+            font-weight: 300;
+            opacity: 0.9;
+            max-width: 800px;
+            line-height: 1.6;
+            margin-bottom: 40px;
+        }
+
+        .title-meta-box {
+            display: flex;
+            gap: 30px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 14px 32px;
+            border-radius: 40px;
+            font-size: 16px;
+            backdrop-filter: blur(8px);
+        }
+
+        /* 팁 박스 */
+        .tip-box {
+            background: #eff6ff;
+            border-left: 4px solid #3b82f6;
+            padding: 12px 16px;
+            border-radius: 0 8px 8px 0;
+            font-size: 14px;
+            color: #1e40af;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        /* 슬라이드 네비게이션 버튼 (슬라이드 모드용) */
+        .slide-nav-fixed {
+            position: fixed;
+            bottom: 20px;
+            right: 30px;
+            display: flex;
+            gap: 10px;
+            z-index: 1000;
+        }
+
+        .nav-arrow-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--usw-blue);
+            color: white;
+            border: 2px solid var(--usw-gold);
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+            transition: all 0.2s ease;
+        }
+
+        .nav-arrow-btn:hover {
+            transform: scale(1.1);
+            background: var(--usw-gold);
+            color: var(--usw-dark-blue);
+        }
+
+        /* 인쇄 및 PDF 최적화 */
+        @media print {
+            @page {
+                size: A4 landscape;
+                margin: 0;
+            }
+            body {
+                background: #ffffff !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            .controls-top, .slide-nav-fixed, .no-print {
+                display: none !important;
+            }
+            .slides-container {
+                margin: 0 !important;
+                gap: 0 !important;
+                display: block !important;
+                padding: 0 !important;
+            }
+            .slide {
+                page-break-after: always !important;
+                break-after: page !important;
+                page-break-inside: avoid !important;
+                break-inside: avoid !important;
+                box-shadow: none !important;
+                border-radius: 0 !important;
+                width: 100vw !important;
+                height: 100vh !important;
+                max-height: 100vh !important;
+                min-height: 100vh !important;
+                margin: 0 !important;
+                border: none !important;
+            }
+            .slide:last-child {
+                page-break-after: auto !important;
+                break-after: auto !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 상단 컨트롤 툴바 -->
+    <div class="controls-top no-print">
+        <span><i class="fa-solid fa-graduation-cap" style="color: var(--usw-gold);"></i> 2026-2 회계원리 OT</span>
+        <div class="view-mode-badge" id="slideIndicator">Slide 1 / 10</div>
+        <button class="btn-ctrl" onclick="prevSlide()"><i class="fa-solid fa-chevron-up"></i> 이전 (PageUp)</button>
+        <button class="btn-ctrl" onclick="nextSlide()"><i class="fa-solid fa-chevron-down"></i> 다음 (PageDown)</button>
+        <button class="btn-ctrl" onclick="toggleFullScreen()"><i class="fa-solid fa-expand"></i> 전체화면</button>
+        <button class="btn-ctrl" onclick="downloadPDF()" style="background: #e11d48; border-color: #f43f5e; color: #ffffff; font-weight: 700;"><i class="fa-solid fa-file-pdf"></i> PDF 다운로드</button>
+    </div>
+
+    <!-- 고정 네비게이션 버튼 -->
+    <div class="slide-nav-fixed no-print">
+        <button class="nav-arrow-btn" onclick="prevSlide()" title="이전 슬라이드"><i class="fa-solid fa-arrow-up"></i></button>
+        <button class="nav-arrow-btn" onclick="nextSlide()" title="다음 슬라이드"><i class="fa-solid fa-arrow-down"></i></button>
+    </div>
+
+    <div class="slides-container" id="slidesContainer">
+
+        <!-- ==================== 슬라이드 1: 메인 표지 ==================== -->
+        <section class="slide slide-title-bg" id="slide-1">
+            <div class="title-sub">THE UNIVERSITY OF SUWON · 경영공학대학</div>
+            <h1 class="title-main">회계원리 (Principles of Accounting)</h1>
+            <p class="title-desc">
+                숫자에 숨겨진 기업의 이야기를 읽는 <strong>‘비즈니스의 언어’</strong><br>
+                2026학년도 2학기 강의 오리엔테이션
+            </p>
+            <div class="title-meta-box">
+                <div><i class="fa-solid fa-user-tie" style="color:var(--usw-gold);"></i> <strong>담당교수:</strong> 김동선 교수</div>
+                <div><i class="fa-solid fa-calendar-check" style="color:var(--usw-gold);"></i> <strong>학기:</strong> 2026학년도 2학기 (총 15주차)</div>
+                <div><i class="fa-solid fa-users" style="color:var(--usw-gold);"></i> <strong>대상:</strong> 1학년 신입생</div>
+            </div>
+        </section>
+
+        <!-- ==================== 슬라이드 2: 환영 및 과목 성격 ==================== -->
+        <section class="slide" id="slide-2">
+            <div class="slide-header">
+                <div class="brand-logo">SUWON <span>UNIVERSITY</span></div>
+                <div class="header-meta">
+                    <span>1. 교과목 소개</span>
+                    <span class="slide-number">02 / 10</span>
+                </div>
+            </div>
+            <div class="slide-body">
+                <div class="slide-title-wrap">
+                    <h2 class="slide-title">반갑습니다! 회계는 '수학'이 아닌 '언어'입니다</h2>
+                    <p class="slide-subtitle">1학년 여러분이 회계를 처음 접할 때 갖는 오해와 진실</p>
+                </div>
+                <div class="grid-2">
+                    <div class="card primary">
+                        <div class="card-header">
+                            <div class="card-icon"><i class="fa-solid fa-lightbulb"></i></div>
+                            <h3 class="card-title">왜 회계를 배워야 할까요?</h3>
+                        </div>
+                        <div class="card-content">
+                            <ul class="feature-list">
+                                <li>
+                                    <i class="fa-solid fa-check-circle"></i>
+                                    <div><strong>기업의 공용어 (Language of Business)</strong><br>마케팅, 생산, 투자, 인사 등 경영학의 모든 의사결정은 회계 정보를 바탕으로 이루어집니다.</div>
+                                </li>
+                                <li>
+                                    <i class="fa-solid fa-check-circle"></i>
+                                    <div><strong>실무 문제해결 역량 배양</strong><br>경영공학도로서 시스템과 데이터를 분석하고 기업의 가치를 정량적으로 평가하는 첫걸음입니다.</div>
+                                </li>
+                                <li>
+                                    <i class="fa-solid fa-check-circle"></i>
+                                    <div><strong>개인의 금융 문해력(Financial Literacy)</strong><br>사회 진출 후 재테크, 기업 분석, 창업 시 평생 활용되는 필수 교양입니다.</div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="card accent">
+                        <div class="card-header">
+                            <div class="card-icon"><i class="fa-solid fa-heart-pulse"></i></div>
+                            <h3 class="card-title">1학년을 위한 안심 가이드</h3>
+                        </div>
+                        <div class="card-content">
+                            <ul class="feature-list">
+                                <li>
+                                    <i class="fa-solid fa-calculator"></i>
+                                    <div><strong>수학적 재능이 필요한가요? No!</strong><br>회계에 필요한 연산은 <strong>사칙연산(+, -, ×, ÷)</strong>이 전부입니다. 복잡한 미적분은 나오지 않습니다.</div>
+                                </li>
+                                <li>
+                                    <i class="fa-solid fa-puzzle-piece"></i>
+                                    <div><strong>원리와 규칙의 퍼즐 게임</strong><br>'원인과 결과(복식부기)'라는 규칙만 이해하면 누구나 재미있게 풀어나갈 수 있습니다.</div>
+                                </li>
+                            </ul>
+                            <div class="tip-box">
+                                <i class="fa-solid fa-circle-info"></i>
+                                <span>선수지식이 전혀 없어도 수업만 성실히 따라오면 A+ 가능합니다!</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== 슬라이드 3: 회계의 기본 개념(일상 비유) ==================== -->
+        <section class="slide" id="slide-3">
+            <div class="slide-header">
+                <div class="brand-logo">SUWON <span>UNIVERSITY</span></div>
+                <div class="header-meta">
+                    <span>2. 회계 맛보기</span>
+                    <span class="slide-number">03 / 10</span>
+                </div>
+            </div>
+            <div class="slide-body">
+                <div class="slide-title-wrap">
+                    <h2 class="slide-title">일상의 비유로 이해하는 회계의 본질</h2>
+                    <p class="slide-subtitle">나의 지갑과 저수지 원리로 쉽게 이해하는 자산, 부채, 자본</p>
+                </div>
+                <div class="grid-3">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-icon"><i class="fa-solid fa-wallet"></i></div>
+                            <h3 class="card-title">1. 내 지갑의 재산</h3>
+                        </div>
+                        <div class="card-content">
+                            <p style="margin-bottom: 12px;"><strong>스마트폰(100만원)</strong>을 살 때:</p>
+                            <ul class="feature-list" style="font-size: 14px;">
+                                <li>내 돈(용돈): <strong>60만원</strong> (자본)</li>
+                                <li>친구에게 빌린 돈: <strong>40만원</strong> (부채)</li>
+                                <li>현재 가진 스마트폰: <strong>100만원</strong> (자산)</li>
+                            </ul>
+                            <div style="margin-top: 15px; padding: 10px; background: #e0f2fe; border-radius: 8px; font-weight: 700; text-align: center; color: #0369a1;">
+                                자산 = 부채 + 자본
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-icon"><i class="fa-solid fa-water"></i></div>
+                            <h3 class="card-title">2. 저수지와 수도꼭지</h3>
+                        </div>
+                        <div class="card-content">
+                            <ul class="feature-list" style="font-size: 14px;">
+                                <li>
+                                    <i class="fa-solid fa-camera"></i>
+                                    <div><strong>저수지 물의 양 (저량/Stock)</strong><br>특정 시점의 재산 상태 <br>&rarr; <strong>재무상태표 (B/S)</strong></div>
+                                </li>
+                                <li>
+                                    <i class="fa-solid fa-faucet-drip"></i>
+                                    <div><strong>수도꼭지 유입/유출 (유량/Flow)</strong><br>1년 동안 번 돈과 쓴 돈 <br>&rarr; <strong>포괄손익계산서 (I/S)</strong></div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-icon"><i class="fa-solid fa-scale-balanced"></i></div>
+                            <h3 class="card-title">3. T-계정의 마법</h3>
+                        </div>
+                        <div class="card-content">
+                            <div class="t-account-box">
+                                <div class="t-header">현금 (자산)</div>
+                                <div class="t-body">
+                                    <div class="t-col">
+                                        <div class="t-tag debit">차변 (왼쪽) : 증가</div>
+                                        <div style="font-weight: 700; color: #0284c7;">+ 1,000,000</div>
+                                    </div>
+                                    <div class="t-line"></div>
+                                    <div class="t-col">
+                                        <div class="t-tag credit">대변 (오른쪽) : 감소</div>
+                                        <div style="font-weight: 700; color: #e11d48;">- 300,000</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <p style="font-size: 12px; color: var(--text-muted); margin-top: 8px; text-align: center;">
+                                왼쪽(차변)과 오른쪽(대변)의 균형 원리
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== 슬라이드 4: 교재 및 준비물 ==================== -->
+        <section class="slide" id="slide-4">
+            <div class="slide-header">
+                <div class="brand-logo">SUWON <span>UNIVERSITY</span></div>
+                <div class="header-meta">
+                    <span>3. 교재 및 준비물</span>
+                    <span class="slide-number">04 / 10</span>
+                </div>
+            </div>
+            <div class="slide-body">
+                <div class="slide-title-wrap">
+                    <h2 class="slide-title">수업 교재 및 필수 준비물</h2>
+                    <p class="slide-subtitle">한 학기 동안 함께할 주교재와 학습 도구 안내</p>
+                </div>
+                <div class="grid-2">
+                    <div class="card primary">
+                        <div class="card-header">
+                            <div class="card-icon"><i class="fa-solid fa-book-open"></i></div>
+                            <h3 class="card-title">주교재 (Textbook)</h3>
+                        </div>
+                        <div class="card-content" style="display: flex; gap: 20px; align-items: center;">
+                            <div style="flex: 1;">
+                                <div style="font-size: 22px; font-weight: 800; color: var(--usw-blue); margin-bottom: 6px;">
+                                    『IFRS 회계원리』
+                                </div>
+                                <div style="color: var(--text-muted); font-size: 15px; margin-bottom: 15px;">
+                                    최관 · 백원선 · 최영수 공저 | 신영사
+                                </div>
+                                <ul class="feature-list" style="font-size: 14px;">
+                                    <li><i class="fa-solid fa-check"></i> 국내 표준 K-IFRS 기준 완벽 반영</li>
+                                    <li><i class="fa-solid fa-check"></i> 풍부한 연습문제 및 실전 예제 수록</li>
+                                    <li><i class="fa-solid fa-check"></i> 교내 서점 및 온라인 서점 구매 가능</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card accent">
+                        <div class="card-header">
+                            <div class="card-icon"><i class="fa-solid fa-toolbox"></i></div>
+                            <h3 class="card-title">필수 준비물 & 학습 자료</h3>
+                        </div>
+                        <div class="card-content">
+                            <ul class="feature-list">
+                                <li>
+                                    <i class="fa-solid fa-calculator" style="color: #d97706;"></i>
+                                    <div><strong>일반 사무용 쌀집 계산기 (필수 지참)</strong><br>
+                                    시험 및 매 수업 시간 연산 연습에 사용합니다. (스마트폰 계산기는 시험 시 부정행위 방지를 위해 사용 금지)</div>
+                                </li>
+                                <li>
+                                    <i class="fa-solid fa-cloud-arrow-down" style="color: #2563eb;"></i>
+                                    <div><strong>LMS 강의 자료실 활용</strong><br>
+                                    매주 강의 슬라이드(PDF/PPTX) 및 실습 템플릿 업로드</div>
+                                </li>
+                                <li>
+                                    <i class="fa-solid fa-pen-to-square" style="color: #059669;"></i>
+                                    <div><strong>손으로 직접 쓰는 분개 노트</strong><br>
+                                    회계는 눈이 아니라 '손'으로 익힐 때 실력이 급상승합니다.</div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== 슬라이드 5: 한 학기 강의 범위 ==================== -->
+        <section class="slide" id="slide-5">
+            <div class="slide-header">
+                <div class="brand-logo">SUWON <span>UNIVERSITY</span></div>
+                <div class="header-meta">
+                    <span>4. 학습 범위</span>
+                    <span class="slide-number">05 / 10</span>
+                </div>
+            </div>
+            <div class="slide-body">
+                <div class="slide-title-wrap">
+                    <h2 class="slide-title">2026-2학기 핵심 학습 범위 (7개 단원)</h2>
+                    <p class="slide-subtitle">기초 순환과정 마스터부터 실제 기업 재무제표 분석까지</p>
+                </div>
+                <div class="grid-2">
+                    <div class="card" style="background: #f0fdf4; border-color: #bbf7d0;">
+                        <div class="card-header">
+                            <div class="card-icon" style="background: #dcfce7; color: #15803d;"><i class="fa-solid fa-arrows-spin"></i></div>
+                            <h3 class="card-title" style="color: #15803d;">[전반부] 회계순환과정 마스터 (Ch.01 ~ Ch.05)</h3>
+                        </div>
+                        <div class="card-content">
+                            <ul class="feature-list" style="font-size: 15px;">
+                                <li><strong>Ch.01</strong> 재무제표와 회계보고시스템</li>
+                                <li><strong>Ch.02</strong> 회계거래와 회계등식 (\(자산=부채+자본\))</li>
+                                <li><strong>Ch.03</strong> 거래의 기록과 회계장부 (분개 및 원장 전기)</li>
+                                <li><strong>Ch.04</strong> 회계순환과정의 완료 (결산수정분개 & 마감)</li>
+                                <li><strong>Ch.05</strong> 상품매매회사의 회계순환과정 (매출원가 산정)</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="card" style="background: #fdf4ff; border-color: #f5d0fe;">
+                        <div class="card-header">
+                            <div class="card-icon" style="background: #fae8ff; color: #a21caf;"><i class="fa-solid fa-chart-pie"></i></div>
+                            <h3 class="card-title" style="color: #a21caf;">[후반부] 실무 데이터 분석 및 응용 (Ch.14 & Ch.15)</h3>
+                        </div>
+                        <div class="card-content">
+                            <ul class="feature-list" style="font-size: 15px;">
+                                <li>
+                                    <strong>Ch.14 현금흐름표 (Cash Flow Statement)</strong><br>
+                                    기업의 혈액순환인 영업·투자·재무활동 현금흐름의 원리와 분석
+                                </li>
+                                <li style="margin-top: 10px;">
+                                    <strong>Ch.15 재무제표분석 (Financial Statement Analysis)</strong><br>
+                                    수익성, 안정성, 활동성 비율 분석 및 DART 실제 기업 재무건전성 진단
+                                </li>
+                            </ul>
+                            <div class="tip-box" style="background: #fae8ff; border-color: #c084fc; color: #7e22ce;">
+                                <i class="fa-solid fa-star"></i>
+                                <span>1학년 맞춤형: 복잡한 암기 대신 실무적 해석 중심 강의!</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== 슬라이드 6: 15주차 강의 계획표 ==================== -->
+        <section class="slide" id="slide-6">
+            <div class="slide-header">
+                <div class="brand-logo">SUWON <span>UNIVERSITY</span></div>
+                <div class="header-meta">
+                    <span>5. 15주차 강의계획</span>
+                    <span class="slide-number">06 / 10</span>
+                </div>
+            </div>
+            <div class="slide-body" style="padding-top: 20px;">
+                <div class="slide-title-wrap" style="margin-bottom: 15px;">
+                    <h2 class="slide-title">15주차 주차별 강의 일정표</h2>
+                    <p class="slide-subtitle">체계적인 단계별 로드맵 (중간/기말고사 일정 포함)</p>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <!-- 1학기 전반부 -->
+                    <table class="table-custom">
+                        <thead>
+                            <tr><th style="width: 55px;">주차</th><th>강의 내용 (1~7주차)</th><th style="width: 75px;">활동</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr class="highlight-row"><td>1주</td><td><strong>강의 오리엔테이션</strong> & 회계의 기본 개념</td><td>OT</td></tr>
+                            <tr><td>2주</td><td>Ch.01 재무제표와 회계보고시스템</td><td>DART 기초</td></tr>
+                            <tr><td>3주</td><td>Ch.02 회계거래와 회계등식</td><td>거래 식별</td></tr>
+                            <tr><td>4주</td><td>Ch.03 거래의 기록과 회계장부 (1) : 분개와 전기</td><td>분개 연습</td></tr>
+                            <tr><td>5주</td><td>Ch.03 거래의 기록과 회계장부 (2) : 수정전시산표</td><td>T-계정 실습</td></tr>
+                            <tr><td>6주</td><td>Ch.04 회계순환과정의 완료 (1) : 결산수정분개</td><td>발생주의</td></tr>
+                            <tr><td>7주</td><td>Ch.04 회계순환과정의 완료 (2) : 마감 & 총정리</td><td>종합 실습</td></tr>
+                            <tr class="highlight-row" style="background:#fee2e2 !important; color:#991b1b;">
+                                <td><strong>8주</strong></td><td><strong>[중간시험] 지필평가 (Ch.01 ~ Ch.04)</strong></td><td><strong>중간고사</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <!-- 2학기 후반부 -->
+                    <table class="table-custom">
+                        <thead>
+                            <tr><th style="width: 55px;">주차</th><th>강의 내용 (9~15주차)</th><th style="width: 75px;">활동</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>9주</td><td>Ch.05 상품매매회사의 회계순환과정 (1)</td><td>계속/실지법</td></tr>
+                            <tr><td>10주</td><td>Ch.05 상품매매회사의 회계순환과정 (2)</td><td>매출원가</td></tr>
+                            <tr><td>11주</td><td>Ch.14 현금흐름표 (1) : 영업·투자·재무활동</td><td>구조 파악</td></tr>
+                            <tr><td>12주</td><td>Ch.14 현금흐름표 (2) : 간접법 도출 원리</td><td>계산 실습</td></tr>
+                            <tr><td>13주</td><td>Ch.15 재무제표분석 (1) : 재무비율 분석 기초</td><td>지표 해석</td></tr>
+                            <tr><td>14주</td><td>Ch.15 재무제표분석 (2) : 실제 기업 종합 분석</td><td>DART 실습</td></tr>
+                            <tr class="highlight-row" style="background:#fee2e2 !important; color:#991b1b;">
+                                <td><strong>15주</strong></td><td><strong>[기말시험] 지필평가 (Ch.05, 14, 15 및 전범위)</strong></td><td><strong>기말고사</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== 슬라이드 7: 성적 평가 기준 ==================== -->
+        <section class="slide" id="slide-7">
+            <div class="slide-header">
+                <div class="brand-logo">SUWON <span>UNIVERSITY</span></div>
+                <div class="header-meta">
+                    <span>6. 성적 평가 기준</span>
+                    <span class="slide-number">07 / 10</span>
+                </div>
+            </div>
+            <div class="slide-body">
+                <div class="slide-title-wrap">
+                    <h2 class="slide-title">학업 성적 평가 및 출결 규정</h2>
+                    <p class="slide-subtitle">공정하고 투명한 다면 평가 기준 안내</p>
+                </div>
+                <div class="grid-2">
+                    <div>
+                        <table class="table-custom" style="font-size: 15px;">
+                            <thead>
+                                <tr><th>평가 항목</th><th style="width: 80px;">비율</th><th>세부 평가 기준</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td><strong>출석</strong></td><td><strong style="color:var(--usw-blue);">25%</strong></td><td>전자출결 시스템 적용 (결석/지각 감점)</td></tr>
+                                <tr><td><strong>중간시험</strong></td><td><strong>25%</strong></td><td>8주차 지필평가 (객관식 + 주관식 분개)</td></tr>
+                                <tr><td><strong>기말시험</strong></td><td><strong style="color:#b91c1c;">35%</strong></td><td>15주차 지필평가 (후반부 및 종합 역량)</td></tr>
+                                <tr><td><strong>과제 / 퀴즈</strong></td><td><strong>10%</strong></td><td>챕터별 주요 분개 워크시트 및 수시 퀴즈</td></tr>
+                                <tr><td><strong>평소점수</strong></td><td><strong>5%</strong></td><td>수업 참여도, Q&A 태도, LMS 활동</td></tr>
+                                <tr class="highlight-row"><td><strong>합계</strong></td><td><strong>100%</strong></td><td>상대평가 규정 적용</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="card primary">
+                        <div class="card-header">
+                            <div class="card-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                            <h3 class="card-title">출결 및 시험 유의사항 (중요!)</h3>
+                        </div>
+                        <div class="card-content">
+                            <ul class="feature-list" style="font-size: 15px;">
+                                <li>
+                                    <i class="fa-solid fa-ban" style="color: #dc2626;"></i>
+                                    <div><strong>F학점 규정 (1/4 이상 결석)</strong><br>총 수업시수의 1/4(4주/12시간) 이상 결석 시 시험 점수와 무관하게 <strong>F(낙제)</strong> 처리됩니다.</div>
+                                </li>
+                                <li>
+                                    <i class="fa-solid fa-clock" style="color: #f59e0b;"></i>
+                                    <div><strong>지각 3회 = 결석 1회</strong><br>수업 시작 후 입실은 지각 처리됩니다.</div>
+                                </li>
+                                <li>
+                                    <i class="fa-solid fa-link" style="color: #2563eb;"></i>
+                                    <div><strong>회계는 '연속성'이 생명입니다</strong><br>한 번 결석하면 다음 주차 분개 수업을 이해하기 매우 어렵습니다. 성실한 출석이 최고의 학점 전략입니다.</div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== 슬라이드 8: 실무 연계(DART) ==================== -->
+        <section class="slide" id="slide-8">
+            <div class="slide-header">
+                <div class="brand-logo">SUWON <span>UNIVERSITY</span></div>
+                <div class="header-meta">
+                    <span>7. 실무 연계 실습</span>
+                    <span class="slide-number">08 / 10</span>
+                </div>
+            </div>
+            <div class="slide-body">
+                <div class="slide-title-wrap">
+                    <h2 class="slide-title">실제 기업 데이터를 분석하는 살아있는 회계</h2>
+                    <p class="slide-subtitle">금융감독원 전자공시시스템(DART)을 활용한 자기주도 분석 실습</p>
+                </div>
+                <div class="grid-2">
+                    <div class="card primary">
+                        <div class="card-header">
+                            <div class="card-icon"><i class="fa-solid fa-magnifying-glass-chart"></i></div>
+                            <h3 class="card-title">DART(전자공시시스템) 연계 수업</h3>
+                        </div>
+                        <div class="card-content">
+                            <p style="font-size: 15px; margin-bottom: 14px; line-height: 1.6;">
+                                단순한 교과서 예제 풀이에 머물지 않고, 여러분이 관심 있는 실제 상장기업의 재무제표를 직접 열람합니다.
+                            </p>
+                            <ul class="feature-list" style="font-size: 14px;">
+                                <li><i class="fa-solid fa-building"></i> <strong>삼성전자, 현대자동차, 네이버</strong> 등 실제 사업보고서 조회</li>
+                                <li><i class="fa-solid fa-money-bill-trend-up"></i> "이 기업은 현금이 잘 돌고 있을까?" (현금흐름표 분석)</li>
+                                <li><i class="fa-solid fa-percent"></i> "빚이 너무 많지 않을까?" (부채비율, 유동비율 진단)</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="card accent">
+                        <div class="card-header">
+                            <div class="card-icon"><i class="fa-solid fa-chart-line"></i></div>
+                            <h3 class="card-title">경영공학도에게 기대되는 역량</h3>
+                        </div>
+                        <div class="card-content">
+                            <ul class="feature-list" style="font-size: 15px;">
+                                <li>
+                                    <i class="fa-solid fa-brain"></i>
+                                    <div><strong>정량적 데이터 기반 의사결정력</strong><br>감이나 직관이 아닌 객관적 재무 지표로 기업의 경영 성과를 진단합니다.</div>
+                                </li>
+                                <li>
+                                    <i class="fa-solid fa-briefcase"></i>
+                                    <div><strong>취업 및 실무 프로젝트 경쟁력</strong><br>향후 경영분석, 마케팅 전략 수립, 생산성 평가, 금융공학 등의 기초 체력이 됩니다.</div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== 슬라이드 9: 성공적인 회계 학습법 ==================== -->
+        <section class="slide" id="slide-9">
+            <div class="slide-header">
+                <div class="brand-logo">SUWON <span>UNIVERSITY</span></div>
+                <div class="header-meta">
+                    <span>8. 학습 팁 & 소통</span>
+                    <span class="slide-number">09 / 10</span>
+                </div>
+            </div>
+            <div class="slide-body">
+                <div class="slide-title-wrap">
+                    <h2 class="slide-title">회계원리 A+을 위한 3가지 학습 전략</h2>
+                    <p class="slide-subtitle">1학년 학생들을 위한 교수님의 꿀팁과 소통 창구</p>
+                </div>
+                <div class="grid-3">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-icon"><i class="fa-solid fa-repeat"></i></div>
+                            <h3 class="card-title">1. 예습 No! 당일 복습</h3>
+                        </div>
+                        <div class="card-content" style="font-size: 14px; line-height: 1.6;">
+                            회계는 예습보다 <strong>'수업 직후 30분 복습'</strong>이 10배 효과적입니다. 그날 배운 분개 예제를 안 보고 다시 풀어보세요.
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-icon"><i class="fa-solid fa-hand-holding-dollar"></i></div>
+                            <h3 class="card-title">2. 손으로 쓰는 연습</h3>
+                        </div>
+                        <div class="card-content" style="font-size: 14px; line-height: 1.6;">
+                            눈으로 보면 다 이해된 것 같지만, 직접 손으로 차변/대변을 쓰려고 하면 헷갈립니다. 반드시 <strong>직접 써보며 체득</strong>하세요.
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-icon"><i class="fa-solid fa-comments"></i></div>
+                            <h3 class="card-title">3. 질문을 두려워 말 것</h3>
+                        </div>
+                        <div class="card-content" style="font-size: 14px; line-height: 1.6;">
+                            "이런 사소한 걸 물어봐도 될까?"하는 질문일수록 기초에 가장 중요합니다. 수업 전후 언제든 편하게 질문하세요.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card primary" style="margin-top: 20px; padding: 16px 24px;">
+                    <div style="display: flex; justify-content: space-around; align-items: center; text-align: center;">
+                        <div><i class="fa-solid fa-envelope" style="color:var(--usw-blue); margin-right: 6px;"></i> <strong>교수 연구실 / 이메일:</strong> LMS 공지사항 참조</div>
+                        <div style="border-left: 2px solid #cbd5e1; height: 30px;"></div>
+                        <div><i class="fa-solid fa-door-open" style="color:var(--usw-blue); margin-right: 6px;"></i> <strong>오피스 아워(상담):</strong> 사전 이메일 신청 후 면담 가능</div>
+                        <div style="border-left: 2px solid #cbd5e1; height: 30px;"></div>
+                        <div><i class="fa-solid fa-bell" style="color:var(--usw-blue); margin-right: 6px;"></i> <strong>질의응답:</strong> LMS e-Campus Q&A 게시판 상시 운영</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== 슬라이드 10: 마무리 슬라이드 ==================== -->
+        <section class="slide slide-title-bg" id="slide-10">
+            <div class="title-sub" style="letter-spacing: 5px;">CLASS IS READY</div>
+            <h2 style="font-size: 50px; font-weight: 900; color: var(--usw-gold); margin-bottom: 20px;">
+                "기초가 탄탄한 경영공학도를 위하여"
+            </h2>
+            <p style="font-size: 22px; max-width: 850px; line-height: 1.7; opacity: 0.95; font-weight: 300; margin-bottom: 40px;">
+                회계는 처음엔 낯설지만, 원리를 깨우치면 평생 여러분의 가장 강력한 무기가 됩니다.<br>
+                2026학년도 2학기, 여러분의 든든한 페이스메이커가 되어 함께 완주하겠습니다.
+            </p>
+            <div style="font-size: 24px; font-weight: 700; color: #ffffff;">
+                수원대학교 경영공학대학 | 회계원리 담당교수 김동선
+            </div>
+            <div style="margin-top: 30px; font-size: 14px; opacity: 0.7;">
+                다음 주 2주차(Ch.01 재무제표와 회계보고시스템)에서 본격적인 강의가 시작됩니다.
+            </div>
+        </section>
+
+    </div>
+
+    <!-- 스크립트: 키보드 제어 및 슬라이드 네비게이션 -->
+    <script>
+        let currentSlide = 1;
+        const totalSlides = 10;
+
+        function updateIndicator() {
+            const indicator = document.getElementById('slideIndicator');
+            if (indicator) {
+                indicator.innerText = `Slide ${currentSlide} / ${totalSlides}`;
+            }
+        }
+
+        function scrollToSlide(slideNum) {
+            if (slideNum < 1) slideNum = 1;
+            if (slideNum > totalSlides) slideNum = totalSlides;
+            currentSlide = slideNum;
+            const target = document.getElementById(`slide-${slideNum}`);
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+            updateIndicator();
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides) {
+                scrollToSlide(currentSlide + 1);
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 1) {
+                scrollToSlide(currentSlide - 1);
+            }
+        }
+
+        function toggleFullScreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(err => {
+                    console.log(`Error attempting to enable full-screen mode: ${err.message}`);
+                });
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
+            }
+        }
+
+        // 키보드 이벤트 리스너
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowDown' || e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') {
+                e.preventDefault();
+                nextSlide();
+            } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft' || e.key === 'PageUp' || e.key === 'Backspace') {
+                e.preventDefault();
+                prevSlide();
+            } else if (e.key === 'f' || e.key === 'F') {
+                toggleFullScreen();
+            }
+        });
+
+        // 스크롤 시 현재 슬라이드 번호 자동 감지
+        window.addEventListener('scroll', () => {
+            const slides = document.querySelectorAll('.slide');
+            const scrollPos = window.scrollY + window.innerHeight / 2;
+            slides.forEach((slide, idx) => {
+                const top = slide.offsetTop;
+                const bottom = top + slide.offsetHeight;
+                if (scrollPos >= top && scrollPos <= bottom) {
+                    currentSlide = idx + 1;
+                    updateIndicator();
+                }
+            });
+        });
+
+        // PDF 다운로드 (인쇄 기능 연동)
+        function downloadPDF() {
+            window.print();
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[1교시] 회계의 본질과 회계보고시스템 | 회계원리</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Google Fonts: Noto Sans KR -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Noto Sans KR', sans-serif; }
+        .tab-btn.active { border-bottom: 3px solid #2563eb; color: #1d4ed8; font-weight: 700; }
+        .slide-page { display: none; }
+        .slide-page.active { display: block; animation: fadeIn 0.3s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+        .page-dot.active { background-color: #2563eb; color: white; font-weight: bold; }
+
+        /* PDF 인쇄 및 다운로드 최적화 스타일 */
+        @media print {
+            @page {
+                size: A4 landscape;
+                margin: 10mm 12mm;
+            }
+            body {
+                background-color: #ffffff !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+                padding: 0 !important;
+            }
+            header, .sticky, #section-practice, .no-print, #page-nav-controller {
+                display: none !important;
+            }
+            main {
+                max-width: 100% !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+            #section-lecture {
+                display: block !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                space-y: 0 !important;
+            }
+            .slide-page {
+                display: block !important;
+                opacity: 1 !important;
+                page-break-after: always !important;
+                break-after: page !important;
+                page-break-inside: avoid !important;
+                break-inside: avoid !important;
+                min-height: 180mm !important;
+                margin-bottom: 0 !important;
+                border: 1px solid #cbd5e1 !important;
+                box-shadow: none !important;
+                border-radius: 12px !important;
+                padding: 24px 28px !important;
+            }
+            .slide-page:last-child {
+                page-break-after: auto !important;
+                break-after: auto !important;
+            }
+        }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-800 min-h-screen flex flex-col">
+
+    <!-- Top Header -->
+    <header class="bg-indigo-950 text-white shadow-md sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 py-2.5 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <div class="bg-blue-600 p-2 rounded-lg text-white shadow">
+                    <i class="fa-solid fa-graduation-cap text-lg"></i>
+                </div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-[11px] bg-blue-800 text-blue-200 px-2 py-0.5 rounded font-semibold">1교시</span>
+                        <span class="text-xs text-slate-300">수원대학교 경영공학대학 | 회계원리</span>
+                    </div>
+                    <h1 class="text-base md:text-lg font-bold">Ch.01 회계의 본질과 회계보고시스템</h1>
+                </div>
+            </div>
+            <div class="flex items-center gap-2">
+                <button onclick="downloadPDF()" class="bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold px-3 py-1.5 rounded-lg shadow transition flex items-center gap-1.5 cursor-pointer">
+                    <i class="fa-solid fa-file-pdf text-sm"></i> PDF 다운로드
+                </button>
+                <span class="hidden sm:flex bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-xs px-3 py-1 rounded-full items-center gap-1.5 font-medium">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                    40분 강의 (10 Pages) + 10분 실습
+                </span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Tab Navigation -->
+    <div class="bg-white border-b border-slate-200 shadow-sm sticky top-[57px] z-40 no-print">
+        <div class="max-w-6xl mx-auto px-4 flex justify-between items-center">
+            <div class="flex space-x-4">
+                <button onclick="switchMainTab('lecture')" id="tab-lecture" class="tab-btn active py-3 px-3 text-sm md:text-base font-semibold flex items-center gap-2 text-slate-600 hover:text-blue-600 transition">
+                    <i class="fa-solid fa-chalkboard-user"></i> [40분] 1교시 강의노트 (10 Pages)
+                </button>
+                <button onclick="switchMainTab('practice')" id="tab-practice" class="tab-btn py-3 px-3 text-sm md:text-base font-semibold flex items-center gap-2 text-slate-600 hover:text-blue-600 transition">
+                    <i class="fa-solid fa-laptop-code"></i> [10분] 인터랙티브 실습실
+                </button>
+            </div>
+            <div class="flex items-center gap-3">
+                <button onclick="downloadPDF()" class="hidden md:flex text-xs bg-slate-100 hover:bg-rose-50 text-slate-700 hover:text-rose-700 border border-slate-300 hover:border-rose-300 font-bold px-2.5 py-1 rounded-md transition items-center gap-1.5 cursor-pointer">
+                    <i class="fa-solid fa-file-pdf text-rose-600"></i> PDF 저장
+                </button>
+                <div id="lecture-page-indicator" class="hidden md:flex items-center gap-1 text-xs font-medium text-slate-500">
+                    <span class="text-blue-700 font-bold" id="current-page-num">1</span> / 10 페이지
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <main class="max-w-6xl mx-auto px-4 py-6 flex-1 w-full">
+
+        <!-- ========================================================================= -->
+        <!-- TAB 1: 40분 강의 (10 Pages 슬라이드 뷰어) -->
+        <!-- ========================================================================= -->
+        <section id="section-lecture" class="space-y-4">
+
+            <!-- Page Navigation Controller -->
+            <div id="page-nav-controller" class="bg-white rounded-xl p-3 border border-slate-200 shadow-sm flex flex-wrap justify-between items-center gap-3 no-print">
+                <div class="flex items-center gap-2">
+                    <button onclick="prevPage()" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-bold transition flex items-center gap-1">
+                        <i class="fa-solid fa-chevron-left"></i> 이전
+                    </button>
+                    <button onclick="nextPage()" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-bold transition flex items-center gap-1 shadow-sm">
+                        다음 <i class="fa-solid fa-chevron-right"></i>
+                    </button>
+                </div>
+
+                <!-- Page Dots/Numbers -->
+                <div class="flex flex-wrap gap-1.5 items-center text-xs">
+                    <button onclick="goToPage(1)" class="page-dot active w-7 h-7 rounded-lg border border-slate-200 hover:bg-blue-50 flex items-center justify-center transition" id="dot-1">1</button>
+                    <button onclick="goToPage(2)" class="page-dot w-7 h-7 rounded-lg border border-slate-200 hover:bg-blue-50 flex items-center justify-center transition" id="dot-2">2</button>
+                    <button onclick="goToPage(3)" class="page-dot w-7 h-7 rounded-lg border border-slate-200 hover:bg-blue-50 flex items-center justify-center transition" id="dot-3">3</button>
+                    <button onclick="goToPage(4)" class="page-dot w-7 h-7 rounded-lg border border-slate-200 hover:bg-blue-50 flex items-center justify-center transition" id="dot-4">4</button>
+                    <button onclick="goToPage(5)" class="page-dot w-7 h-7 rounded-lg border border-slate-200 hover:bg-blue-50 flex items-center justify-center transition" id="dot-5">5</button>
+                    <button onclick="goToPage(6)" class="page-dot w-7 h-7 rounded-lg border border-slate-200 hover:bg-blue-50 flex items-center justify-center transition" id="dot-6">6</button>
+                    <button onclick="goToPage(7)" class="page-dot w-7 h-7 rounded-lg border border-slate-200 hover:bg-blue-50 flex items-center justify-center transition" id="dot-7">7</button>
+                    <button onclick="goToPage(8)" class="page-dot w-7 h-7 rounded-lg border border-slate-200 hover:bg-blue-50 flex items-center justify-center transition" id="dot-8">8</button>
+                    <button onclick="goToPage(9)" class="page-dot w-7 h-7 rounded-lg border border-slate-200 hover:bg-blue-50 flex items-center justify-center transition" id="dot-9">9</button>
+                    <button onclick="goToPage(10)" class="page-dot w-7 h-7 rounded-lg border border-slate-200 hover:bg-blue-50 flex items-center justify-center transition" id="dot-10">10</button>
+                </div>
+            </div>
+
+            <!-- SLIDE 1 / 10 -->
+            <div class="slide-page active bg-white rounded-2xl p-6 md:p-8 border border-slate-200 shadow-sm" id="page-1">
+                <div class="flex items-center justify-between border-b pb-4 mb-6">
+                    <span class="text-xs font-bold uppercase tracking-wider text-blue-600 bg-blue-50 px-3 py-1 rounded-full">Page 01 / 10 • 단원 개요</span>
+                    <span class="text-xs text-slate-400">Ch.01 재무제표와 회계보고시스템</span>
+                </div>
+                <h2 class="text-2xl font-extrabold text-slate-900 mb-4">1교시 학습 목표 및 강의 로드맵</h2>
+                <p class="text-slate-600 text-sm md:text-base leading-relaxed mb-6">
+                    현대 자본주의 시장경제에서 회계는 단순한 장부 정리가 아닌 <strong>'비즈니스의 언어(Language of Business)'</strong>이자 <strong>'사회의 신뢰 인프라'</strong>로 작동합니다. 1교시에서는 회계의 본질과 시스템 작동 원리를 학습합니다.
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="p-4 bg-indigo-50/60 rounded-xl border border-indigo-100">
+                        <div class="font-bold text-indigo-900 flex items-center gap-2 mb-2 text-sm">
+                            <i class="fa-solid fa-bullseye text-indigo-600"></i> 핵심 학습 목표
+                        </div>
+                        <ul class="text-xs md:text-sm text-slate-700 space-y-2 list-disc list-inside">
+                            <li>회계의 정의와 궁극적 목적(의사결정 유용성) 설명</li>
+                            <li>회계 투명성이 국가 및 기업 경쟁력에 미치는 영향 이해</li>
+                            <li>내부/외부 정보이용자별 의사결정 요구 파악</li>
+                            <li>회계시스템 4단계(식별-측정-처리-보고)와 3대 분야 이해</li>
+                        </ul>
+                    </div>
+                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                        <div class="font-bold text-slate-900 flex items-center gap-2 mb-2 text-sm">
+                            <i class="fa-solid fa-clock text-blue-600"></i> 1교시 시간 계획 (50분)
+                        </div>
+                        <div class="space-y-2 text-xs md:text-sm text-slate-600">
+                            <div class="flex justify-between border-b pb-1"><span>1~10분: 회계의 본질 및 사회적 역할</span><span class="font-semibold text-slate-800">Page 1 ~ 4</span></div>
+                            <div class="flex justify-between border-b pb-1"><span>11~25분: 정보이용자와 대리인 문제</span><span class="font-semibold text-slate-800">Page 5 ~ 6</span></div>
+                            <div class="flex justify-between border-b pb-1"><span>26~40분: 회계시스템 및 3대 영역</span><span class="font-semibold text-slate-800">Page 7 ~ 10</span></div>
+                            <div class="flex justify-between text-blue-600 font-bold pt-1"><span>41~50분: 인터랙티브 실습 진행</span><span>별도 실습실</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 2 / 10 -->
+            <div class="slide-page bg-white rounded-2xl p-6 md:p-8 border border-slate-200 shadow-sm" id="page-2">
+                <div class="flex items-center justify-between border-b pb-4 mb-6">
+                    <span class="text-xs font-bold uppercase tracking-wider text-blue-600 bg-blue-50 px-3 py-1 rounded-full">Page 02 / 10 • 회계의 개념</span>
+                    <span class="text-xs text-slate-400">Slide 6 매핑</span>
+                </div>
+                <h2 class="text-2xl font-extrabold text-slate-900 mb-4">회계(Accounting)란 무엇인가?</h2>
+                <div class="p-4 bg-blue-50 border-l-4 border-blue-600 rounded-r-xl mb-6">
+                    <p class="text-blue-950 font-medium text-sm md:text-base leading-relaxed">
+                        "회계란 특정 경제실체(기업)의 경제적 활동에 관한 계량적 정보, 특히 <strong>재무적 정보</strong>를 식별·측정·기록·전달함으로써, 정보이용자들이 <strong>합리적인 판단과 의사결정(Decision-Making)</strong>을 내릴 수 있도록 돕는 일련의 정보시스템이다."
+                    </p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs md:text-sm">
+                    <div class="p-4 bg-slate-50 border rounded-xl">
+                        <div class="font-bold text-slate-900 mb-1 text-sm"><i class="fa-solid fa-language text-blue-600 mr-1.5"></i>비즈니스의 언어</div>
+                        <p class="text-slate-600">음악가가 악보로 소통하듯, 경영자와 투자자는 '재무제표'라는 회계 언어로 기업의 성과와 재무상태를 소통합니다.</p>
+                    </div>
+                    <div class="p-4 bg-slate-50 border rounded-xl">
+                        <div class="font-bold text-slate-900 mb-1 text-sm"><i class="fa-solid fa-calculator text-indigo-600 mr-1.5"></i>화폐적 계량화</div>
+                        <p class="text-slate-600">다양한 경영 사건을 '원(\)', '달러($)' 등 공통의 화폐 단위로 환산하여 객관적으로 비교·분석할 수 있게 합니다.</p>
+                    </div>
+                    <div class="p-4 bg-slate-50 border rounded-xl">
+                        <div class="font-bold text-slate-900 mb-1 text-sm"><i class="fa-solid fa-arrows-split-up-and-left text-emerald-600 mr-1.5"></i>의사결정 지향성</div>
+                        <p class="text-slate-600">단순한 과거 사실의 기계적 기록(부기)을 넘어, 미래의 합리적인 자원 배분과 의사결정을 지원하는 것이 핵심 목적입니다.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 3 / 10 -->
+            <div class="slide-page bg-white rounded-2xl p-6 md:p-8 border border-slate-200 shadow-sm" id="page-3">
+                <div class="flex items-center justify-between border-b pb-4 mb-6">
+                    <span class="text-xs font-bold uppercase tracking-wider text-blue-600 bg-blue-50 px-3 py-1 rounded-full">Page 03 / 10 • 자본주의와 회계</span>
+                    <span class="text-xs text-slate-400">Slide 30 매핑</span>
+                </div>
+                <h2 class="text-2xl font-extrabold text-slate-900 mb-4">근대 자본주의 발전과 회계의 필연성</h2>
+                <p class="text-slate-600 text-sm md:text-base leading-relaxed mb-6">
+                    세계적인 경제학자와 사회학자들은 근대 자본주의의 번영이 **'복식부기와 체계적인 회계 시스템'**의 정립 덕분에 가능했다고 입을 모읍니다.
+                </p>
+                <div class="space-y-3 text-xs md:text-sm">
+                    <div class="p-4 bg-amber-50/50 border border-amber-200 rounded-xl flex items-start gap-3">
+                        <div class="bg-amber-500 text-white p-2 rounded-lg shrink-0 mt-0.5"><i class="fa-solid fa-quote-left"></i></div>
+                        <div>
+                            <div class="font-bold text-amber-950">베르너 솜바르트 (Werner Sombart, 경제학자)</div>
+                            <p class="text-slate-700 mt-1">"복식부기 없는 자본주의는 상상할 수도 없다. 이 두 가지는 마치 <strong>형식과 내용</strong>처럼 긴밀하게 연결되어 있다."</p>
+                        </div>
+                    </div>
+                    <div class="p-4 bg-sky-50/50 border border-sky-200 rounded-xl flex items-start gap-3">
+                        <div class="bg-sky-500 text-white p-2 rounded-lg shrink-0 mt-0.5"><i class="fa-solid fa-quote-left"></i></div>
+                        <div>
+                            <div class="font-bold text-sky-950">막스 베버 (Max Weber, 사회학자)</div>
+                            <p class="text-slate-700 mt-1">"근대 기업은 합리적 회계와 밀접하게 결부되어 있으며, 회계는 복잡한 자본주의 시장경제를 지탱하는 가장 필수적인 문화요소이다."</p>
+                        </div>
+                    </div>
+                    <div class="p-4 bg-indigo-50/50 border border-indigo-200 rounded-xl flex items-start gap-3">
+                        <div class="bg-indigo-500 text-white p-2 rounded-lg shrink-0 mt-0.5"><i class="fa-solid fa-quote-left"></i></div>
+                        <div>
+                            <div class="font-bold text-indigo-950">조셉 슘페터 (Joseph Schumpeter, 경제학자)</div>
+                            <p class="text-slate-700 mt-1">"회계는 자본주의의 핵심이다. 회계활동의 역사를 이해하지 않고서는 효과적인 경제 이론을 구축할 수 없다."</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 4 / 10 -->
+            <div class="slide-page bg-white rounded-2xl p-6 md:p-8 border border-slate-200 shadow-sm" id="page-4">
+                <div class="flex items-center justify-between border-b pb-4 mb-5">
+                    <span class="text-xs font-bold uppercase tracking-wider text-blue-600 bg-blue-50 px-3 py-1 rounded-full">Page 04 / 10 • 사회적 가치와 국가경쟁력</span>
+                    <span class="text-xs text-slate-400">IMD World Competitiveness Yearbook (2015~2026)</span>
+                </div>
+                <h2 class="text-2xl font-extrabold text-slate-900 mb-2">회계 투명성과 국가 경쟁력 (IMD 최근 12개년 분석)</h2>
+                <p class="text-slate-600 text-xs md:text-sm leading-relaxed mb-4">
+                    스위스 국제경영개발대학원(IMD)의 평가에 따르면, <strong>회계 및 감사 투명성(Auditing & Accounting Practices)</strong>은 국가 신용도와 기업 가치를 결정하는 핵심 인프라입니다.
+                </p>
+
+                <!-- 상단 핵심 시사점 카드 -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-5">
+                    <div class="p-3.5 bg-rose-50/70 rounded-xl border border-rose-200 text-xs">
+                        <div class="font-bold text-rose-900 flex items-center gap-1.5 mb-1">
+                            <i class="fa-solid fa-triangle-exclamation text-rose-600"></i> 2016~2017년 최하위 충격
+                        </div>
+                        <p class="text-slate-600 leading-snug">
+                            조사대상국 중 <strong>연속 꼴찌(61위/63위)</strong>를 기록하며 한국 기업의 주가가 저평가되는 '코리아 디스카운트'의 주원인으로 지목됨.
+                        </p>
+                    </div>
+                    <div class="p-3.5 bg-emerald-50/70 rounded-xl border border-emerald-200 text-xs">
+                        <div class="font-bold text-emerald-900 flex items-center gap-1.5 mb-1">
+                            <i class="fa-solid fa-arrow-trend-up text-emerald-600"></i> 2018년 신(新)외부감사법 도입
+                        </div>
+                        <p class="text-slate-600 leading-snug">
+                            주기적 감사인 지정제, 표준감사시간제 도입으로 회계개혁 추진 $\rightarrow$ <strong>2021년 37위로 대폭 도약(역대 최고)</strong>.
+                        </p>
+                    </div>
+                    <div class="p-3.5 bg-sky-50/70 rounded-xl border border-sky-200 text-xs">
+                        <div class="font-bold text-sky-950 flex items-center gap-1.5 mb-1">
+                            <i class="fa-solid fa-scale-balanced text-sky-600"></i> 2026년 최신 동향 및 과제
+                        </div>
+                        <p class="text-slate-600 leading-snug">
+                            국가경쟁력 종합 순위는 <strong>21위(상위 30%)</strong>인 반면, 회계투명성은 <strong>55위(하위 21%)</strong>로 여전히 개선 과제가 존재함.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 인터랙티브 차트 영역 -->
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 mb-4">
+                    <div class="flex flex-wrap justify-between items-center mb-3">
+                        <div class="font-bold text-slate-800 text-xs md:text-sm flex items-center gap-2">
+                            <i class="fa-solid fa-chart-line text-blue-600"></i> 한국 IMD 국가경쟁력 종합 순위 vs 회계투명성 순위 추이 (2015~2026)
+                        </div>
+                        <div class="text-[11px] text-slate-500 font-medium">
+                            *순위(Rank) 그래프는 위쪽으로 갈수록 순위가 높음을 의미합니다.
+                        </div>
+                    </div>
+                    <div class="relative w-full h-56 md:h-64 bg-white p-2 rounded-lg border border-slate-200">
+                        <canvas id="imdRankingChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- 상세 데이터 표 -->
+                <div class="overflow-x-auto rounded-xl border border-slate-200">
+                    <table class="w-full text-[11px] text-center bg-white">
+                        <thead class="bg-slate-100 text-slate-700 font-bold border-b border-slate-200">
+                            <tr>
+                                <th class="py-1.5 px-2">연도</th>
+                                <th class="py-1.5 px-2">2015</th>
+                                <th class="py-1.5 px-2">2016</th>
+                                <th class="py-1.5 px-2">2017</th>
+                                <th class="py-1.5 px-2">2018</th>
+                                <th class="py-1.5 px-2">2019</th>
+                                <th class="py-1.5 px-2">2020</th>
+                                <th class="py-1.5 px-2">2021</th>
+                                <th class="py-1.5 px-2">2022</th>
+                                <th class="py-1.5 px-2">2023</th>
+                                <th class="py-1.5 px-2">2024</th>
+                                <th class="py-1.5 px-2">2025</th>
+                                <th class="py-1.5 px-2 bg-blue-50 text-blue-900">2026</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 text-slate-600">
+                            <tr class="hover:bg-slate-50 font-medium">
+                                <td class="py-1 px-2 font-bold text-slate-800 bg-slate-50">조사 대상국</td>
+                                <td class="py-1 px-2">61개국</td>
+                                <td class="py-1 px-2">61개국</td>
+                                <td class="py-1 px-2">63개국</td>
+                                <td class="py-1 px-2">63개국</td>
+                                <td class="py-1 px-2">63개국</td>
+                                <td class="py-1 px-2">63개국</td>
+                                <td class="py-1 px-2">64개국</td>
+                                <td class="py-1 px-2">63개국</td>
+                                <td class="py-1 px-2">64개국</td>
+                                <td class="py-1 px-2">69개국</td>
+                                <td class="py-1 px-2">69개국</td>
+                                <td class="py-1 px-2 bg-blue-50/50 font-bold text-blue-900">70개국</td>
+                            </tr>
+                            <tr class="hover:bg-blue-50/30 text-blue-800 font-semibold">
+                                <td class="py-1 px-2 font-bold text-blue-900 bg-slate-50">종합 순위</td>
+                                <td class="py-1 px-2">25위</td>
+                                <td class="py-1 px-2">29위</td>
+                                <td class="py-1 px-2">29위</td>
+                                <td class="py-1 px-2">27위</td>
+                                <td class="py-1 px-2">28위</td>
+                                <td class="py-1 px-2">23위</td>
+                                <td class="py-1 px-2">23위</td>
+                                <td class="py-1 px-2">27위</td>
+                                <td class="py-1 px-2">28위</td>
+                                <td class="py-1 px-2 text-blue-600 font-extrabold">20위</td>
+                                <td class="py-1 px-2">37위</td>
+                                <td class="py-1 px-2 bg-blue-50 text-blue-700 font-extrabold">21위</td>
+                            </tr>
+                            <tr class="hover:bg-rose-50/30 text-rose-700 font-semibold">
+                                <td class="py-1 px-2 font-bold text-rose-900 bg-slate-50">회계 투명성</td>
+                                <td class="py-1 px-2">60위</td>
+                                <td class="py-1 px-2 text-rose-600 font-bold">61위<span class="text-[9px] block text-rose-500">(최하위)</span></td>
+                                <td class="py-1 px-2 text-rose-600 font-bold">63위<span class="text-[9px] block text-rose-500">(최하위)</span></td>
+                                <td class="py-1 px-2">62위</td>
+                                <td class="py-1 px-2">61위</td>
+                                <td class="py-1 px-2 text-emerald-600 font-bold">46위</td>
+                                <td class="py-1 px-2 text-emerald-600 font-extrabold">37위<span class="text-[9px] block text-emerald-500">(역대최고)</span></td>
+                                <td class="py-1 px-2">53위</td>
+                                <td class="py-1 px-2">41위</td>
+                                <td class="py-1 px-2">60위</td>
+                                <td class="py-1 px-2">60위</td>
+                                <td class="py-1 px-2 bg-blue-50 text-rose-700 font-extrabold">55위</td>
+                            </tr>
+                            <tr class="hover:bg-slate-50 text-slate-500">
+                                <td class="py-1 px-2 font-bold text-slate-700 bg-slate-50">종합 vs 회계 격차</td>
+                                <td class="py-1 px-2">-35</td>
+                                <td class="py-1 px-2 text-rose-600 font-bold">-32</td>
+                                <td class="py-1 px-2 text-rose-600 font-bold">-34</td>
+                                <td class="py-1 px-2">-35</td>
+                                <td class="py-1 px-2">-33</td>
+                                <td class="py-1 px-2">-23</td>
+                                <td class="py-1 px-2 text-emerald-600 font-bold">-14</td>
+                                <td class="py-1 px-2">-26</td>
+                                <td class="py-1 px-2">-13</td>
+                                <td class="py-1 px-2 text-rose-600 font-bold">-40</td>
+                                <td class="py-1 px-2">-23</td>
+                                <td class="py-1 px-2 bg-blue-50 font-bold text-slate-700">-34</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="mt-3 p-2.5 rounded-lg bg-indigo-50 border border-indigo-100 flex items-center justify-between text-xs text-indigo-900">
+                    <div>
+                        <i class="fa-solid fa-graduation-cap text-indigo-600 mr-1.5"></i>
+                        <strong>교수자 핵심 강의 포인트:</strong> "회계 투명성은 단순한 윤리 문제가 아니라, 기업과 국가의 <strong>자본조달 비용을 낮추고 글로벌 경쟁력을 결정짓는 핵심 경제 인프라</strong>입니다."
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 5 / 10 -->
+            <div class="slide-page bg-white rounded-2xl p-6 md:p-8 border border-slate-200 shadow-sm" id="page-5">
+                <div class="flex items-center justify-between border-b pb-4 mb-6">
+                    <span class="text-xs font-bold uppercase tracking-wider text-blue-600 bg-blue-50 px-3 py-1 rounded-full">Page 05 / 10 • 정보이용자와 대리인 문제</span>
+                    <span class="text-xs text-slate-400">Slide 7 매핑</span>
+                </div>
+                <h2 class="text-2xl font-extrabold text-slate-900 mb-4">소유와 경영의 분리 & 대리인 이론(Agency Theory)</h2>
+                <p class="text-slate-600 text-sm md:text-base leading-relaxed mb-6">
+                    현대 주식회사는 주식을 가진 소유주(주주)와 회사를 직접 운영하는 전문경영인이 분리되어 있습니다. 이로 인해 필연적으로 **정보 비대칭(Information Asymmetry)**이 발생합니다.
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs md:text-sm">
+                    <div class="p-5 bg-rose-50/60 border border-rose-200 rounded-xl">
+                        <div class="font-bold text-rose-900 mb-2 flex items-center gap-2">
+                            <i class="fa-solid fa-triangle-exclamation text-rose-600"></i> 대리인 문제 (Agency Problem)
+                        </div>
+                        <p class="text-slate-700 leading-relaxed">
+                            경영자는 회사의 실제 사정을 손바닥 보듯 알지만, 주주는 밖에서 지켜볼 뿐입니다. 이 과정에서 경영자가 주주의 이익 대신 자신의 사리사욕(성과급 극대화, 과도한 의전)을 추구할 위험이 발생합니다.
+                        </p>
+                    </div>
+                    <div class="p-5 bg-emerald-50/60 border border-emerald-200 rounded-xl">
+                        <div class="font-bold text-emerald-900 mb-2 flex items-center gap-2">
+                            <i class="fa-solid fa-shield-halved text-emerald-600"></i> 회계의 해결 메커니즘
+                        </div>
+                        <p class="text-slate-700 leading-relaxed">
+                            경영자는 1년 동안 주주의 돈을 어떻게 굴려 얼마를 벌었는지 객관적인 규칙(회계기준)에 따라 <strong>재무제표로 보고(수탁책임 보고)</strong>해야 하며, 이를 통해 정보 비대칭과 대리인 비용을 해소합니다.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 6 / 10 -->
+            <div class="slide-page bg-white rounded-2xl p-6 md:p-8 border border-slate-200 shadow-sm" id="page-6">
+                <div class="flex items-center justify-between border-b pb-4 mb-6">
+                    <span class="text-xs font-bold uppercase tracking-wider text-blue-600 bg-blue-50 px-3 py-1 rounded-full">Page 06 / 10 • 정보이용자 분류</span>
+                    <span class="text-xs text-slate-400">Slide 7, 11 매핑</span>
+                </div>
+                <h2 class="text-2xl font-extrabold text-slate-900 mb-4">회계정보의 이용자: 내부 vs 외부 이해관계자</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs md:text-sm">
+                    <!-- 내부이용자 -->
+                    <div class="p-5 bg-slate-50 border border-slate-200 rounded-xl">
+                        <div class="flex items-center gap-2 font-bold text-indigo-900 mb-3 text-base">
+                            <i class="fa-solid fa-building-user text-indigo-600"></i> 내부이해관계자 (Internal Users)
+                        </div>
+                        <div class="space-y-3 text-slate-700">
+                            <div>
+                                <strong class="text-slate-900">• 최고경영자(CEO) & 임원:</strong>
+                                <p class="text-xs text-slate-600 mt-0.5">신규 사업 투자 여부 결정, 전사적 예산 편성 및 사업부별 성과평가</p>
+                            </div>
+                            <div>
+                                <strong class="text-slate-900">• 부서장(생산/영업/인사):</strong>
+                                <p class="text-xs text-slate-600 mt-0.5">제조원가 절감, 제품 판매가격 결정, 부서별 인센티브 산정</p>
+                            </div>
+                            <div>
+                                <strong class="text-slate-900">• 일반 종업원 및 노동조합:</strong>
+                                <p class="text-xs text-slate-600 mt-0.5">임금 인상 협상, 고용 안정성 및 성과급 분배 근거 확인</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 외부이용자 -->
+                    <div class="p-5 bg-slate-50 border border-slate-200 rounded-xl">
+                        <div class="flex items-center gap-2 font-bold text-sky-900 mb-3 text-base">
+                            <i class="fa-solid fa-users text-sky-600"></i> 외부이해관계자 (External Users)
+                        </div>
+                        <div class="space-y-3 text-slate-700">
+                            <div>
+                                <strong class="text-slate-900">• 주주 및 잠재적 투자자:</strong>
+                                <p class="text-xs text-slate-600 mt-0.5">주식 매수/보유/매도 판단, 미래 배당금 및 주가 상승 가능성 평가</p>
+                            </div>
+                            <div>
+                                <strong class="text-slate-900">• 채권자(은행, 회사채 투자자):</strong>
+                                <p class="text-xs text-slate-600 mt-0.5">대출 승인 여부, 이자율 결정, 원리금 상환능력(신용도) 심사</p>
+                            </div>
+                            <div>
+                                <strong class="text-slate-900">• 과세당국(국세청):</strong>
+                                <p class="text-xs text-slate-600 mt-0.5">법인세 등 세금 산출의 정확성 검증 및 세무조사 대상 선정</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 7 / 10 -->
+            <div class="slide-page bg-white rounded-2xl p-6 md:p-8 border border-slate-200 shadow-sm" id="page-7">
+                <div class="flex items-center justify-between border-b pb-4 mb-6">
+                    <span class="text-xs font-bold uppercase tracking-wider text-blue-600 bg-blue-50 px-3 py-1 rounded-full">Page 07 / 10 • 회계시스템 4단계</span>
+                    <span class="text-xs text-slate-400">Slide 9, 10 매핑</span>
+                </div>
+                <h2 class="text-2xl font-extrabold text-slate-900 mb-4">회계시스템의 4단계 처리 프로세스</h2>
+                <p class="text-slate-600 text-sm mb-6">기업 활동 중 발생하는 무수한 사건들을 일정한 체계에 따라 정제하는 파이프라인입니다.</p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-xs md:text-sm">
+                    <div class="p-4 bg-blue-50/50 border border-blue-200 rounded-xl relative">
+                        <div class="w-7 h-7 bg-blue-600 text-white rounded-lg flex items-center justify-center font-bold text-xs mb-2">1</div>
+                        <h4 class="font-bold text-blue-950 mb-1">거래의 식별 (인식)</h4>
+                        <p class="text-slate-600 text-xs">수많은 사건 중 자산·부채·자본의 증감을 일으키는 '회계상 거래'만 장부에 기록 대상으로 포착합니다.</p>
+                    </div>
+                    <div class="p-4 bg-indigo-50/50 border border-indigo-200 rounded-xl relative">
+                        <div class="w-7 h-7 bg-indigo-600 text-white rounded-lg flex items-center justify-center font-bold text-xs mb-2">2</div>
+                        <h4 class="font-bold text-indigo-950 mb-1">거래의 측정 (계량화)</h4>
+                        <p class="text-slate-600 text-xs">식별된 사건에 원화(\) 등 객관적인 화폐 금액을 부여하여 수치(Numbers)로 계량화합니다.</p>
+                    </div>
+                    <div class="p-4 bg-purple-50/50 border border-purple-200 rounded-xl relative">
+                        <div class="w-7 h-7 bg-purple-600 text-white rounded-lg flex items-center justify-center font-bold text-xs mb-2">3</div>
+                        <h4 class="font-bold text-purple-950 mb-1">거래의 처리 (분류·요약)</h4>
+                        <p class="text-slate-600 text-xs">분개장 작성 $ightarrow$ 총계정원장 전기 $ightarrow$ 시산표 작성을 통해 계정과목별로 일목요연하게 정리합니다.</p>
+                    </div>
+                    <div class="p-4 bg-emerald-50/50 border border-emerald-200 rounded-xl relative">
+                        <div class="w-7 h-7 bg-emerald-600 text-white rounded-lg flex items-center justify-center font-bold text-xs mb-2">4</div>
+                        <h4 class="font-bold text-emerald-950 mb-1">정보의 보고 (공시)</h4>
+                        <p class="text-slate-600 text-xs">재무제표(F/S) 형태로 작성하여 외부 공시시스템(DART) 등을 통해 정보이용자에게 전달합니다.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 8 / 10 -->
+            <div class="slide-page bg-white rounded-2xl p-6 md:p-8 border border-slate-200 shadow-sm" id="page-8">
+                <div class="flex items-center justify-between border-b pb-4 mb-6">
+                    <span class="text-xs font-bold uppercase tracking-wider text-blue-600 bg-blue-50 px-3 py-1 rounded-full">Page 08 / 10 • 회계의 3대 분야 (1)</span>
+                    <span class="text-xs text-slate-400">Slide 12 매핑</span>
+                </div>
+                <h2 class="text-2xl font-extrabold text-slate-900 mb-4">재무회계(Financial) vs 관리회계(Managerial)</h2>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-xs md:text-sm text-left border-collapse">
+                        <thead>
+                            <tr class="bg-slate-100 text-slate-800 border-b border-slate-300">
+                                <th class="p-3">비교 항목</th>
+                                <th class="p-3 text-blue-700 font-bold bg-blue-50/50">재무회계 (Financial Accounting)</th>
+                                <th class="p-3 text-purple-700 font-bold bg-purple-50/50">관리회계 (Managerial Accounting)</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-200 text-slate-700">
+                            <tr>
+                                <td class="p-3 font-semibold bg-slate-50">주요 보고 대상</td>
+                                <td class="p-3">외부 이용자 (주주, 채권자, 정부 등)</td>
+                                <td class="p-3">내부 이용자 (경영자, 부서장 등)</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-semibold bg-slate-50">작성 규범/기준</td>
+                                <td class="p-3 font-bold text-blue-900">회계기준(GAAP, K-IFRS) 준수 필수</td>
+                                <td class="p-3">정해진 양식 없음 (목적 적합성 중심)</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-semibold bg-slate-50">정보의 시간성</td>
+                                <td class="p-3">과거 지향적 (역사적 원가, 기발생 실적)</td>
+                                <td class="p-3 font-bold text-purple-900">미래 지향적 (예산 편성, 경영 예측)</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-semibold bg-slate-50">보고 주기 및 형식</td>
+                                <td class="p-3">정기적 (분기/반기/연간 정형화된 F/S)</td>
+                                <td class="p-3">수시 보고서 (프로젝트별 비정형 보고서)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- SLIDE 9 / 10 -->
+            <div class="slide-page bg-white rounded-2xl p-6 md:p-8 border border-slate-200 shadow-sm" id="page-9">
+                <div class="flex items-center justify-between border-b pb-4 mb-6">
+                    <span class="text-xs font-bold uppercase tracking-wider text-blue-600 bg-blue-50 px-3 py-1 rounded-full">Page 09 / 10 • 회계의 3대 분야 (2)</span>
+                    <span class="text-xs text-slate-400">Slide 12 매핑</span>
+                </div>
+                <h2 class="text-2xl font-extrabold text-slate-900 mb-4">세무회계(Tax Accounting)와 세무조정</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs md:text-sm">
+                    <div class="p-5 bg-amber-50/60 border border-amber-200 rounded-xl">
+                        <div class="font-bold text-amber-950 mb-2 flex items-center gap-2">
+                            <i class="fa-solid fa-file-invoice-dollar text-amber-600"></i> 세무회계의 목적과 특징
+                        </div>
+                        <p class="text-slate-700 leading-relaxed mb-3">
+                            세법(법인세법, 부가가치세법 등) 규정에 따라 기업의 과세소득과 세액을 산출하여 공평과세를 실현하는 회계 분야입니다.
+                        </p>
+                        <div class="bg-white p-3 rounded-lg border border-amber-200 text-xs text-slate-700">
+                            <strong>• 재무회계의 목적:</strong> 투자자를 위한 순이익 측정<br>
+                            <strong>• 세무회계의 목적:</strong> 국가를 위한 공평한 세금 부과(과세표준 산출)
+                        </div>
+                    </div>
+
+                    <div class="p-5 bg-slate-50 border border-slate-200 rounded-xl">
+                        <div class="font-bold text-slate-900 mb-2 flex items-center gap-2">
+                            <i class="fa-solid fa-sliders text-blue-600"></i> 세무조정(Tax Reconciliation)의 필요성
+                        </div>
+                        <p class="text-slate-700 leading-relaxed">
+                            기업회계기준상의 <strong>'수익'과 '비용'</strong>은 세법상의 <strong>'익금(益金)'과 '손금(損金)'</strong>과 완벽히 일치하지 않습니다. 따라서 재무회계상 당기순이익에서 세법과의 차이를 가감 조정하는 <strong>'세무조정'</strong> 절차를 거치게 됩니다.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 10 / 10 -->
+            <div class="slide-page bg-white rounded-2xl p-6 md:p-8 border border-slate-200 shadow-sm" id="page-10">
+                <div class="flex items-center justify-between border-b pb-4 mb-6">
+                    <span class="text-xs font-bold uppercase tracking-wider text-blue-600 bg-blue-50 px-3 py-1 rounded-full">Page 10 / 10 • 1교시 총정리</span>
+                    <span class="text-xs text-slate-400">요약 & 2교시 브릿지</span>
+                </div>
+                <h2 class="text-2xl font-extrabold text-slate-900 mb-4">1교시 핵심 요약 및 2교시 안내</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs md:text-sm mb-6">
+                    <div class="p-4 bg-indigo-50 border border-indigo-200 rounded-xl space-y-2 text-slate-700">
+                        <div class="font-bold text-indigo-950 text-sm">✅ 1교시 핵심 Check Points</div>
+                        <div>1. 회계는 합리적 의사결정을 지원하는 정보시스템이다.</div>
+                        <div>2. 회계투명성은 국가경쟁력과 직결된다 (IMD 41위).</div>
+                        <div>3. 내부(경영자)-외부(투자자/채권자) 요구에 따라 회계가 나뉜다.</div>
+                        <div>4. 회계는 인식 $ightarrow$ 측정 $ightarrow$ 처리 $ightarrow$ 보고의 4단계를 거친다.</div>
+                    </div>
+                    <div class="p-4 bg-emerald-50 border border-emerald-200 rounded-xl space-y-2 text-slate-700">
+                        <div class="font-bold text-emerald-950 text-sm">🚀 2교시 예고: 기업의 4대 재무제표</div>
+                        <p class="text-xs text-slate-600">
+                            다음 2교시에는 회계시스템의 최종 결과물인 <strong>재무상태표, 손익계산서, 자본변동표, 현금흐름표</strong>가 서로 어떻게 톱니바퀴처럼 맞물려 돌아가는지 실제 수치로 살펴봅니다!
+                        </p>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <button onclick="switchMainTab('practice')" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-6 py-2.5 rounded-xl shadow transition">
+                        지금 바로 [10분 실습실]로 이동하기 <i class="fa-solid fa-arrow-right ml-1"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Bottom Navigation Bar -->
+            <div class="flex justify-between items-center pt-2">
+                <button onclick="prevPage()" class="px-4 py-2 bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-sm">
+                    <i class="fa-solid fa-arrow-left"></i> 이전 페이지
+                </button>
+                <span class="text-xs text-slate-500 font-medium" id="bottom-page-num">1 / 10 Pages (키보드 ← / → 방향키 지원)</span>
+                <button onclick="nextPage()" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-sm">
+                    다음 페이지 <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
+
+        </section>
+
+        <!-- ========================================================================= -->
+        <!-- TAB 2: 10분 인터랙티브 실습실 (별도 탭) -->
+        <!-- ========================================================================= -->
+        <section id="section-practice" class="space-y-6 hidden">
+            
+            <!-- 실습 1 -->
+            <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
+                <div class="flex items-center justify-between border-b pb-3 mb-4">
+                    <div>
+                        <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+                            <i class="fa-solid fa-vial text-blue-600"></i>
+                            [실습 1] 회계상 거래(Transaction) 판별 챌린지
+                        </h2>
+                        <p class="text-xs text-slate-500 mt-0.5">다음 경영 사건 중 기업의 자산·부채·자본에 실질적 변동을 주는 회계상 거래를 판단해보세요.</p>
+                    </div>
+                    <span id="trans-score" class="text-xs font-bold bg-blue-100 text-blue-800 px-3 py-1 rounded-full">진행: 0 / 4</span>
+                </div>
+
+                <div class="space-y-3" id="transaction-list">
+                    <!-- Item 1 -->
+                    <div class="p-4 border rounded-xl border-slate-200 bg-slate-50 transition" id="tr-box-1">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                            <div class="text-xs md:text-sm text-slate-800">
+                                <span class="font-bold text-blue-600 mr-1.5">사건 1.</span>
+                                신입사원 3명을 월 급여 300만원에 고용하기로 채용 근로계약서를 체결하였다.
+                            </div>
+                            <div class="flex gap-2 shrink-0">
+                                <button onclick="checkTransaction(1, false, this)" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-white border border-slate-300 hover:bg-slate-100">회계상 거래 아님</button>
+                                <button onclick="checkTransaction(1, true, this)" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-white border border-slate-300 hover:bg-slate-100">회계상 거래 맞음</button>
+                            </div>
+                        </div>
+                        <div id="tr-desc-1" class="text-xs text-slate-600 mt-2 hidden p-2.5 rounded bg-white border"></div>
+                    </div>
+
+                    <!-- Item 2 -->
+                    <div class="p-4 border rounded-xl border-slate-200 bg-slate-50 transition" id="tr-box-2">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                            <div class="text-xs md:text-sm text-slate-800">
+                                <span class="font-bold text-blue-600 mr-1.5">사건 2.</span>
+                                공장에 태풍으로 인한 침수가 발생하여 보관 중이던 ￦5,000,000 상당의 원재료가 파손되었다.
+                            </div>
+                            <div class="flex gap-2 shrink-0">
+                                <button onclick="checkTransaction(2, false, this)" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-white border border-slate-300 hover:bg-slate-100">회계상 거래 아님</button>
+                                <button onclick="checkTransaction(2, true, this)" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-white border border-slate-300 hover:bg-slate-100">회계상 거래 맞음</button>
+                            </div>
+                        </div>
+                        <div id="tr-desc-2" class="text-xs text-slate-600 mt-2 hidden p-2.5 rounded bg-white border"></div>
+                    </div>
+
+                    <!-- Item 3 -->
+                    <div class="p-4 border rounded-xl border-slate-200 bg-slate-50 transition" id="tr-box-3">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                            <div class="text-xs md:text-sm text-slate-800">
+                                <span class="font-bold text-blue-600 mr-1.5">사건 3.</span>
+                                거래처와 ￦10,000,000 상당의 상품 매매 계약을 구두로 약속하였다. (대금 및 물품 미인도)
+                            </div>
+                            <div class="flex gap-2 shrink-0">
+                                <button onclick="checkTransaction(3, false, this)" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-white border border-slate-300 hover:bg-slate-100">회계상 거래 아님</button>
+                                <button onclick="checkTransaction(3, true, this)" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-white border border-slate-300 hover:bg-slate-100">회계상 거래 맞음</button>
+                            </div>
+                        </div>
+                        <div id="tr-desc-3" class="text-xs text-slate-600 mt-2 hidden p-2.5 rounded bg-white border"></div>
+                    </div>
+
+                    <!-- Item 4 -->
+                    <div class="p-4 border rounded-xl border-slate-200 bg-slate-50 transition" id="tr-box-4">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                            <div class="text-xs md:text-sm text-slate-800">
+                                <span class="font-bold text-blue-600 mr-1.5">사건 4.</span>
+                                은행으로부터 사업 운영자금 ￦50,000,000을 3년 만기로 대출받아 보통예금 계좌에 입금되었다.
+                            </div>
+                            <div class="flex gap-2 shrink-0">
+                                <button onclick="checkTransaction(4, false, this)" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-white border border-slate-300 hover:bg-slate-100">회계상 거래 아님</button>
+                                <button onclick="checkTransaction(4, true, this)" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-white border border-slate-300 hover:bg-slate-100">회계상 거래 맞음</button>
+                            </div>
+                        </div>
+                        <div id="tr-desc-4" class="text-xs text-slate-600 mt-2 hidden p-2.5 rounded bg-white border"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 실습 2 -->
+            <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
+                <div class="flex items-center justify-between border-b pb-3 mb-4">
+                    <div>
+                        <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+                            <i class="fa-solid fa-users-gear text-indigo-600"></i>
+                            [실습 2] 회계 정보이용자 의사결정 매칭 퀴즈
+                        </h2>
+                        <p class="text-xs text-slate-500 mt-0.5">다음 질문을 던지는 정보이용자의 유형과 가장 적합한 회계 분야를 선택하세요.</p>
+                    </div>
+                </div>
+
+                <div class="space-y-4" id="quiz-list">
+                    <!-- Q1 -->
+                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+                        <div class="text-xs md:text-sm font-semibold text-slate-800 mb-2">
+                            Q1. "우리 회사가 다음 달에 출시할 신제품 '스마트워치 B'의 목표 제조원가를 얼마로 설정해야 목표 마진 20%를 달성할 수 있을까?"
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
+                            <button onclick="checkQuiz(1, 'A', this)" class="q-btn-1 p-2.5 bg-white border rounded-lg text-left hover:border-indigo-500 transition">
+                                <strong>A.</strong> 경영자 (관리회계)
+                            </button>
+                            <button onclick="checkQuiz(1, 'B', this)" class="q-btn-1 p-2.5 bg-white border rounded-lg text-left hover:border-indigo-500 transition">
+                                <strong>B.</strong> 주식투자자 (재무회계)
+                            </button>
+                            <button onclick="checkQuiz(1, 'C', this)" class="q-btn-1 p-2.5 bg-white border rounded-lg text-left hover:border-indigo-500 transition">
+                                <strong>C.</strong> 국세청 (세무회계)
+                            </button>
+                        </div>
+                        <div id="q-feedback-1" class="hidden text-xs mt-2 p-2 rounded"></div>
+                    </div>
+
+                    <!-- Q2 -->
+                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+                        <div class="text-xs md:text-sm font-semibold text-slate-800 mb-2">
+                            Q2. "이 회사의 최근 3개년 부채비율과 영업현금흐름을 볼 때, 10억 원의 시설자금 대출을 승인해도 원리금 상환 위험이 없는가?"
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
+                            <button onclick="checkQuiz(2, 'A', this)" class="q-btn-2 p-2.5 bg-white border rounded-lg text-left hover:border-indigo-500 transition">
+                                <strong>A.</strong> 생산부서장 (관리회계)
+                            </button>
+                            <button onclick="checkQuiz(2, 'B', this)" class="q-btn-2 p-2.5 bg-white border rounded-lg text-left hover:border-indigo-500 transition">
+                                <strong>B.</strong> 주거래 은행/채권자 (재무회계)
+                            </button>
+                            <button onclick="checkQuiz(2, 'C', this)" class="q-btn-2 p-2.5 bg-white border rounded-lg text-left hover:border-indigo-500 transition">
+                                <strong>C.</strong> 일반 종업원 (세무회계)
+                            </button>
+                        </div>
+                        <div id="q-feedback-2" class="hidden text-xs mt-2 p-2 rounded"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 완료 카드 -->
+            <div class="bg-gradient-to-r from-slate-900 to-indigo-950 text-white p-6 rounded-2xl shadow text-center">
+                <h3 class="text-lg font-bold mb-1">🎉 1교시 실습 완료!</h3>
+                <p class="text-xs text-indigo-200 mb-3">회계의 본질, 거래 식별 및 정보이용자의 의사결정 체계를 성공적으로 마스터했습니다.</p>
+                <div class="inline-block bg-white/10 px-4 py-2 rounded-xl text-xs font-semibold">
+                    다음 시간: <span class="text-yellow-300">2교시 - 4대 재무제표와 상호 연계 구조 (10 Pages)</span>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-200 border-t border-slate-300 py-4 text-center text-xs text-slate-600">
+        회계원리 강의자료 | 수원대학교 경영공학대학 | Ch.01 재무제표와 회계보고시스템
+    </footer>
+
+    <!-- Interactive Script -->
+    <script>
+        let curPage = 1;
+        const totalPages = 10;
+
+        function switchMainTab(tab) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            if (tab === 'lecture') {
+                document.getElementById('tab-lecture').classList.add('active');
+                document.getElementById('section-lecture').classList.remove('hidden');
+                document.getElementById('section-practice').classList.add('hidden');
+                if (curPage === 4) setTimeout(initIMDChart, 50);
+            } else {
+                document.getElementById('tab-practice').classList.add('active');
+                document.getElementById('section-lecture').classList.add('hidden');
+                document.getElementById('section-practice').classList.remove('hidden');
+            }
+        }
+
+        function goToPage(pageNum) {
+            if (pageNum < 1 || pageNum > totalPages) return;
+            curPage = pageNum;
+            document.querySelectorAll('.slide-page').forEach(page => page.classList.remove('active'));
+            document.getElementById(`page-${curPage}`).classList.add('active');
+
+            document.querySelectorAll('.page-dot').forEach(dot => dot.classList.remove('active'));
+            document.getElementById(`dot-${curPage}`).classList.add('active');
+
+            document.getElementById('current-page-num').innerText = curPage;
+            document.getElementById('bottom-page-num').innerText = `${curPage} / ${totalPages} Pages (키보드 ← / → 방향키 지원)`;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            if (curPage === 4) {
+                setTimeout(initIMDChart, 50);
+            }
+        }
+
+        function nextPage() {
+            if (curPage < totalPages) goToPage(curPage + 1);
+            else switchMainTab('practice');
+        }
+
+        function prevPage() {
+            if (curPage > 1) goToPage(curPage - 1);
+        }
+
+        // 키보드 좌우 방향키 네비게이션
+        window.addEventListener('keydown', (e) => {
+            if (!document.getElementById('section-lecture').classList.contains('hidden')) {
+                if (e.key === 'ArrowRight') nextPage();
+                if (e.key === 'ArrowLeft') prevPage();
+            }
+        });
+
+        // 실습 채점 로직
+        const trAnswers = {
+            1: { isTr: false, exp: "<strong>정답: [회계상 거래 아님]</strong> 단순 채용 계약 체결은 노동 제공이나 급여 지급 의무가 발생하지 않아 자산·부채 변동이 없습니다." },
+            2: { isTr: true, exp: "<strong>정답: [회계상 거래 맞음]</strong> 자연재해로 원재료(자산) 소실 및 재해손실(비용)이 발생하여 장부 기록이 필수적입니다." },
+            3: { isTr: false, exp: "<strong>정답: [회계상 거래 아님]</strong> 주문이나 구두 계약은 물품 인도나 대금 지급 전까지 회계상 기록하지 않습니다." },
+            4: { isTr: true, exp: "<strong>정답: [회계상 거래 맞음]</strong> 예금(자산) 5천만원 증가와 차입금(부채) 5천만원 증가가 발생하는 대표적 거래입니다." }
+        };
+
+        function checkTransaction(id, choice, btn) {
+            const box = document.getElementById(`tr-box-${id}`);
+            const desc = document.getElementById(`tr-desc-${id}`);
+            const item = trAnswers[id];
+            
+            box.querySelectorAll('button').forEach(b => {
+                b.classList.remove('bg-emerald-600', 'bg-rose-600', 'text-white');
+                b.classList.add('bg-white');
+            });
+
+            if (choice === item.isTr) {
+                btn.classList.add('bg-emerald-600', 'text-white');
+                box.className = "p-4 border rounded-xl border-emerald-400 bg-emerald-50/50 transition";
+                desc.innerHTML = `<span class="text-emerald-700 font-bold"><i class="fa-solid fa-circle-check"></i> 정답!</span> ${item.exp}`;
+                desc.className = "text-xs mt-2 p-2.5 rounded bg-emerald-50 text-emerald-900 border border-emerald-200 block";
+            } else {
+                btn.classList.add('bg-rose-600', 'text-white');
+                box.className = "p-4 border rounded-xl border-rose-400 bg-rose-50/50 transition";
+                desc.innerHTML = `<span class="text-rose-700 font-bold"><i class="fa-solid fa-circle-xmark"></i> 오답!</span> ${item.exp}`;
+                desc.className = "text-xs mt-2 p-2.5 rounded bg-rose-50 text-rose-900 border border-rose-200 block";
+            }
+            const trDone = document.querySelectorAll('#transaction-list .block').length;
+            document.getElementById('trans-score').innerText = `진행: ${trDone} / 4`;
+        }
+
+        const quizAnswers = {
+            1: { ans: 'A', exp: "신제품 목표원가 설정 및 이익 예측은 경영자의 내부 의사결정을 위한 <strong>관리회계</strong>의 핵심 영역입니다." },
+            2: { ans: 'B', exp: "원리금 상환능력 평가는 대출을 제공하는 <strong>채권자(은행)</strong>가 공시된 재무제표(재무회계 정보)를 분석하여 수행합니다." }
+        };
+
+        function checkQuiz(qNum, choice, btn) {
+            const btns = document.querySelectorAll(`.q-btn-${qNum}`);
+            const fb = document.getElementById(`q-feedback-${qNum}`);
+            const correctAns = quizAnswers[qNum].ans;
+
+            btns.forEach(b => {
+                b.className = `q-btn-${qNum} p-2.5 bg-white border rounded-lg text-left transition`;
+            });
+
+            fb.classList.remove('hidden');
+            if (choice === correctAns) {
+                btn.classList.add('bg-emerald-100', 'border-emerald-500', 'text-emerald-900', 'font-bold');
+                fb.className = "text-xs mt-2 p-2.5 rounded bg-emerald-50 text-emerald-900 border border-emerald-200 block";
+                fb.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-600"></i> <strong>정답!</strong> ${quizAnswers[qNum].exp}`;
+            } else {
+                btn.classList.add('bg-rose-100', 'border-rose-500', 'text-rose-900');
+                fb.className = "text-xs mt-2 p-2.5 rounded bg-rose-50 text-rose-900 border border-rose-200 block";
+                fb.innerHTML = `<i class="fa-solid fa-circle-xmark text-rose-600"></i> <strong>다시 생각해보세요!</strong> ${quizAnswers[qNum].exp}`;
+            }
+        }
+
+        // Chart.js - IMD 순위 추이 그래프 렌더링
+        let imdChart = null;
+        function initIMDChart() {
+            const ctx = document.getElementById('imdRankingChart');
+            if (!ctx) return;
+            if (imdChart) {
+                imdChart.destroy();
+            }
+            imdChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['2015', '2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023', '2024', '2025', '2026'],
+                    datasets: [
+                        {
+                            label: '국가경쟁력 종합 순위',
+                            data: [25, 29, 29, 27, 28, 23, 23, 27, 28, 20, 37, 21],
+                            borderColor: '#2563eb',
+                            backgroundColor: 'rgba(37, 99, 235, 0.1)',
+                            borderWidth: 3,
+                            pointBackgroundColor: '#1d4ed8',
+                            pointRadius: 5,
+                            pointHoverRadius: 7,
+                            tension: 0.2,
+                            fill: false
+                        },
+                        {
+                            label: '회계 및 감사 투명성 순위',
+                            data: [60, 61, 63, 62, 61, 46, 37, 53, 41, 60, 60, 55],
+                            borderColor: '#e11d48',
+                            backgroundColor: 'rgba(225, 29, 72, 0.1)',
+                            borderWidth: 3,
+                            pointBackgroundColor: '#be123c',
+                            pointRadius: 6,
+                            pointHoverRadius: 8,
+                            tension: 0.2,
+                            fill: false
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        mode: 'index',
+                        intersect: false
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                font: {
+                                    family: "'Noto Sans KR', sans-serif",
+                                    weight: 'bold',
+                                    size: 12
+                                },
+                                usePointStyle: true,
+                                padding: 15
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                            titleFont: { family: "'Noto Sans KR', sans-serif", weight: 'bold' },
+                            bodyFont: { family: "'Noto Sans KR', sans-serif" },
+                            padding: 10,
+                            callbacks: {
+                                label: function(context) {
+                                    return ` ${context.dataset.label}: ${context.parsed.y}위`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            reverse: true,
+                            min: 10,
+                            max: 70,
+                            ticks: {
+                                stepSize: 10,
+                                callback: function(value) {
+                                    return value + '위';
+                                },
+                                font: { weight: 'bold' }
+                            },
+                            title: {
+                                display: true,
+                                text: '순위 (위쪽일수록 우수)',
+                                color: '#64748b',
+                                font: { size: 11, weight: 'bold' }
+                            },
+                            grid: {
+                                color: '#f1f5f9'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: '평가 연도',
+                                color: '#64748b',
+                                font: { size: 11, weight: 'bold' }
+                            },
+                            grid: {
+                                color: '#f8fafc'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // 페이지 로드 시 및 4페이지 이동 시 차트 렌더링
+        window.addEventListener('DOMContentLoaded', () => {
+            initIMDChart();
+        });
+
+        // PDF 다운로드 (인쇄 기능 연동)
+        function downloadPDF() {
+            // 강의노트 탭으로 자동 전환하여 10페이지 전체가 출력되도록 함
+            switchMainTab('lecture');
+            setTimeout(() => {
+                window.print();
+            }, 300);
+        }
+    </script>
+</body>
+</html>

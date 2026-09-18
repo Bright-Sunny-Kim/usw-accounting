@@ -1,0 +1,230 @@
+﻿<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>회계원리 강의 포털 | 수원대학교 경영공학대학</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Noto Sans KR', sans-serif; -webkit-tap-highlight-color: transparent; }
+        .glass-card { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-800 min-h-screen flex flex-col antialiased">
+
+    <!-- Top Navigation Header -->
+    <header class="bg-gradient-to-r from-blue-950 via-indigo-900 to-slate-900 text-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-5xl mx-auto px-4 py-3.5 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <div class="bg-blue-600 p-2 rounded-xl text-white shadow-md">
+                    <i class="fa-solid fa-graduation-cap text-xl"></i>
+                </div>
+                <div>
+                    <span class="text-[11px] bg-blue-500/30 text-blue-200 px-2 py-0.5 rounded font-semibold border border-blue-400/30">2026학년도 2학기</span>
+                    <h1 class="text-base sm:text-lg font-bold tracking-tight">수원대학교 경영공학대학 회계원리</h1>
+                </div>
+            </div>
+            <div class="hidden sm:flex items-center gap-2 text-xs text-slate-300">
+                <i class="fa-solid fa-mobile-screen-button text-emerald-400"></i> 모바일/태블릿/PC 최적화
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-5xl mx-auto px-4 py-6 sm:py-8 flex-1 w-full space-y-6">
+
+        <!-- 안내 배너 -->
+        <div class="bg-gradient-to-br from-indigo-900 via-blue-900 to-slate-900 text-white rounded-2xl p-5 sm:p-7 shadow-md relative overflow-hidden">
+            <div class="relative z-10 max-w-2xl">
+                <span class="bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-xs px-3 py-1 rounded-full inline-flex items-center gap-1.5 font-medium mb-3">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                    스마트 인터랙티브 강의노트
+                </span>
+                <h2 class="text-xl sm:text-2xl font-black mb-2">스마트폰과 PC에서 바로 학습하는 웹 강의실</h2>
+                <p class="text-xs sm:text-sm text-slate-300 leading-relaxed mb-4">
+                    아이폰, 갤럭시, 아이패드, 노트북 어디서나 설치 없이 웹 링크로 바로 접속하여 40분 슬라이드 노트와 10분 실습 퀴즈를 진행할 수 있습니다.
+                </p>
+                <div class="flex flex-wrap gap-2 text-xs">
+                    <span class="bg-white/10 px-3 py-1.5 rounded-lg font-medium"><i class="fa-solid fa-bolt text-yellow-400 mr-1"></i> 슬라이드 자동 넘김</span>
+                    <span class="bg-white/10 px-3 py-1.5 rounded-lg font-medium"><i class="fa-solid fa-check-double text-emerald-400 mr-1"></i> 실시간 퀴즈 자동 채점</span>
+                    <span class="bg-white/10 px-3 py-1.5 rounded-lg font-medium"><i class="fa-solid fa-chart-line text-blue-400 mr-1"></i> 인터랙티브 재무 그래프</span>
+                </div>
+            </div>
+            <div class="absolute -right-8 -bottom-8 opacity-10 text-white text-[160px] pointer-events-none">
+                <i class="fa-solid fa-calculator"></i>
+            </div>
+        </div>
+
+        <!-- 주차별 강의 목록 -->
+        <section class="space-y-6">
+
+            <!-- 1주차 / 오리엔테이션 -->
+            <div class="bg-white rounded-2xl border border-slate-200 p-5 sm:p-6 shadow-sm">
+                <div class="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
+                    <div class="flex items-center gap-2.5">
+                        <span class="bg-slate-800 text-white text-xs font-bold px-2.5 py-1 rounded-lg">1주차</span>
+                        <h3 class="text-base sm:text-lg font-bold text-slate-900">강의 소개 및 오리엔테이션</h3>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <a href="2026_02/orientation.html" class="flex items-center justify-between p-4 rounded-xl border border-slate-200 hover:border-blue-500 hover:shadow-md bg-slate-50/50 hover:bg-blue-50/40 transition group">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-lg bg-blue-100 text-blue-700 flex items-center justify-center font-bold text-sm group-hover:bg-blue-600 group-hover:text-white transition">
+                                <i class="fa-solid fa-compass"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-bold text-slate-800 group-hover:text-blue-700 transition">회계원리 오리엔테이션</h4>
+                                <p class="text-xs text-slate-500">강의 목표, 평가 기준, 16주 로드맵</p>
+                            </div>
+                        </div>
+                        <i class="fa-solid fa-chevron-right text-slate-400 group-hover:text-blue-600 group-hover:translate-x-1 transition"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- 2주차: 회계의 본질과 재무제표 체계 -->
+            <div class="bg-white rounded-2xl border border-slate-200 p-5 sm:p-6 shadow-sm">
+                <div class="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
+                    <div class="flex items-center gap-2.5">
+                        <span class="bg-blue-600 text-white text-xs font-bold px-2.5 py-1 rounded-lg">2주차</span>
+                        <h3 class="text-base sm:text-lg font-bold text-slate-900">Ch.01 재무제표와 회계보고시스템</h3>
+                    </div>
+                    <span class="text-xs text-slate-500 font-medium">3교시 완강</span>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <a href="2026_02/202602_02_01.html" class="flex flex-col justify-between p-4 rounded-xl border border-slate-200 hover:border-blue-500 hover:shadow-md bg-slate-50/50 hover:bg-blue-50/40 transition group">
+                        <div class="space-y-2 mb-3">
+                            <div class="flex justify-between items-center">
+                                <span class="text-[11px] font-bold text-blue-700 bg-blue-100 px-2 py-0.5 rounded">1교시</span>
+                                <span class="text-[11px] text-slate-400">10 슬라이드</span>
+                            </div>
+                            <h4 class="text-sm font-bold text-slate-800 group-hover:text-blue-700 transition">회계의 본질과 회계보고시스템</h4>
+                            <p class="text-xs text-slate-500 line-clamp-2">정보이용자, 경제적 거래의 식별, IMD 국가투명성 추이</p>
+                        </div>
+                        <div class="text-xs font-semibold text-blue-600 flex items-center justify-between pt-2 border-t border-slate-200/60">
+                            <span>강의노트 & 실습</span>
+                            <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition"></i>
+                        </div>
+                    </a>
+
+                    <a href="2026_02/202602_02_02.html" class="flex flex-col justify-between p-4 rounded-xl border border-slate-200 hover:border-blue-500 hover:shadow-md bg-slate-50/50 hover:bg-blue-50/40 transition group">
+                        <div class="space-y-2 mb-3">
+                            <div class="flex justify-between items-center">
+                                <span class="text-[11px] font-bold text-sky-700 bg-sky-100 px-2 py-0.5 rounded">2교시</span>
+                                <span class="text-[11px] text-slate-400">10 슬라이드</span>
+                            </div>
+                            <h4 class="text-sm font-bold text-slate-800 group-hover:text-sky-700 transition">기업의 4대 재무제표와 유기적 연계</h4>
+                            <p class="text-xs text-slate-500 line-clamp-2">재무상태표, 손익계산서, 자본변동표, 현금흐름표</p>
+                        </div>
+                        <div class="text-xs font-semibold text-sky-600 flex items-center justify-between pt-2 border-t border-slate-200/60">
+                            <span>강의노트 & 실습</span>
+                            <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition"></i>
+                        </div>
+                    </a>
+
+                    <a href="2026_02/202602_02_03.html" class="flex flex-col justify-between p-4 rounded-xl border border-slate-200 hover:border-blue-500 hover:shadow-md bg-slate-50/50 hover:bg-blue-50/40 transition group">
+                        <div class="space-y-2 mb-3">
+                            <div class="flex justify-between items-center">
+                                <span class="text-[11px] font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded">3교시</span>
+                                <span class="text-[11px] text-slate-400">10 슬라이드</span>
+                            </div>
+                            <h4 class="text-sm font-bold text-slate-800 group-hover:text-emerald-700 transition">회계기준, 감사제도 및 ROE 재무분석</h4>
+                            <p class="text-xs text-slate-500 line-clamp-2">K-IFRS/일반회계기준, 외부감사 의견, ROE/자기자본이익률</p>
+                        </div>
+                        <div class="text-xs font-semibold text-emerald-600 flex items-center justify-between pt-2 border-t border-slate-200/60">
+                            <span>강의노트 & 실습</span>
+                            <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition"></i>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- 3주차: 회계거래와 회계등식 -->
+            <div class="bg-white rounded-2xl border border-slate-200 p-5 sm:p-6 shadow-sm">
+                <div class="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
+                    <div class="flex items-center gap-2.5">
+                        <span class="bg-indigo-600 text-white text-xs font-bold px-2.5 py-1 rounded-lg">3주차</span>
+                        <h3 class="text-base sm:text-lg font-bold text-slate-900">Ch.02 회계거래와 기본·확장 회계등식</h3>
+                    </div>
+                    <span class="text-xs text-slate-500 font-medium">3교시 + 종합실습</span>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                    <a href="2026_02/202602_03_01.html" class="flex flex-col justify-between p-4 rounded-xl border border-slate-200 hover:border-indigo-500 hover:shadow-md bg-slate-50/50 hover:bg-indigo-50/40 transition group">
+                        <div class="space-y-2 mb-3">
+                            <div class="flex justify-between items-center">
+                                <span class="text-[11px] font-bold text-indigo-700 bg-indigo-100 px-2 py-0.5 rounded">1교시</span>
+                                <span class="text-[11px] text-slate-400">10 슬라이드</span>
+                            </div>
+                            <h4 class="text-sm font-bold text-slate-800 group-hover:text-indigo-700 transition">회계거래의 식별과 기본 회계등식</h4>
+                            <p class="text-xs text-slate-500 line-clamp-2">자산 = 부채 + 자본 등식과 거래 식별 원리</p>
+                        </div>
+                        <div class="text-xs font-semibold text-indigo-600 flex items-center justify-between pt-2 border-t border-slate-200/60">
+                            <span>강의노트 & 실습</span>
+                            <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition"></i>
+                        </div>
+                    </a>
+
+                    <a href="2026_02/202602_03_02.html" class="flex flex-col justify-between p-4 rounded-xl border border-slate-200 hover:border-indigo-500 hover:shadow-md bg-slate-50/50 hover:bg-indigo-50/40 transition group">
+                        <div class="space-y-2 mb-3">
+                            <div class="flex justify-between items-center">
+                                <span class="text-[11px] font-bold text-sky-700 bg-sky-100 px-2 py-0.5 rounded">2교시</span>
+                                <span class="text-[11px] text-slate-400">10 슬라이드</span>
+                            </div>
+                            <h4 class="text-sm font-bold text-slate-800 group-hover:text-sky-700 transition">수익·비용의 인식과 확장 회계등식</h4>
+                            <p class="text-xs text-slate-500 line-clamp-2">자산 = 부채 + 기초자본 + (수익 - 비용)</p>
+                        </div>
+                        <div class="text-xs font-semibold text-sky-600 flex items-center justify-between pt-2 border-t border-slate-200/60">
+                            <span>강의노트 & 실습</span>
+                            <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition"></i>
+                        </div>
+                    </a>
+
+                    <a href="2026_02/202602_03_03.html" class="flex flex-col justify-between p-4 rounded-xl border border-slate-200 hover:border-indigo-500 hover:shadow-md bg-slate-50/50 hover:bg-indigo-50/40 transition group">
+                        <div class="space-y-2 mb-3">
+                            <div class="flex justify-between items-center">
+                                <span class="text-[11px] font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded">3교시</span>
+                                <span class="text-[11px] text-slate-400">10 슬라이드</span>
+                            </div>
+                            <h4 class="text-sm font-bold text-slate-800 group-hover:text-emerald-700 transition">발생기준 vs 현금기준 & 마진율 분석</h4>
+                            <p class="text-xs text-slate-500 line-clamp-2">발생기준의 우월성 및 매출액순이익률 분석</p>
+                        </div>
+                        <div class="text-xs font-semibold text-emerald-600 flex items-center justify-between pt-2 border-t border-slate-200/60">
+                            <span>강의노트 & 실습</span>
+                            <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition"></i>
+                        </div>
+                    </a>
+
+                    <a href="2026_02/exercise_03.html" class="flex flex-col justify-between p-4 rounded-xl border border-amber-300 bg-amber-50/40 hover:border-amber-500 hover:shadow-md transition group">
+                        <div class="space-y-2 mb-3">
+                            <div class="flex justify-between items-center">
+                                <span class="text-[11px] font-bold text-amber-800 bg-amber-200 px-2 py-0.5 rounded">실습과제</span>
+                                <span class="text-[11px] text-amber-700 font-bold">인터랙티브</span>
+                            </div>
+                            <h4 class="text-sm font-bold text-amber-950 group-hover:text-amber-800 transition">3주차 종합 실습문제</h4>
+                            <p class="text-xs text-slate-600 line-clamp-2">회계등식 거래분석표 완성 및 실시간 피드백</p>
+                        </div>
+                        <div class="text-xs font-semibold text-amber-800 flex items-center justify-between pt-2 border-t border-amber-200">
+                            <span>실습실 입장</span>
+                            <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition"></i>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 py-6 border-t border-slate-800 text-center text-xs space-y-1">
+        <p class="font-semibold text-slate-300">수원대학교 경영공학대학 | 회계원리 (2026학년도 2학기)</p>
+        <p>© 2026 Dept. of Management Engineering, The University of Suwon. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>
