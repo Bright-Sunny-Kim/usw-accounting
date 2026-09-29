@@ -1,0 +1,470 @@
+﻿<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>[4주차 3차시] 전기와 총계정원장 | 수원대학교 회계원리</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Noto Sans KR', sans-serif; }
+    .slide-page { display: none; }
+    .slide-page.active { display: flex; animation: fadeIn 0.25s ease-in-out; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+    .page-btn.active { background-color: #2563eb !important; color: white !important; font-weight: bold; border-color: #1d4ed8 !important; }
+
+    @media print {
+      @page { size: A4 landscape; margin: 10mm 12mm; }
+      body { background-color: #ffffff !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; padding: 0 !important; }
+      header, .no-print, #top-nav-controller { display: none !important; }
+      main { max-width: 100% !important; padding: 0 !important; margin: 0 !important; }
+      .slide-page { display: block !important; opacity: 1 !important; page-break-after: always !important; break-after: page !important; min-height: 180mm !important; margin-bottom: 0 !important; border: 1px solid #cbd5e1 !important; border-radius: 12px !important; padding: 24px 28px !important; }
+    }
+  </style>
+</head>
+<body class="bg-slate-100 text-slate-800 antialiased min-h-screen flex flex-col justify-between">
+
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm no-print">
+    <div class="max-w-5xl mx-auto px-4 flex justify-between items-center h-12">
+      <div class="flex items-center gap-2">
+        <span class="bg-blue-900 text-white text-[11px] px-2 py-0.5 rounded-full font-bold">수원대 회계원리</span>
+        <h1 class="font-bold text-slate-800 text-xs sm:text-sm">4주차 3차시: 전기와 총계정원장</h1>
+      </div>
+      <div class="flex items-center gap-2">
+        <button onclick="window.print()" class="text-[11px] bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold px-2.5 py-1 rounded border border-slate-300 transition flex items-center gap-1">
+          <i class="fa-solid fa-print"></i> PDF/인쇄
+        </button>
+      </div>
+    </div>
+
+    <!-- 상단 1~10 퀵 버튼 -->
+    <div id="top-nav-controller" class="border-t border-slate-100 bg-slate-50/95 py-2 px-4 shadow-inner">
+      <div class="max-w-5xl mx-auto flex items-center justify-between gap-2">
+        <button onclick="prevPage()" class="px-3 py-1.5 bg-white hover:bg-slate-100 text-slate-700 text-xs font-bold rounded-lg border border-slate-300 transition flex items-center gap-1 shrink-0">
+          <i class="fa-solid fa-chevron-left text-[10px]"></i> <span class="hidden sm:inline">이전</span>
+        </button>
+        <div class="flex items-center gap-1.5 overflow-x-auto py-0.5 px-1 max-w-full">
+          <button onclick="goToPage(1)" class="page-btn active w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">1</button>
+          <button onclick="goToPage(2)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">2</button>
+          <button onclick="goToPage(3)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">3</button>
+          <button onclick="goToPage(4)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">4</button>
+          <button onclick="goToPage(5)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">5</button>
+          <button onclick="goToPage(6)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">6</button>
+          <button onclick="goToPage(7)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">7</button>
+          <button onclick="goToPage(8)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">8</button>
+          <button onclick="goToPage(9)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">9</button>
+          <button onclick="goToPage(10)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">10</button>
+        </div>
+        <button onclick="nextPage()" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-lg transition flex items-center gap-1 shrink-0">
+          <span class="hidden sm:inline">다음</span> <i class="fa-solid fa-chevron-right text-[10px]"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-1 max-w-4xl w-full mx-auto px-4 py-4 flex flex-col justify-center">
+
+    <!-- Slide 1: 표지 -->
+    <div class="slide-page active bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-1">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 01 / 10</span>
+        <span>수원대학교 경영공학대학</span>
+      </div>
+      <div class="text-center my-auto py-6">
+        <div class="inline-block p-4 bg-blue-50 text-blue-700 rounded-2xl mb-3">
+          <i class="fa-solid fa-arrows-split-up-and-left text-4xl"></i>
+        </div>
+        <span class="text-xs font-bold text-blue-700 tracking-wider block mb-1">CH.03 거래의 기록과 회계장부</span>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mb-3">3차시: 전기(Posting)와 총계정원장</h2>
+        <p class="text-slate-600 text-xs sm:text-sm max-w-lg mx-auto leading-relaxed">
+          분개장에서 총계정원장으로 옮겨 적는 절차와 오류의 유형,<br>
+          대차평균 잔액 검증표(시산표 예비단계)를 마스터합니다.
+        </p>
+      </div>
+      <div class="text-center text-xs text-slate-400 border-t pt-3">
+        상단 퀵 버튼(1~10)으로 원하는 슬라이드로 이동할 수 있습니다.
+      </div>
+    </div>
+
+    <!-- Slide 2: 학습 목표 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-2">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 02 / 10</span>
+        <span>학습 목표 (50분 설계)</span>
+      </div>
+      <div class="my-auto">
+        <h3 class="text-lg sm:text-xl font-bold text-slate-900 mb-4 flex items-center gap-2">
+          <i class="fa-solid fa-bullseye text-blue-600"></i> 3차시 핵심 학습 목표
+        </h3>
+        <div class="grid sm:grid-cols-3 gap-3.5">
+          <div class="p-4 bg-slate-50 border rounded-xl">
+            <span class="w-6 h-6 rounded bg-blue-600 text-white font-bold flex items-center justify-center text-xs mb-2">1</span>
+            <h4 class="font-bold text-slate-800 text-xs sm:text-sm mb-1">전기 4단계 마스터</h4>
+            <p class="text-xs text-slate-600 leading-relaxed">분개장 날짜, 상대계정과목, 금액을 원장으로 오기 없이 전착하는 규칙 습득</p>
+          </div>
+          <div class="p-4 bg-slate-50 border rounded-xl">
+            <span class="w-6 h-6 rounded bg-blue-600 text-white font-bold flex items-center justify-center text-xs mb-2">2</span>
+            <h4 class="font-bold text-slate-800 text-xs sm:text-sm mb-1">전기 오류 유형 파악</h4>
+            <p class="text-xs text-slate-600 leading-relaxed">대차평균으로 발견 가능한 오류 vs 시산표로 발견 불가능한 오류를 구별</p>
+          </div>
+          <div class="p-4 bg-slate-50 border rounded-xl">
+            <span class="w-6 h-6 rounded bg-blue-600 text-white font-bold flex items-center justify-center text-xs mb-2">3</span>
+            <h4 class="font-bold text-slate-800 text-xs sm:text-sm mb-1">대차평균 잔액 검증</h4>
+            <p class="text-xs text-slate-600 leading-relaxed">7대 계정 잔액 합산 $\rightarrow$ 차/대변 37,000,000원 완전 일치 실습 완성</p>
+          </div>
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3 flex justify-between">
+        <span>시간: 이론 15분 / 종합 실습 35분</span>
+        <span>Check: 총계정원장(G/L)과 시산표 연계</span>
+      </div>
+    </div>
+
+    <!-- Slide 3: 전기의 개념 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-3">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 03 / 10</span>
+        <span>이론 정리 1</span>
+      </div>
+      <div class="my-auto">
+        <h3 class="text-lg sm:text-xl font-bold text-slate-900 mb-3 flex items-center gap-2">
+          <i class="fa-solid fa-arrows-split-up-and-left text-blue-600"></i> 전기(Posting)와 총계정원장의 의의
+        </h3>
+        <p class="text-xs sm:text-sm text-slate-600 mb-4 leading-relaxed">
+          <strong>전기(Posting)</strong>란 날짜순으로 작성된 분개장의 내용을 각 계정별로 모아둔 <strong>총계정원장(General Ledger: G/L)</strong>으로 옮겨 적는 절차입니다.
+        </p>
+        <div class="grid sm:grid-cols-2 gap-3 text-xs">
+          <div class="p-3.5 bg-slate-50 border rounded-xl">
+            <strong class="text-slate-800 block mb-1">분개장 (Journal)</strong>
+            <p class="text-slate-600 leading-relaxed">• 거래 발생 일자순(연대순) 기록<br>• 거래의 전모와 인과관계 파악<br>• 원시 장부 (Book of Original Entry)</p>
+          </div>
+          <div class="p-3.5 bg-blue-50 border border-blue-200 rounded-xl">
+            <strong class="text-blue-900 block mb-1">총계정원장 (General Ledger)</strong>
+            <p class="text-slate-600 leading-relaxed">• 계정과목별 집계 기록<br>• 특정 계정의 현재 잔액 즉시 파악<br>• 결산 및 재무제표 작성의 직전 기초</p>
+          </div>
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3">
+        전기 과정에서 누락이나 오기가 발생하지 않도록 주의
+      </div>
+    </div>
+
+    <!-- Slide 4: 전기의 4단계 절차 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-4">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 04 / 10</span>
+        <span>이론 정리 2</span>
+      </div>
+      <div class="my-auto">
+        <h3 class="text-lg sm:text-xl font-bold text-slate-900 mb-3 flex items-center gap-2">
+          <i class="fa-solid fa-list-ol text-blue-600"></i> 전기의 4단계 기입 요령
+        </h3>
+        <div class="space-y-2 text-xs">
+          <div class="p-2.5 bg-blue-50/50 border border-blue-200 rounded-lg">
+            <strong class="text-blue-900">1. 차변 계정 찾아가기:</strong> 분개의 차변 계정과목의 원장을 펼친다.
+          </div>
+          <div class="p-2.5 bg-blue-50/50 border border-blue-200 rounded-lg">
+            <strong class="text-blue-900">2. 차변(왼쪽)에 기입:</strong> 날짜, <strong>상대 계정과목명(적요)</strong>, 금액을 차변에 적는다.
+          </div>
+          <div class="p-2.5 bg-rose-50/50 border border-rose-200 rounded-lg">
+            <strong class="text-rose-900">3. 대변 계정 찾아가기:</strong> 분개의 대변 계정과목의 원장을 펼친다.
+          </div>
+          <div class="p-2.5 bg-rose-50/50 border border-rose-200 rounded-lg">
+            <strong class="text-rose-900">4. 대변(오른쪽)에 기입:</strong> 날짜, <strong>상대 계정과목명(적요)</strong>, 금액을 대변에 적는다.
+          </div>
+        </div>
+        <p class="text-[11px] text-slate-500 mt-2 bg-slate-100 p-2 rounded">
+          💡 <strong>상대 계정과목명 기입 이유:</strong> 나중에 원장만 보고도 돈이 어디서 들어왔고 나갔는지 원인을 추적하기 위함입니다.
+        </p>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3">
+        복합분개로 상대 계정이 2개 이상일 땐 '제좌(諸座)'라고 적음
+      </div>
+    </div>
+
+    <!-- Slide 5: 전기의 오류 유형 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-5">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 05 / 10</span>
+        <span>심화 이론</span>
+      </div>
+      <div class="my-auto">
+        <h3 class="text-lg sm:text-xl font-bold text-slate-900 mb-3 flex items-center gap-2">
+          <i class="fa-solid fa-triangle-exclamation text-blue-600"></i> 전기의 5대 오류와 발견 가능성
+        </h3>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs border-collapse">
+            <thead>
+              <tr class="bg-slate-100 border-b">
+                <th class="p-2">오류 유형</th>
+                <th class="p-2">구체적 사례</th>
+                <th class="p-2">대차평균 발견 여부</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100">
+              <tr>
+                <td class="p-2 font-bold text-slate-800">한쪽 전기 누락</td>
+                <td class="p-2 text-slate-600">차변은 적고 대변 전기를 빠뜨림</td>
+                <td class="p-2 font-bold text-emerald-600">발견 가능 (불일치)</td>
+              </tr>
+              <tr>
+                <td class="p-2 font-bold text-slate-800">반대 기입</td>
+                <td class="p-2 text-slate-600">대변에 적을 것을 차변에 잘못 적음</td>
+                <td class="p-2 font-bold text-emerald-600">발견 가능 (2배 차이)</td>
+              </tr>
+              <tr>
+                <td class="p-2 font-bold text-slate-800">금액 오기</td>
+                <td class="p-2 text-slate-600">차변엔 100만 원, 대변엔 10만 원 전착</td>
+                <td class="p-2 font-bold text-emerald-600">발견 가능 (차액 발생)</td>
+              </tr>
+              <tr class="bg-rose-50/50">
+                <td class="p-2 font-bold text-rose-800">거래 전체 누락</td>
+                <td class="p-2 text-slate-600">분개와 전기를 아예 통째로 누락함</td>
+                <td class="p-2 font-bold text-rose-600">발견 불가능! (일치)</td>
+              </tr>
+              <tr class="bg-rose-50/50">
+                <td class="p-2 font-bold text-rose-800">계정과목 착오</td>
+                <td class="p-2 text-slate-600">비품 차변에 적을 것을 소모품비에 적음</td>
+                <td class="p-2 font-bold text-rose-600">발견 불가능! (일치)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3">
+        시산표(대차평균)의 한계를 인지하는 것이 핵심
+      </div>
+    </div>
+
+    <!-- Slide 6: [종합 실습 1] 5대 거래 분개 총괄 리뷰 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-6">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded border border-emerald-200">SLIDE 06 / 10 · 실습 1</span>
+        <span>종합 실습</span>
+      </div>
+      <div class="my-auto">
+        <h3 class="text-lg sm:text-xl font-bold text-slate-900 mb-2 flex items-center gap-2">
+          <i class="fa-solid fa-list-check text-emerald-600"></i> [종합 실습] 2차시 5대 거래 분개 총정리
+        </h3>
+        <p class="text-xs text-slate-600 mb-2">이 5가지 분개를 원장으로 전착(Posting)하겠습니다:</p>
+        <div class="space-y-1.5 text-[11px] font-mono bg-slate-50 p-2.5 rounded-lg border">
+          <div>① 3/1: (차) 보통예금 20,000,000 / (대) 자본금 20,000,000</div>
+          <div>② 3/4: (차) 보통예금 10,000,000 / (대) 단기차입금 10,000,000</div>
+          <div>③ 3/10: (차) 비품 5,000,000 / (대) 보통예금 2,000,000, 미지급금 3,000,000</div>
+          <div>④ 3/18: (차) 보통예금 1,000,000, 매출채권 3,000,000 / (대) 용역수익 4,000,000</div>
+          <div>⑤ 3/25: (차) 임차료 1,200,000, 수도광열비 200,000 / (대) 보통예금 1,400,000</div>
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3">
+        전기 시작 전 분개 대차 일치 여부 확인 필수
+      </div>
+    </div>
+
+    <!-- Slide 7: [종합 실습 2] 자산 계정 T계정 전기 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-7">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded border border-emerald-200">SLIDE 07 / 10 · 실습 2</span>
+        <span>원장 전기</span>
+      </div>
+      <div class="my-auto">
+        <h3 class="text-lg sm:text-xl font-bold text-slate-900 mb-2 flex items-center gap-2">
+          <i class="fa-solid fa-table text-emerald-600"></i> 자산 계정 T계정 원장 전기 결과
+        </h3>
+        <div class="grid sm:grid-cols-2 gap-3 text-xs">
+          <!-- 보통예금 -->
+          <div class="border rounded-xl p-2.5 bg-white">
+            <div class="text-center font-bold text-blue-900 border-b pb-1 mb-1 text-xs">[ 보통예금 (자산) ]</div>
+            <div class="grid grid-cols-2 text-[11px] min-h-[70px]">
+              <div class="border-r pr-1.5 space-y-0.5">
+                <div class="flex justify-between"><span>3/1 자본금</span><span>20,000,000</span></div>
+                <div class="flex justify-between"><span>3/4 차입금</span><span>10,000,000</span></div>
+                <div class="flex justify-between"><span>3/18 수익</span><span>1,000,000</span></div>
+              </div>
+              <div class="pl-1.5 space-y-0.5">
+                <div class="flex justify-between"><span>3/10 비품</span><span>2,000,000</span></div>
+                <div class="flex justify-between"><span>3/25 비용</span><span>1,400,000</span></div>
+              </div>
+            </div>
+            <div class="bg-blue-50 text-blue-900 font-bold p-1 rounded mt-1 text-[11px] text-center">차변 잔액: 27,600,000원</div>
+          </div>
+          <!-- 비품 & 매출채권 -->
+          <div class="space-y-2">
+            <div class="border rounded-xl p-2 bg-white">
+              <div class="text-center font-bold text-blue-900 border-b pb-1 text-xs">[ 매출채권 (자산) ]</div>
+              <div class="text-[11px] py-1 flex justify-between"><span>3/18 용역수익</span><span class="font-bold">3,000,000원 (차변잔액)</span></div>
+            </div>
+            <div class="border rounded-xl p-2 bg-white">
+              <div class="text-center font-bold text-blue-900 border-b pb-1 text-xs">[ 비품 (자산) ]</div>
+              <div class="text-[11px] py-1 flex justify-between"><span>3/10 예금/미지급</span><span class="font-bold">5,000,000원 (차변잔액)</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3">
+        자산 계정 잔액 합계 = 27,600,000 + 3,000,000 + 5,000,000 = 35,600,000원
+      </div>
+    </div>
+
+    <!-- Slide 8: [종합 실습 3] 부채/자본/손익 원장 전기 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-8">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded border border-emerald-200">SLIDE 08 / 10 · 실습 3</span>
+        <span>원장 전기</span>
+      </div>
+      <div class="my-auto">
+        <h3 class="text-lg sm:text-xl font-bold text-slate-900 mb-2 flex items-center gap-2">
+          <i class="fa-solid fa-table text-emerald-600"></i> 부채·자본·손익 계정 원장 잔액 마감
+        </h3>
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs">
+          <div class="p-2 border rounded-lg bg-white">
+            <span class="font-bold text-rose-800 block text-[11px]">단기차입금 (부채)</span>
+            <div class="text-right text-xs font-bold text-slate-800 mt-1">대변 10,000,000</div>
+          </div>
+          <div class="p-2 border rounded-lg bg-white">
+            <span class="font-bold text-rose-800 block text-[11px]">미지급금 (부채)</span>
+            <div class="text-right text-xs font-bold text-slate-800 mt-1">대변 3,000,000</div>
+          </div>
+          <div class="p-2 border rounded-lg bg-white">
+            <span class="font-bold text-purple-800 block text-[11px]">자본금 (자본)</span>
+            <div class="text-right text-xs font-bold text-slate-800 mt-1">대변 20,000,000</div>
+          </div>
+          <div class="p-2 border rounded-lg bg-white">
+            <span class="font-bold text-emerald-800 block text-[11px]">용역수익 (수익)</span>
+            <div class="text-right text-xs font-bold text-slate-800 mt-1">대변 4,000,000</div>
+          </div>
+          <div class="p-2 border rounded-lg bg-white">
+            <span class="font-bold text-amber-800 block text-[11px]">임차료 (비용)</span>
+            <div class="text-right text-xs font-bold text-slate-800 mt-1">차변 1,200,000</div>
+          </div>
+          <div class="p-2 border rounded-lg bg-white">
+            <span class="font-bold text-amber-800 block text-[11px]">수도광열비 (비용)</span>
+            <div class="text-right text-xs font-bold text-slate-800 mt-1">차변 200,000</div>
+          </div>
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3">
+        모든 계정의 잔액을 모아 일치 여부를 검증할 준비 완료
+      </div>
+    </div>
+
+    <!-- Slide 9: 대차평균 잔액 검증표 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-9">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 09 / 10</span>
+        <span>검증표</span>
+      </div>
+      <div class="my-auto">
+        <h3 class="text-lg sm:text-xl font-bold text-slate-900 mb-2 flex items-center gap-2">
+          <i class="fa-solid fa-scale-balanced text-blue-600"></i> 대차평균 잔액 검증표 (시산표 예비단계)
+        </h3>
+        <div class="overflow-x-auto">
+          <table class="w-full text-center text-xs border-collapse">
+            <thead>
+              <tr class="bg-slate-100 border-b">
+                <th class="p-1.5">계정과목</th><th class="p-1.5 text-blue-700">차변 잔액 (Debit)</th><th class="p-1.5 text-rose-700">대변 잔액 (Credit)</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100">
+              <tr><td>보통예금</td><td>27,600,000</td><td>-</td></tr>
+              <tr><td>매출채권</td><td>3,000,000</td><td>-</td></tr>
+              <tr><td>비품</td><td>5,000,000</td><td>-</td></tr>
+              <tr><td>미지급금 / 단기차입금</td><td>-</td><td>13,000,000</td></tr>
+              <tr><td>자본금</td><td>-</td><td>20,000,000</td></tr>
+              <tr><td>용역수익</td><td>-</td><td>4,000,000</td></tr>
+              <tr><td>비용(임차+광열)</td><td>1,400,000</td><td>-</td></tr>
+              <tr class="bg-blue-50 font-bold">
+                <td>합계 (Total)</td>
+                <td class="text-blue-700 font-extrabold">37,000,000원</td>
+                <td class="text-rose-700 font-extrabold">37,000,000원</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="mt-2 p-2 bg-emerald-50 border border-emerald-200 rounded text-center text-xs font-bold text-emerald-800">
+          ✅ 검증 완료: 37,000,000원으로 완벽 일치! 이것이 바로 '수정전 시산표'입니다.
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3">
+        다음 5주차: 시산표(Trial Balance)와 결산 수정분개
+      </div>
+    </div>
+
+    <!-- Slide 10: 3차시 퀴즈 및 주차 마무리 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-10">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded border border-emerald-200">SLIDE 10 / 10 · 퀴즈</span>
+        <span>4주차 강의 종료</span>
+      </div>
+      <div class="my-auto">
+        <h3 class="text-base sm:text-lg font-bold text-slate-900 mb-2 flex items-center gap-2">
+          <i class="fa-solid fa-circle-question text-emerald-600"></i> [자가진단 퀴즈]
+        </h3>
+        <div class="bg-slate-50 p-4 rounded-xl border mb-3">
+          <p class="text-xs sm:text-sm font-bold text-slate-800 mb-2">
+            Q. 다음 중 대차평균의 원리(시산표)로 발견할 수 <u>없는</u> 오류는?
+          </p>
+          <div class="space-y-1.5">
+            <button onclick="checkQuiz(1, 'A', this)" class="q-btn-1 w-full text-left p-2 bg-white border rounded text-xs hover:bg-slate-100 transition">A) 차변만 전기하고 대변 전기를 빠뜨린 경우</button>
+            <button onclick="checkQuiz(1, 'B', this)" class="q-btn-1 w-full text-left p-2 bg-white border rounded text-xs hover:bg-slate-100 transition">B) 비품 계정 대신 소모품비 계정 차변에 잘못 전착한 경우</button>
+            <button onclick="checkQuiz(1, 'C', this)" class="q-btn-1 w-full text-left p-2 bg-white border rounded text-xs hover:bg-slate-100 transition">C) 대변에 적어야 할 금액을 차변에 잘못 전착한 경우</button>
+          </div>
+          <div id="q-feedback-1" class="hidden mt-2 p-2 rounded text-xs"></div>
+        </div>
+        <div class="p-3 bg-emerald-50 border border-emerald-100 rounded-xl text-center text-xs">
+          🎉 4주차 전체 정규 강의를 마쳤습니다! <strong>[exercise_04.html]</strong>에서 실습과제를 풀어보세요.
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3 flex justify-between">
+        <a href="202602_04_02.html" class="text-slate-500 hover:underline">← 2차시 복습</a>
+        <a href="exercise_04.html" class="text-blue-600 font-bold hover:underline">4주차 실습과제 풀기 →</a>
+      </div>
+    </div>
+
+  </main>
+
+  <footer class="text-center py-3 text-slate-400 text-xs border-t bg-white no-print">
+    수원대학교 경영공학대학 회계원리 © 2026
+  </footer>
+
+  <script>
+    let currentPage = 1;
+    const totalPages = 10;
+    function goToPage(page) {
+      if (page < 1 || page > totalPages) return;
+      document.querySelectorAll('.slide-page').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.page-btn').forEach(d => d.classList.remove('active'));
+      const target = document.getElementById(`page-${page}`);
+      if (target) target.classList.add('active');
+      const btns = document.querySelectorAll('.page-btn');
+      if (btns[page - 1]) btns[page - 1].classList.add('active');
+      currentPage = page;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    function nextPage() { if (currentPage < totalPages) goToPage(currentPage + 1); }
+    function prevPage() { if (currentPage > 1) goToPage(currentPage - 1); }
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === 'PageDown') nextPage();
+      if (e.key === 'ArrowLeft' || e.key === 'PageUp') prevPage();
+    });
+
+    const quizAnswers = { 1: { ans: 'B', exp: '계정과목을 잘못 기입했더라도 차변과 대변에 동일한 금액이 적혔으므로 대차평균은 일치하여 시산표로 적발할 수 없습니다.' } };
+    function checkQuiz(qNum, choice, btn) {
+      const btns = document.querySelectorAll(`.q-btn-${qNum}`);
+      const fb = document.getElementById(`q-feedback-${qNum}`);
+      btns.forEach(b => { b.className = `q-btn-${qNum} w-full text-left p-2 bg-white border rounded text-xs transition`; });
+      fb.classList.remove('hidden');
+      if (choice === quizAnswers[qNum].ans) {
+        btn.classList.add('bg-emerald-100', 'border-emerald-500', 'text-emerald-900', 'font-bold');
+        fb.className = "text-xs mt-2 p-2 rounded bg-emerald-50 text-emerald-900 border border-emerald-200 block";
+        fb.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-600 mr-1"></i> <strong>정답입니다!</strong> ${quizAnswers[qNum].exp}`;
+      } else {
+        btn.classList.add('bg-rose-100', 'border-rose-500', 'text-rose-900');
+        fb.className = "text-xs mt-2 p-2 rounded bg-rose-50 text-rose-900 border border-rose-200 block";
+        fb.innerHTML = `<i class="fa-solid fa-circle-xmark text-rose-600 mr-1"></i> <strong>오답입니다!</strong> ${quizAnswers[qNum].exp}`;
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,91 +1,812 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>3주차 2차시 - 분개와 분개장 | 수원대학교 회계원리</title>
-  <style>
-    :root { --primary: #003876; --secondary: #1e70bf; --bg: #f8fafc; --card-bg: #ffffff; --text: #1e293b; --muted: #64748b; --border: #e2e8f0; }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; background-color: var(--bg); color: var(--text); line-height: 1.65; padding-bottom: 60px; -webkit-font-smoothing: antialiased; }
-    header { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; padding: 24px 16px; text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-    .badge { display: inline-block; background: rgba(255,255,255,0.2); padding: 4px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; margin-bottom: 8px; }
-    h1 { font-size: 1.5rem; font-weight: 700; margin-bottom: 6px; }
-    .subtitle { font-size: 0.95rem; opacity: 0.9; }
-    .nav-bar { display: flex; overflow-x: auto; background: white; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; -webkit-overflow-scrolling: touch; }
-    .nav-bar a { flex: 1; min-width: 85px; padding: 12px 8px; text-align: center; text-decoration: none; color: var(--muted); font-size: 0.85rem; font-weight: 600; border-bottom: 3px solid transparent; white-space: nowrap; }
-    .nav-bar a.active { color: var(--primary); border-bottom-color: var(--primary); }
-    .container { max-width: 800px; margin: 20px auto; padding: 0 16px; }
-    .card { background: var(--card-bg); border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); border: 1px solid var(--border); }
-    h2 { font-size: 1.25rem; color: var(--primary); margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid #edf2f7; }
-    p, li { font-size: 0.95rem; margin-bottom: 8px; word-break: keep-all; }
-    .step-box { background: #f8fafc; border-left: 4px solid var(--secondary); padding: 12px 14px; margin: 10px 0; border-radius: 4px; font-size: 0.92rem; }
-    .journal-box { background: #f1f5f9; border-radius: 8px; padding: 14px; margin: 12px 0; border: 1px solid #cbd5e1; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
-    .journal-entry { display: flex; justify-content: space-between; padding: 4px 0; font-size: 0.95rem; }
-    .debit-text { color: #0369a1; font-weight: 600; }
-    .credit-text { color: #b91c1c; font-weight: 600; padding-left: 20px; }
-    .btn-group { display: flex; justify-content: space-between; margin-top: 24px; gap: 12px; }
-    .btn { display: inline-block; flex: 1; padding: 12px; text-align: center; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 0.9rem; }
-    .btn-next { background: var(--primary); color: white; }
-    .btn-prev { background: #e2e8f0; color: var(--text); }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[2교시] 수익·비용의 인식과 확장 회계등식 | 회계원리</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Google Fonts: Noto Sans KR -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Noto Sans KR', sans-serif; }
+        .tab-btn.active { border-bottom: 3px solid #0284c7; color: #0369a1; font-weight: 700; }
+        .slide-page { display: none; }
+        .slide-page.active { display: block; animation: fadeIn 0.3s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+        .page-dot.active { background-color: #0284c7; color: white; font-weight: bold; }
+
+        /* PDF 인쇄 및 다운로드 최적화 스타일 */
+        @media print {
+            @page {
+                size: A4 landscape;
+                margin: 10mm 12mm;
+            }
+            body {
+                background-color: #ffffff !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+                padding: 0 !important;
+            }
+            header, .sticky, #section-practice, .no-print, #page-nav-controller {
+                display: none !important;
+            }
+            main {
+                max-width: 100% !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+            #section-lecture {
+                display: block !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                space-y: 0 !important;
+            }
+            .slide-page {
+                display: block !important;
+                opacity: 1 !important;
+                page-break-after: always !important;
+                break-after: page !important;
+                page-break-inside: avoid !important;
+                break-inside: avoid !important;
+                min-height: 180mm !important;
+                margin-bottom: 0 !important;
+                border: 1px solid #cbd5e1 !important;
+                box-shadow: none !important;
+                border-radius: 12px !important;
+                padding: 24px 28px !important;
+            }
+            .slide-page:last-child {
+                page-break-after: auto !important;
+                break-after: auto !important;
+            }
+        }
+    </style>
 </head>
-<body>
-  <header>
-    <span class="badge">수원대학교 회계원리 3주차</span>
-    <h1>Ch.03 거래의 기록과 회계장부</h1>
-    <p class="subtitle">2차시: 분개(Journalizing)와 분개장</p>
-  </header>
-  <nav class="nav-bar">
-    <a href="../index.html">홈</a>
-    <a href="202602_03_01.html">1차시: 계정</a>
-    <a href="202602_03_02.html" class="active">2차시: 분개</a>
-    <a href="202602_03_03.html">3차시: 전기</a>
-    <a href="exercise_03.html">연습문제</a>
-  </nav>
-  <div class="container">
-    <div class="card">
-      <h2>📝 1. 분개(Journal Entry)의 개념</h2>
-      <p><strong>분개(Journalizing)</strong>란 거래 발생 시 어떤 계정과목의 차변과 대변에 얼마의 금액으로 기록할지 결정하는 절차입니다.</p>
-      <div class="step-box">
-        <strong>분개의 3단계 절차:</strong><br>
-        1. <strong>거래 분석:</strong> 관련 계정과목 식별<br>
-        2. <strong>증감 판별:</strong> 거래의 8요소에 따라 차변/대변 결정<br>
-        3. <strong>금액 기록:</strong> 차변 합계 = 대변 합계 확인
-      </div>
+<body class="bg-slate-100 text-slate-800 min-h-screen flex flex-col">
+
+    <!-- Top Header -->
+    <header class="bg-sky-950 text-white shadow-md sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 py-2.5 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <div class="bg-sky-500 p-2 rounded-lg text-white shadow">
+                    <i class="fa-solid fa-chart-line text-lg"></i>
+                </div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-[11px] bg-sky-800 text-sky-200 px-2 py-0.5 rounded font-semibold">2교시</span>
+                        <span class="text-xs text-slate-300">수원대학교 경영공학대학 | 회계원리 (3주차)</span>
+                    </div>
+                    <h1 class="text-base md:text-lg font-bold">Ch.02 수익·비용의 인식과 확장 회계등식, 재무제표 연계</h1>
+                </div>
+            </div>
+            <div class="flex items-center gap-2">
+                <button onclick="downloadPDF()" class="bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold px-3 py-1.5 rounded-lg shadow transition flex items-center gap-1.5 cursor-pointer">
+                    <i class="fa-solid fa-file-pdf text-sm"></i> PDF 다운로드
+                </button>
+                <span class="hidden sm:flex bg-sky-500/20 text-sky-300 border border-sky-500/40 text-xs px-3 py-1 rounded-full items-center gap-1.5 font-medium">
+                    <span class="w-2 h-2 rounded-full bg-sky-400 animate-pulse"></span>
+                    40분 강의 (10 Pages) + 10분 실습
+                </span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Tab Navigation -->
+    <div class="bg-white border-b border-slate-200 shadow-sm sticky top-[57px] z-40 no-print">
+        <div class="max-w-6xl mx-auto px-4 flex justify-between items-center">
+            <div class="flex space-x-4">
+                <button onclick="switchMainTab('lecture')" id="tab-lecture" class="tab-btn active py-3 px-3 text-sm md:text-base font-semibold flex items-center gap-2 text-slate-600 hover:text-sky-600 transition">
+                    <i class="fa-solid fa-chalkboard-user"></i> [40분] 2교시 강의노트 (10 Pages)
+                </button>
+                <button onclick="switchMainTab('practice')" id="tab-practice" class="tab-btn py-3 px-3 text-sm md:text-base font-semibold flex items-center gap-2 text-slate-600 hover:text-sky-600 transition">
+                    <i class="fa-solid fa-laptop-code"></i> [10분] 인터랙티브 실습실
+                </button>
+            </div>
+            <div class="flex items-center gap-3">
+                <button onclick="downloadPDF()" class="hidden md:flex text-xs bg-slate-100 hover:bg-rose-50 text-slate-700 hover:text-rose-700 border border-slate-300 hover:border-rose-300 font-bold px-2.5 py-1 rounded-md transition items-center gap-1.5 cursor-pointer">
+                    <i class="fa-solid fa-file-pdf text-rose-600"></i> PDF 저장
+                </button>
+                <div id="lecture-page-indicator" class="hidden md:flex items-center gap-1 text-xs font-medium text-slate-500">
+                    <span class="text-sky-700 font-bold" id="current-page-num">1</span> / 10 페이지
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="card">
-      <h2>💡 2. 대표 거래 분개 예제</h2>
-      <p><strong>예제 1. 출자 및 설립:</strong> 주주가 현금 10,000,000원을 출자하다.</p>
-      <div class="journal-box">
-        <div class="journal-entry"><span class="debit-text">(차) 현금 10,000,000 [자산 증가]</span></div>
-        <div class="journal-entry"><span></span><span class="credit-text">(대) 자본금 10,000,000 [자본 증가]</span></div>
-      </div>
-      <p style="margin-top:16px;"><strong>예제 2. 자금 차입:</strong> 은행에서 5,000,000원을 단기 차입하다.</p>
-      <div class="journal-box">
-        <div class="journal-entry"><span class="debit-text">(차) 현금 5,000,000 [자산 증가]</span></div>
-        <div class="journal-entry"><span></span><span class="credit-text">(대) 단기차입금 5,000,000 [부채 증가]</span></div>
-      </div>
-      <p style="margin-top:16px;"><strong>예제 3. 비품 구입:</strong> 컴퓨터를 현금 2,000,000원에 구매하다.</p>
-      <div class="journal-box">
-        <div class="journal-entry"><span class="debit-text">(차) 비품 2,000,000 [자산 증가]</span></div>
-        <div class="journal-entry"><span></span><span class="credit-text">(대) 현금 2,000,000 [자산 감소]</span></div>
-      </div>
-      <p style="margin-top:16px;"><strong>예제 4. 수익 발생:</strong> 용역비 3,000,000원을 현금으로 받다.</p>
-      <div class="journal-box">
-        <div class="journal-entry"><span class="debit-text">(차) 현금 3,000,000 [자산 증가]</span></div>
-        <div class="journal-entry"><span></span><span class="credit-text">(대) 용역수익 3,000,000 [수익 발생]</span></div>
-      </div>
-      <p style="margin-top:16px;"><strong>예제 5. 비용 지급:</strong> 임차료 1,000,000원을 현금 지급하다.</p>
-      <div class="journal-box">
-        <div class="journal-entry"><span class="debit-text">(차) 임차료 1,000,000 [비용 발생]</span></div>
-        <div class="journal-entry"><span></span><span class="credit-text">(대) 현금 1,000,000 [자산 감소]</span></div>
-      </div>
-    </div>
-    <div class="btn-group">
-      <a href="202602_03_01.html" class="btn btn-prev">← 1차시 복습</a>
-      <a href="202602_03_03.html" class="btn btn-next">3차시 전기 학습하기 →</a>
-    </div>
-  </div>
+
+    <!-- Main Container -->
+    <main class="max-w-6xl mx-auto px-4 py-6 flex-1 w-full">
+
+        <!-- ========================================================================= -->
+        <!-- TAB 1: 40분 강의 (10 Pages 슬라이드 뷰어) -->
+        <!-- ========================================================================= -->
+        <section id="section-lecture" class="space-y-4">
+
+            <!-- Page Navigation Controller -->
+            <div id="page-nav-controller" class="bg-white rounded-xl p-3 border border-slate-200 shadow-sm flex flex-wrap justify-between items-center gap-3 no-print">
+                <div class="flex items-center gap-2">
+                    <button onclick="prevPage()" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-bold transition flex items-center gap-1">
+                        <i class="fa-solid fa-chevron-left"></i> 이전
+                    </button>
+                    <button onclick="nextPage()" class="px-3 py-1.5 bg-sky-600 hover:bg-sky-700 text-white rounded-lg text-xs font-bold transition flex items-center gap-1 shadow-sm">
+                        다음 <i class="fa-solid fa-chevron-right"></i>
+                    </button>
+                </div>
+
+                <!-- Page Dots/Numbers -->
+                <div class="flex flex-wrap gap-1.5 items-center text-xs">
+                    <button onclick="goToPage(1)" class="page-dot active w-7 h-7 rounded-lg border border-slate-200 hover:bg-sky-50 flex items-center justify-center transition" id="dot-1">1</button>
+                    <button onclick="goToPage(2)" class="page-dot w-7 h-7 rounded-lg border border-slate-200 hover:bg-sky-50 flex items-center justify-center transition" id="dot-2">2</button>
+                    <button onclick="goToPage(3)" class="page-dot w-7 h-7 rounded-lg border border-slate-200 hover:bg-sky-50 flex items-center justify-center transition" id="dot-3">3</button>
+                    <button onclick="goToPage(4)" class="page-dot w-7 h-7 rounded-lg border border-slate-200 hover:bg-sky-50 flex items-center justify-center transition" id="dot-4">4</button>
+                    <button onclick="goToPage(5)" class="page-dot w-7 h-7 rounded-lg border border-slate-200 hover:bg-sky-50 flex items-center justify-center transition" id="dot-5">5</button>
+                    <button onclick="goToPage(6)" class="page-dot w-7 h-7 rounded-lg border border-slate-200 hover:bg-sky-50 flex items-center justify-center transition" id="dot-6">6</button>
+                    <button onclick="goToPage(7)" class="page-dot w-7 h-7 rounded-lg border border-slate-200 hover:bg-sky-50 flex items-center justify-center transition" id="dot-7">7</button>
+                    <button onclick="goToPage(8)" class="page-dot w-7 h-7 rounded-lg border border-slate-200 hover:bg-sky-50 flex items-center justify-center transition" id="dot-8">8</button>
+                    <button onclick="goToPage(9)" class="page-dot w-7 h-7 rounded-lg border border-slate-200 hover:bg-sky-50 flex items-center justify-center transition" id="dot-9">9</button>
+                    <button onclick="goToPage(10)" class="page-dot w-7 h-7 rounded-lg border border-slate-200 hover:bg-sky-50 flex items-center justify-center transition" id="dot-10">10</button>
+                </div>
+            </div>
+
+            <!-- SLIDE 1 / 10 -->
+            <div class="slide-page active bg-white rounded-2xl p-6 md:p-8 border border-slate-200 shadow-sm" id="page-1">
+                <div class="flex items-center justify-between border-b pb-4 mb-6">
+                    <span class="text-xs font-bold uppercase tracking-wider text-sky-600 bg-sky-50 px-3 py-1 rounded-full">Page 01 / 10 • 2교시 개요</span>
+                    <span class="text-xs text-slate-400">Ch.02 수익·비용과 회계등식 (Slide 13)</span>
+                </div>
+                <h2 class="text-2xl font-extrabold text-slate-900 mb-4">2교시 학습 목표 및 강의 로드맵</h2>
+                <p class="text-slate-600 text-sm md:text-base leading-relaxed mb-6">
+                    기업이 본업 활동을 통해 돈을 벌고(수익), 돈을 쓰는(비용) 과정은 재무상태표의 <strong>'자본(이익잉여금)'</strong>에 누적적으로 반영됩니다. 2교시에서는 <strong>확장 회계등식</strong>의 도출 과정과 <strong>손익계산서 → 자본변동표 → 재무상태표</strong>의 유기적 연계 메커니즘을 마스터합니다.
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="p-4 bg-sky-50/70 rounded-xl border border-sky-100">
+                        <div class="font-bold text-sky-900 flex items-center gap-2 mb-2 text-sm">
+                            <i class="fa-solid fa-bullseye text-sky-600"></i> 2교시 핵심 학습 목표
+                        </div>
+                        <ul class="text-xs md:text-sm text-slate-700 space-y-2 list-disc list-inside">
+                            <li><strong>이익잉여금(Retained Earnings)</strong>의 발생과 배당금 처리 메커니즘 이해</li>
+                            <li><strong>확장 회계등식</strong> [자산 = 부채 + 자본금 + 수익 - 비용 - 배당금]의 원리 체득</li>
+                            <li>글로벌세탁(주) 9월 18일~30일 영업거래의 등식 변화 분석</li>
+                            <li><strong>손익계산서와 자본변동표 및 재무상태표</strong>의 상호 수치 연결 관계 규명</li>
+                        </ul>
+                    </div>
+                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                        <div class="font-bold text-slate-900 flex items-center gap-2 mb-2 text-sm">
+                            <i class="fa-solid fa-clock text-sky-600"></i> 2교시 시간 계획 (50분)
+                        </div>
+                        <div class="space-y-2 text-xs md:text-sm text-slate-600">
+                            <div class="flex justify-between border-b pb-1"><span>1~10분: 이익잉여금과 확장 회계등식 개념</span><span class="font-semibold text-slate-800">Page 1 ~ 3</span></div>
+                            <div class="flex justify-between border-b pb-1"><span>11~25분: 글로벌세탁 영업/배당 거래와 중간 연계</span><span class="font-semibold text-slate-800">Page 4 ~ 8</span></div>
+                            <div class="flex justify-between border-b pb-1"><span>26~40분: 외상매출, 기말비용 반영과 등식 종합</span><span class="font-semibold text-slate-800">Page 9 ~ 10</span></div>
+                            <div class="flex justify-between text-sky-600 font-bold pt-1"><span>41~50분: 인터랙티브 등식 & 재무제표 실습</span><span>실습 탭</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 2 / 10 -->
+            <div class="slide-page bg-white rounded-2xl p-6 md:p-8 border border-slate-200 shadow-sm" id="page-2">
+                <div class="flex items-center justify-between border-b pb-4 mb-6">
+                    <span class="text-xs font-bold uppercase tracking-wider text-sky-600 bg-sky-50 px-3 py-1 rounded-full">Page 02 / 10 • 자본의 구조</span>
+                    <span class="text-xs text-slate-400">Slide 13 매핑</span>
+                </div>
+                <h2 class="text-2xl font-extrabold text-slate-900 mb-4">이익잉여금(Retained Earnings)과 배당금</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6 text-xs md:text-sm">
+                    <div class="p-4 bg-sky-50/70 border border-sky-200 rounded-xl">
+                        <div class="font-bold text-sky-950 mb-2 flex items-center gap-2 text-sm">
+                            <i class="fa-solid fa-piggy-bank text-sky-600"></i> 이익잉여금이란?
+                        </div>
+                        <p class="text-slate-700 leading-relaxed mb-3">
+                            기업이 설립된 이후 매 회계기간 동안 창출한 <strong>당기순이익(수익 - 비용)</strong> 중 사외로 유출(배당)되지 않고 사내에 차곡차곡 누적·유보된 이익의 총합입니다.
+                        </p>
+                        <div class="p-2.5 bg-white rounded border border-sky-300 font-mono text-center font-bold text-sky-900">
+                            기말 이익잉여금 = 기초 이익잉여금 + 당기순이익 - 현금배당금
+                        </div>
+                    </div>
+                    <div class="p-4 bg-rose-50/70 border border-rose-200 rounded-xl">
+                        <div class="font-bold text-rose-950 mb-2 flex items-center gap-2 text-sm">
+                            <i class="fa-solid fa-hand-holding-dollar text-rose-600"></i> 배당금(Dividends)의 회계적 성격
+                        </div>
+                        <p class="text-slate-700 leading-relaxed mb-3">
+                            사내에 누적된 이익잉여금의 일부를 주주(소유주)에게 현금 등으로 분배하는 것입니다.
+                        </p>
+                        <div class="p-2.5 bg-white rounded border border-rose-300 text-rose-900 font-bold text-xs">
+                            <i class="fa-solid fa-triangle-exclamation mr-1"></i> 주의: 배당금은 손익계산서의 '비용'이 아니라, 자본(이익잉여금)에서 직접 차감되는 <strong>자본의 차감 항목</strong>입니다!
+                        </div>
+                    </div>
+                </div>
+                <!-- 자본 구성도 시각화 -->
+                <div class="p-4 bg-slate-900 text-white rounded-xl">
+                    <div class="text-xs text-slate-400 font-bold mb-3 uppercase tracking-wider text-center">자본의 증감 변동 메커니즘 (Slide 13)</div>
+                    <div class="grid grid-cols-2 gap-4 text-center">
+                        <div class="p-3 bg-emerald-950/60 border border-emerald-500/40 rounded-lg">
+                            <div class="text-emerald-400 font-bold text-sm mb-1"><i class="fa-solid fa-arrow-trend-up"></i> 자본의 증가 요인 (+)</div>
+                            <div class="text-xs text-slate-300">① 주주의 추가 출자 (자본금 증가)<br>② 영업활동을 통한 <strong>수익(Revenues) 창출</strong></div>
+                        </div>
+                        <div class="p-3 bg-rose-950/60 border border-rose-500/40 rounded-lg">
+                            <div class="text-rose-400 font-bold text-sm mb-1"><i class="fa-solid fa-arrow-trend-down"></i> 자본의 감소 요인 (-)</div>
+                            <div class="text-xs text-slate-300">① 주주에 대한 <strong>현금배당금 지급</strong><br>② 영업활동에 따른 <strong>비용(Expenses) 지출</strong></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 3 / 10 -->
+            <div class="slide-page bg-white rounded-2xl p-6 md:p-8 border border-slate-200 shadow-sm" id="page-3">
+                <div class="flex items-center justify-between border-b pb-4 mb-6">
+                    <span class="text-xs font-bold uppercase tracking-wider text-sky-600 bg-sky-50 px-3 py-1 rounded-full">Page 03 / 10 • 등식의 확장</span>
+                    <span class="text-xs text-slate-400">Slide 13-14 확장 원리</span>
+                </div>
+                <h2 class="text-2xl font-extrabold text-slate-900 mb-4">확장 회계등식 (Expanded Accounting Equation)</h2>
+                <p class="text-slate-600 text-sm leading-relaxed mb-4">
+                    기본 회계등식 [자산 = 부채 + 자본]에서 자본을 <strong>자본금 + 이익잉여금(기초 + 수익 - 비용 - 배당금)</strong>으로 세분화하여 표현한 식입니다.
+                </p>
+                <div class="p-5 bg-gradient-to-r from-slate-900 via-sky-950 to-slate-900 text-white rounded-2xl mb-6 shadow-md">
+                    <div class="text-center">
+                        <div class="text-xs text-sky-300 uppercase font-bold tracking-widest mb-1">Expanded Accounting Equation</div>
+                        <div class="text-xl md:text-2xl font-black py-2">
+                            <span class="text-blue-400">자산</span> = <span class="text-rose-400">부채</span> + <span class="text-emerald-400">자본금</span> + (<span class="text-amber-300">수익</span> - <span class="text-orange-400">비용</span> - <span class="text-purple-300">배당금</span>)
+                        </div>
+                        <div class="text-xs text-slate-300 mt-1">
+                            여기서 (<span class="text-amber-300">수익</span> - <span class="text-orange-400">비용</span>)은 <strong>당기순이익</strong>이며, 괄호 안의 전체 금액이 <strong>기말 이익잉여금</strong>을 구성합니다.
+                        </div>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-3 text-xs md:text-sm">
+                    <div class="p-3 bg-slate-50 border rounded-xl">
+                        <div class="font-bold text-slate-900 mb-1 text-xs"><i class="fa-solid fa-building text-emerald-600 mr-1"></i>자본금</div>
+                        <p class="text-slate-600">주주가 회사에 납입한 원천 출자액</p>
+                    </div>
+                    <div class="p-3 bg-amber-50/60 border border-amber-200 rounded-xl">
+                        <div class="font-bold text-amber-950 mb-1 text-xs"><i class="fa-solid fa-arrow-up text-amber-600 mr-1"></i>수익 (+)</div>
+                        <p class="text-slate-600">용역 제공, 상품 판매로 자산 유입 → 자본 증가</p>
+                    </div>
+                    <div class="p-3 bg-orange-50/60 border border-orange-200 rounded-xl">
+                        <div class="font-bold text-orange-950 mb-1 text-xs"><i class="fa-solid fa-arrow-down text-orange-600 mr-1"></i>비용 (-)</div>
+                        <p class="text-slate-600">수익 창출 과정에서 자원 소비 → 자본 감소</p>
+                    </div>
+                    <div class="p-3 bg-purple-50/60 border border-purple-200 rounded-xl">
+                        <div class="font-bold text-purple-950 mb-1 text-xs"><i class="fa-solid fa-gift text-purple-600 mr-1"></i>배당금 (-)</div>
+                        <p class="text-slate-600">주주에게 이익 분배 → 자본 감소 (비용 아님)</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 4 / 10 -->
+            <div class="slide-page bg-white rounded-2xl p-6 md:p-8 border border-slate-200 shadow-sm" id="page-4">
+                <div class="flex items-center justify-between border-b pb-4 mb-6">
+                    <span class="text-xs font-bold uppercase tracking-wider text-sky-600 bg-sky-50 px-3 py-1 rounded-full">Page 04 / 10 • 실전 사례 ⑤</span>
+                    <span class="text-xs text-slate-400">Slide 14 글로벌세탁(주) 9/18 용역수익</span>
+                </div>
+                <h2 class="text-2xl font-extrabold text-slate-900 mb-2">[사례 ⑤] 9월 18일: 세탁용역 완료 및 현금 수령</h2>
+                <p class="text-slate-600 text-sm mb-4">
+                    성지제조회사로부터 의뢰받은 작업복 세탁용역을 완료하고 용역대금 <strong>₩400,000</strong>을 전액 현금으로 수취하였습니다.
+                </p>
+                <div class="p-4 bg-slate-50 border rounded-xl mb-4">
+                    <div class="text-xs font-bold text-slate-500 uppercase mb-2">거래 분석 & 회계등식 영향</div>
+                    <div class="flex flex-wrap items-center justify-around gap-4 text-center">
+                        <div class="p-3 bg-blue-100 rounded-lg">
+                            <span class="text-xs text-blue-800 font-bold block">자산 (현금 증가)</span>
+                            <span class="text-lg font-extrabold text-blue-900">+₩400,000</span>
+                        </div>
+                        <span class="text-xl font-bold text-slate-400">=</span>
+                        <div class="p-3 bg-slate-200 rounded-lg">
+                            <span class="text-xs text-slate-700 font-bold block">부채 변동</span>
+                            <span class="text-lg font-extrabold text-slate-700">₩0</span>
+                        </div>
+                        <span class="text-xl font-bold text-slate-400">+</span>
+                        <div class="p-3 bg-amber-100 rounded-lg">
+                            <span class="text-xs text-amber-800 font-bold block">자본 (용역매출/이익잉여금)</span>
+                            <span class="text-lg font-extrabold text-amber-900">+₩400,000</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-3 bg-white border rounded-xl overflow-x-auto text-xs md:text-sm">
+                    <div class="font-bold text-slate-800 mb-1">회계등식 누적 변화표 (Slide 14)</div>
+                    <table class="w-full text-center border">
+                        <tr class="bg-slate-100 font-bold text-[11px] md:text-xs">
+                            <th class="p-1 border">구분</th><th class="p-1 border">현금</th><th class="p-1 border">+소모품</th><th class="p-1 border">=</th><th class="p-1 border">미지급금</th><th class="p-1 border">+차입금</th><th class="p-1 border">+자본금</th><th class="p-1 border">+이익잉여금(수익)</th>
+                        </tr>
+                        <tr>
+                            <td class="p-1 border">거래 전(9/10)</td><td class="p-1 border">₩450,000</td><td class="p-1 border">₩100,000</td><td class="p-1 border">=</td><td class="p-1 border">₩50,000</td><td class="p-1 border">₩200,000</td><td class="p-1 border">₩300,000</td><td class="p-1 border">₩0</td>
+                        </tr>
+                        <tr class="bg-amber-50 font-bold text-amber-900">
+                            <td class="p-1 border">9/18 수익 영향</td><td class="p-1 border text-blue-600">+400,000</td><td class="p-1 border">0</td><td class="p-1 border">=</td><td class="p-1 border">0</td><td class="p-1 border">0</td><td class="p-1 border">0</td><td class="p-1 border text-amber-600">+400,000</td>
+                        </tr>
+                        <tr class="bg-slate-50 font-extrabold">
+                            <td class="p-1 border">거래 후 잔액</td><td class="p-1 border text-blue-700">₩850,000</td><td class="p-1 border">₩100,000</td><td class="p-1 border">=</td><td class="p-1 border">₩50,000</td><td class="p-1 border">₩200,000</td><td class="p-1 border">₩300,000</td><td class="p-1 border text-amber-700">₩400,000</td>
+                        </tr>
+                    </table>
+                    <div class="text-right text-[11px] text-slate-500 mt-1 font-semibold">총자산 ₩950,000 = 부채 ₩250,000 + 자본 ₩700,000 (완전 균형)</div>
+                </div>
+            </div>
+
+            <!-- SLIDE 5 / 10 -->
+            <div class="slide-page bg-white rounded-2xl p-6 md:p-8 border border-slate-200 shadow-sm" id="page-5">
+                <div class="flex items-center justify-between border-b pb-4 mb-6">
+                    <span class="text-xs font-bold uppercase tracking-wider text-sky-600 bg-sky-50 px-3 py-1 rounded-full">Page 05 / 10 • 실전 사례 ⑥</span>
+                    <span class="text-xs text-slate-400">Slide 15 글로벌세탁(주) 9/19 운송비 지출</span>
+                </div>
+                <h2 class="text-2xl font-extrabold text-slate-900 mb-2">[사례 ⑥] 9월 19일: 세탁물 운송비 현금 지급</h2>
+                <p class="text-slate-600 text-sm mb-4">
+                    세탁물 배송을 위해 퀵서비스 및 용달 운송업체에 <strong>운송비 ₩50,000</strong>을 현금으로 지급하였습니다.
+                </p>
+                <div class="p-4 bg-slate-50 border rounded-xl mb-4">
+                    <div class="text-xs font-bold text-slate-500 uppercase mb-2">거래 분석 & 회계등식 영향</div>
+                    <div class="flex flex-wrap items-center justify-around gap-4 text-center">
+                        <div class="p-3 bg-rose-100 rounded-lg">
+                            <span class="text-xs text-rose-800 font-bold block">자산 (현금 감소)</span>
+                            <span class="text-lg font-extrabold text-rose-900">-₩50,000</span>
+                        </div>
+                        <span class="text-xl font-bold text-slate-400">=</span>
+                        <div class="p-3 bg-slate-200 rounded-lg">
+                            <span class="text-xs text-slate-700 font-bold block">부채 변동</span>
+                            <span class="text-lg font-extrabold text-slate-700">₩0</span>
+                        </div>
+                        <span class="text-xl font-bold text-slate-400">+</span>
+                        <div class="p-3 bg-orange-100 rounded-lg">
+                            <span class="text-xs text-orange-800 font-bold block">자본 (운송비 발생/이익잉여금 감소)</span>
+                            <span class="text-lg font-extrabold text-orange-900">-₩50,000</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-3 bg-white border rounded-xl overflow-x-auto text-xs md:text-sm">
+                    <div class="font-bold text-slate-800 mb-1">회계등식 누적 변화표 (Slide 15)</div>
+                    <table class="w-full text-center border">
+                        <tr class="bg-slate-100 font-bold text-[11px] md:text-xs">
+                            <th class="p-1 border">구분</th><th class="p-1 border">현금</th><th class="p-1 border">+소모품</th><th class="p-1 border">=</th><th class="p-1 border">미지급금</th><th class="p-1 border">+차입금</th><th class="p-1 border">+자본금</th><th class="p-1 border">+이익잉여금</th>
+                        </tr>
+                        <tr>
+                            <td class="p-1 border">거래 전(9/18)</td><td class="p-1 border">₩850,000</td><td class="p-1 border">₩100,000</td><td class="p-1 border">=</td><td class="p-1 border">₩50,000</td><td class="p-1 border">₩200,000</td><td class="p-1 border">₩300,000</td><td class="p-1 border">₩400,000</td>
+                        </tr>
+                        <tr class="bg-rose-50 font-bold text-rose-900">
+                            <td class="p-1 border">9/19 비용 영향</td><td class="p-1 border text-rose-600">-50,000</td><td class="p-1 border">0</td><td class="p-1 border">=</td><td class="p-1 border">0</td><td class="p-1 border">0</td><td class="p-1 border">0</td><td class="p-1 border text-orange-600">-50,000</td>
+                        </tr>
+                        <tr class="bg-slate-50 font-extrabold">
+                            <td class="p-1 border">거래 후 잔액</td><td class="p-1 border text-blue-700">₩800,000</td><td class="p-1 border">₩100,000</td><td class="p-1 border">=</td><td class="p-1 border">₩50,000</td><td class="p-1 border">₩200,000</td><td class="p-1 border">₩300,000</td><td class="p-1 border text-amber-700">₩350,000</td>
+                        </tr>
+                    </table>
+                    <div class="text-right text-[11px] text-slate-500 mt-1 font-semibold">총자산 ₩900,000 = 부채 ₩250,000 + 자본 ₩650,000</div>
+                </div>
+            </div>
+
+            <!-- SLIDE 6 / 10 -->
+            <div class="slide-page bg-white rounded-2xl p-6 md:p-8 border border-slate-200 shadow-sm" id="page-6">
+                <div class="flex items-center justify-between border-b pb-4 mb-6">
+                    <span class="text-xs font-bold uppercase tracking-wider text-sky-600 bg-sky-50 px-3 py-1 rounded-full">Page 06 / 10 • 실전 사례 ⑦</span>
+                    <span class="text-xs text-slate-400">Slide 16 글로벌세탁(주) 9/20 급여 지급</span>
+                </div>
+                <h2 class="text-2xl font-extrabold text-slate-900 mb-2">[사례 ⑦] 9월 20일: 세탁기술자 급여 현금 지급</h2>
+                <p class="text-slate-600 text-sm mb-4">
+                    9월 4일 채용한 세탁기술자에게 약정된 1개월분 <strong>급여 ₩300,000</strong>을 현금으로 지급하였습니다.
+                </p>
+                <div class="p-4 bg-slate-50 border rounded-xl mb-4">
+                    <div class="text-xs font-bold text-slate-500 uppercase mb-2">거래 분석 & 회계등식 영향</div>
+                    <div class="flex flex-wrap items-center justify-around gap-4 text-center">
+                        <div class="p-3 bg-rose-100 rounded-lg">
+                            <span class="text-xs text-rose-800 font-bold block">자산 (현금 감소)</span>
+                            <span class="text-lg font-extrabold text-rose-900">-₩300,000</span>
+                        </div>
+                        <span class="text-xl font-bold text-slate-400">=</span>
+                        <div class="p-3 bg-slate-200 rounded-lg">
+                            <span class="text-xs text-slate-700 font-bold block">부채 변동</span>
+                            <span class="text-lg font-extrabold text-slate-700">₩0</span>
+                        </div>
+                        <span class="text-xl font-bold text-slate-400">+</span>
+                        <div class="p-3 bg-orange-100 rounded-lg">
+                            <span class="text-xs text-orange-800 font-bold block">자본 (급여 발생/이익잉여금 감소)</span>
+                            <span class="text-lg font-extrabold text-orange-900">-₩300,000</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-3 bg-white border rounded-xl overflow-x-auto text-xs md:text-sm">
+                    <div class="font-bold text-slate-800 mb-1">회계등식 누적 변화표 (Slide 16)</div>
+                    <table class="w-full text-center border">
+                        <tr class="bg-slate-100 font-bold text-[11px] md:text-xs">
+                            <th class="p-1 border">구분</th><th class="p-1 border">현금</th><th class="p-1 border">+소모품</th><th class="p-1 border">=</th><th class="p-1 border">미지급금</th><th class="p-1 border">+차입금</th><th class="p-1 border">+자본금</th><th class="p-1 border">+이익잉여금</th>
+                        </tr>
+                        <tr>
+                            <td class="p-1 border">거래 전(9/19)</td><td class="p-1 border">₩800,000</td><td class="p-1 border">₩100,000</td><td class="p-1 border">=</td><td class="p-1 border">₩50,000</td><td class="p-1 border">₩200,000</td><td class="p-1 border">₩300,000</td><td class="p-1 border">₩350,000</td>
+                        </tr>
+                        <tr class="bg-rose-50 font-bold text-rose-900">
+                            <td class="p-1 border">9/20 급여 영향</td><td class="p-1 border text-rose-600">-300,000</td><td class="p-1 border">0</td><td class="p-1 border">=</td><td class="p-1 border">0</td><td class="p-1 border">0</td><td class="p-1 border">0</td><td class="p-1 border text-orange-600">-300,000</td>
+                        </tr>
+                        <tr class="bg-slate-50 font-extrabold">
+                            <td class="p-1 border">거래 후 잔액</td><td class="p-1 border text-blue-700">₩500,000</td><td class="p-1 border">₩100,000</td><td class="p-1 border">=</td><td class="p-1 border">₩50,000</td><td class="p-1 border">₩200,000</td><td class="p-1 border">₩300,000</td><td class="p-1 border text-amber-700">₩50,000</td>
+                        </tr>
+                    </table>
+                    <div class="text-right text-[11px] text-slate-500 mt-1 font-semibold">총자산 ₩600,000 = 부채 ₩250,000 + 자본 ₩350,000</div>
+                </div>
+            </div>
+
+            <!-- SLIDE 7 / 10 -->
+            <div class="slide-page bg-white rounded-2xl p-6 md:p-8 border border-slate-200 shadow-sm" id="page-7">
+                <div class="flex items-center justify-between border-b pb-4 mb-6">
+                    <span class="text-xs font-bold uppercase tracking-wider text-sky-600 bg-sky-50 px-3 py-1 rounded-full">Page 07 / 10 • 실전 사례 ⑧</span>
+                    <span class="text-xs text-slate-400">Slide 17 글로벌세탁(주) 9/20 배당금</span>
+                </div>
+                <h2 class="text-2xl font-extrabold text-slate-900 mb-2">[사례 ⑧] 9월 20일: 주주 배당금 현금 지급</h2>
+                <p class="text-slate-600 text-sm mb-4">
+                    영업으로 발생한 이익 중 <strong>현금배당금 ₩30,000</strong>을 주주들에게 직접 현금으로 지급하였습니다.
+                </p>
+                <div class="p-4 bg-purple-50/60 border border-purple-200 rounded-xl mb-4">
+                    <div class="text-xs font-bold text-purple-900 uppercase mb-2"><i class="fa-solid fa-triangle-exclamation text-purple-600 mr-1"></i> 핵심 분석 포인트: 배당금 vs 비용의 차이</div>
+                    <p class="text-xs text-slate-700 leading-relaxed">
+                        배당금은 수익을 창출하기 위해 희생된 대가(비용)가 아니라, 이미 벌어들인 순이익을 소유주에게 분배하는 것입니다. 따라서 손익계산서의 비용이 되지 않고 <strong>이익잉여금(자본)에서 직접 차감</strong>됩니다.
+                    </p>
+                </div>
+                <div class="p-3 bg-white border rounded-xl overflow-x-auto text-xs md:text-sm">
+                    <div class="font-bold text-slate-800 mb-1">회계등식 누적 변화표 (Slide 17)</div>
+                    <table class="w-full text-center border">
+                        <tr class="bg-slate-100 font-bold text-[11px] md:text-xs">
+                            <th class="p-1 border">구분</th><th class="p-1 border">현금</th><th class="p-1 border">+소모품</th><th class="p-1 border">=</th><th class="p-1 border">미지급금</th><th class="p-1 border">+차입금</th><th class="p-1 border">+자본금</th><th class="p-1 border">+이익잉여금</th>
+                        </tr>
+                        <tr>
+                            <td class="p-1 border">거래 전(급여 후)</td><td class="p-1 border">₩500,000</td><td class="p-1 border">₩100,000</td><td class="p-1 border">=</td><td class="p-1 border">₩50,000</td><td class="p-1 border">₩200,000</td><td class="p-1 border">₩300,000</td><td class="p-1 border">₩50,000</td>
+                        </tr>
+                        <tr class="bg-purple-50 font-bold text-purple-900">
+                            <td class="p-1 border">9/20 배당 영향</td><td class="p-1 border text-rose-600">-30,000</td><td class="p-1 border">0</td><td class="p-1 border">=</td><td class="p-1 border">0</td><td class="p-1 border">0</td><td class="p-1 border">0</td><td class="p-1 border text-purple-600">-30,000</td>
+                        </tr>
+                        <tr class="bg-slate-50 font-extrabold">
+                            <td class="p-1 border">거래 후 잔액</td><td class="p-1 border text-blue-700">₩470,000</td><td class="p-1 border">₩100,000</td><td class="p-1 border">=</td><td class="p-1 border">₩50,000</td><td class="p-1 border">₩200,000</td><td class="p-1 border">₩300,000</td><td class="p-1 border text-purple-700">₩20,000</td>
+                        </tr>
+                    </table>
+                    <div class="text-right text-[11px] text-slate-500 mt-1 font-semibold">총자산 ₩570,000 = 부채 ₩250,000 + 자본 ₩320,000 (자본금 300,000 + 이익잉여금 20,000)</div>
+                </div>
+            </div>
+
+            <!-- SLIDE 8 / 10 -->
+            <div class="slide-page bg-white rounded-2xl p-6 md:p-8 border border-slate-200 shadow-sm" id="page-8">
+                <div class="flex items-center justify-between border-b pb-4 mb-6">
+                    <span class="text-xs font-bold uppercase tracking-wider text-sky-600 bg-sky-50 px-3 py-1 rounded-full">Page 08 / 10 • 재무제표 연계</span>
+                    <span class="text-xs text-slate-400">Slide 18-20 재무제표 상호 연계</span>
+                </div>
+                <h2 class="text-2xl font-extrabold text-slate-900 mb-3">9월 20일 기준 재무제표의 유기적 연계 구조</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs mb-4">
+                    <!-- 손익계산서 -->
+                    <div class="p-3 bg-amber-50/70 border border-amber-300 rounded-xl">
+                        <div class="font-bold text-amber-950 text-center mb-1">[손익계산서] 9/1~9/20</div>
+                        <table class="w-full text-[11px]">
+                            <tr><td>용역매출</td><td class="text-right font-mono font-bold">₩400,000</td></tr>
+                            <tr class="text-rose-700"><td>(비용) 급여</td><td class="text-right font-mono">-300,000</td></tr>
+                            <tr class="text-rose-700"><td>(비용) 운송비</td><td class="text-right font-mono">-50,000</td></tr>
+                            <tr class="border-t border-amber-400 font-extrabold text-amber-900">
+                                <td>당기순이익</td><td class="text-right font-mono text-blue-700">₩50,000</td>
+                            </tr>
+                        </table>
+                        <div class="text-[10px] text-amber-800 text-center mt-2 bg-amber-100 p-1 rounded font-semibold">
+                            ↓ 당기순이익이 자본변동표로 전달
+                        </div>
+                    </div>
+
+                    <!-- 자본변동표 -->
+                    <div class="p-3 bg-sky-50/70 border border-sky-300 rounded-xl">
+                        <div class="font-bold text-sky-950 text-center mb-1">[자본변동표] 9/1~9/20</div>
+                        <table class="w-full text-[11px]">
+                            <tr><td>기초자본 (9/1)</td><td class="text-right font-mono">₩0</td></tr>
+                            <tr><td>유상증자(주식발행)</td><td class="text-right font-mono">300,000</td></tr>
+                            <tr class="text-blue-700 font-bold"><td>+ 당기순이익</td><td class="text-right font-mono">+50,000</td></tr>
+                            <tr class="text-purple-700 font-bold"><td>- 배당금</td><td class="text-right font-mono">-30,000</td></tr>
+                            <tr class="border-t border-sky-400 font-extrabold text-sky-950">
+                                <td>기말자본 (9/20)</td><td class="text-right font-mono text-emerald-700">₩320,000</td>
+                            </tr>
+                        </table>
+                        <div class="text-[10px] text-sky-800 text-center mt-2 bg-sky-100 p-1 rounded font-semibold">
+                            ↓ 기말자본이 재무상태표로 전달
+                        </div>
+                    </div>
+
+                    <!-- 재무상태표 -->
+                    <div class="p-3 bg-emerald-50/70 border border-emerald-300 rounded-xl">
+                        <div class="font-bold text-emerald-950 text-center mb-1">[재무상태표] 9/20 현재</div>
+                        <table class="w-full text-[11px]">
+                            <tr class="font-semibold text-blue-900"><td>총자산 (현금+소모품)</td><td class="text-right font-mono">₩570,000</td></tr>
+                            <tr class="font-semibold text-rose-900"><td>총부채 (미지급+차입)</td><td class="text-right font-mono">₩250,000</td></tr>
+                            <tr class="font-bold text-emerald-900"><td>자본금</td><td class="text-right font-mono">300,000</td></tr>
+                            <tr class="font-bold text-purple-900"><td>이익잉여금</td><td class="text-right font-mono">20,000</td></tr>
+                            <tr class="border-t border-emerald-400 font-extrabold text-emerald-950">
+                                <td>부채와자본총계</td><td class="text-right font-mono text-blue-700">₩570,000</td>
+                            </tr>
+                        </table>
+                        <div class="text-[10px] text-emerald-800 text-center mt-2 bg-emerald-100 p-1 rounded font-semibold">
+                            [자산 = 부채 + 자본] 완전 일치
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 9 / 10 -->
+            <div class="slide-page bg-white rounded-2xl p-6 md:p-8 border border-slate-200 shadow-sm" id="page-9">
+                <div class="flex items-center justify-between border-b pb-4 mb-6">
+                    <span class="text-xs font-bold uppercase tracking-wider text-sky-600 bg-sky-50 px-3 py-1 rounded-full">Page 09 / 10 • 실전 사례 ⑨</span>
+                    <span class="text-xs text-slate-400">Slide 24 외상대금 지급 & 외상매출</span>
+                </div>
+                <h2 class="text-2xl font-extrabold text-slate-900 mb-2">[사례 ⑨] 9월 25일~28일: 부채상환 & 복합 매출거래</h2>
+                <div class="space-y-3 text-xs md:text-sm mb-4">
+                    <div class="p-3 bg-slate-50 border rounded-xl">
+                        <div class="font-bold text-slate-900 mb-1 flex items-center gap-2">
+                            <span class="bg-blue-600 text-white px-2 py-0.5 rounded text-xs font-bold">9월 25일</span>
+                            외상 소모품 대금 중 ₩30,000 현금 지급
+                        </div>
+                        <p class="text-slate-600">현금(자산) ₩30,000 감소 → 미지급금(부채) ₩30,000 감소 (자본 변동 없음)</p>
+                    </div>
+                    <div class="p-3 bg-blue-50/60 border border-blue-200 rounded-xl">
+                        <div class="font-bold text-blue-950 mb-1 flex items-center gap-2">
+                            <span class="bg-blue-600 text-white px-2 py-0.5 rounded text-xs font-bold">9월 28일</span>
+                            세탁용역 대금 ₩560,000 중 ₩400,000 현금 수령, 잔액 ₩160,000은 외상(10월 수령 약정)
+                        </div>
+                        <ul class="text-slate-700 space-y-0.5 list-disc list-inside mt-1">
+                            <li>현금(자산 증가): <strong class="text-blue-700">+₩400,000</strong></li>
+                            <li>매출채권(자산 증가): <strong class="text-blue-700">+₩160,000</strong></li>
+                            <li>용역매출(수익 발생 → 이익잉여금 증가): <strong class="text-amber-700">+₩560,000</strong></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="p-3 bg-white border rounded-xl overflow-x-auto text-xs">
+                    <div class="font-bold text-slate-800 mb-1">등식 영향 누적 현황표 (Slide 24)</div>
+                    <table class="w-full text-center border">
+                        <tr class="bg-slate-100 font-bold">
+                            <th class="p-1 border">구분</th><th class="p-1 border">현금</th><th class="p-1 border">+매출채권</th><th class="p-1 border">+소모품</th><th class="p-1 border">=</th><th class="p-1 border">미지급금</th><th class="p-1 border">+차입금</th><th class="p-1 border">+자본금</th><th class="p-1 border">+이익잉여금</th>
+                        </tr>
+                        <tr><td>9/20 잔액</td><td>₩470,000</td><td>₩0</td><td>₩100,000</td><td>=</td><td>₩50,000</td><td>₩200,000</td><td>₩300,000</td><td>₩20,000</td></tr>
+                        <tr class="text-rose-600"><td>9/25 영향</td><td>-30,000</td><td>0</td><td>0</td><td>=</td><td>-30,000</td><td>0</td><td>0</td><td>0</td></tr>
+                        <tr class="text-blue-600"><td>9/28 영향</td><td>+400,000</td><td>+160,000</td><td>0</td><td>=</td><td>0</td><td>0</td><td>0</td><td class="text-amber-600 font-bold">+560,000</td></tr>
+                        <tr class="bg-slate-50 font-bold"><td>9/28 잔액</td><td>₩840,000</td><td>₩160,000</td><td>₩100,000</td><td>=</td><td>₩20,000</td><td>₩200,000</td><td>₩300,000</td><td>₩580,000</td></tr>
+                    </table>
+                </div>
+            </div>
+
+            <!-- SLIDE 10 / 10 -->
+            <div class="slide-page bg-white rounded-2xl p-6 md:p-8 border border-slate-200 shadow-sm" id="page-10">
+                <div class="flex items-center justify-between border-b pb-4 mb-6">
+                    <span class="text-xs font-bold uppercase tracking-wider text-sky-600 bg-sky-50 px-3 py-1 rounded-full">Page 10 / 10 • 실전 사례 ⑩</span>
+                    <span class="text-xs text-slate-400">Slide 24-25 9/30 기말 결산 거래</span>
+                </div>
+                <h2 class="text-2xl font-extrabold text-slate-900 mb-2">[사례 ⑩] 9월 30일: 임차료, 소모품 소비 및 미지급이자</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs mb-4">
+                    <div class="p-3 bg-slate-50 border rounded-xl">
+                        <div class="font-bold text-slate-900 mb-1">① 임차료 현금 지급</div>
+                        <p class="text-slate-600">세탁기계 1개월분 임차료 <strong>₩400,000</strong> 현금 지급</p>
+                        <div class="mt-2 text-rose-700 font-semibold font-mono">현금 -400,000<br>이익잉여금(임차료) -400,000</div>
+                    </div>
+                    <div class="p-3 bg-slate-50 border rounded-xl">
+                        <div class="font-bold text-slate-900 mb-1">② 소모품 재고 실사 및 소비</div>
+                        <p class="text-slate-600">월말 재고 ₩30,000 확인 → <strong>₩70,000</strong> 소비됨</p>
+                        <div class="mt-2 text-orange-700 font-semibold font-mono">소모품(자산) -70,000<br>이익잉여금(소모품비) -70,000</div>
+                    </div>
+                    <div class="p-3 bg-slate-50 border rounded-xl">
+                        <div class="font-bold text-slate-900 mb-1">③ 차입금 미지급이자 발생</div>
+                        <p class="text-slate-600">9월분 이자 <strong>₩2,000</strong> 기간 경과분 반영</p>
+                        <div class="mt-2 text-purple-700 font-semibold font-mono">미지급이자(부채) +2,000<br>이익잉여금(이자비용) -2,000</div>
+                    </div>
+                </div>
+
+                <div class="p-4 bg-sky-950 text-white rounded-xl">
+                    <div class="text-xs text-sky-300 font-bold mb-2 text-center uppercase tracking-wider">9월 30일 최종 결산 후 확장 회계등식 결과 (Slide 25)</div>
+                    <div class="text-center font-mono text-sm md:text-base font-bold text-sky-200">
+                        자산(₩630,000) = 부채(₩222,000) + 자본금(₩300,000) + 이익잉여금(₩108,000)
+                    </div>
+                    <div class="text-center text-xs text-slate-400 mt-1">
+                        [자산] 현금 440,000 + 매출채권 160,000 + 소모품 30,000 = ₩630,000<br>
+                        [부채/자본] 미지급금 20,000 + 미지급이자 2,000 + 차입금 200,000 + 자본총계 408,000 = ₩630,000
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- ========================================================================= -->
+        <!-- TAB 2: 10분 인터랙티브 실습실 -->
+        <!-- ========================================================================= -->
+        <section id="section-practice" class="hidden space-y-6">
+
+            <!-- 실습 1: 확장 회계등식 트래커 -->
+            <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
+                <h3 class="text-lg font-bold text-slate-900 mb-2 flex items-center gap-2">
+                    <i class="fa-solid fa-layer-group text-sky-600"></i> [실습 1] 확장 회계등식 시뮬레이터 (9/18~9/30 거래 순차 적용)
+                </h3>
+                <p class="text-xs text-slate-500 mb-4">버튼을 눌러 거래를 단계별로 누적하고 등식의 균형과 이익잉여금의 변화를 확인하세요.</p>
+                
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-2 mb-4">
+                    <button onclick="applyExpStep(1)" id="exp-btn-1" class="p-2.5 bg-sky-50 hover:bg-sky-100 border border-sky-200 text-sky-900 rounded-lg text-xs font-bold text-left transition">
+                        ① 9/18 용역수익 (+40만)
+                    </button>
+                    <button onclick="applyExpStep(2)" id="exp-btn-2" class="p-2.5 bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-800 rounded-lg text-xs font-bold text-left transition">
+                        ② 9/19~20 비용&배당 (-38만)
+                    </button>
+                    <button onclick="applyExpStep(3)" id="exp-btn-3" class="p-2.5 bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-800 rounded-lg text-xs font-bold text-left transition">
+                        ③ 9/28 외상매출 (+56만)
+                    </button>
+                    <button onclick="applyExpStep(4)" id="exp-btn-4" class="p-2.5 bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-800 rounded-lg text-xs font-bold text-left transition">
+                        ④ 9/30 결산비용 (-47.2만)
+                    </button>
+                </div>
+
+                <div class="p-4 bg-slate-900 text-white rounded-xl">
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-3 text-center items-center">
+                        <div class="p-2.5 bg-blue-950/80 border border-blue-500/50 rounded-lg">
+                            <span class="text-[11px] text-blue-300 font-semibold block">총자산</span>
+                            <span id="exp-asset" class="text-xl font-black text-blue-400 font-mono">₩550,000</span>
+                        </div>
+                        <div class="text-xl font-bold text-slate-400">=</div>
+                        <div class="p-2.5 bg-rose-950/80 border border-rose-500/50 rounded-lg">
+                            <span class="text-[11px] text-rose-300 font-semibold block">총부채</span>
+                            <span id="exp-liab" class="text-xl font-black text-rose-400 font-mono">₩250,000</span>
+                        </div>
+                        <div class="p-2.5 bg-emerald-950/80 border border-emerald-500/50 rounded-lg">
+                            <span class="text-[11px] text-emerald-300 font-semibold block">총자본 (자본금+잉여금)</span>
+                            <span id="exp-equity" class="text-xl font-black text-emerald-400 font-mono">₩300,000</span>
+                        </div>
+                    </div>
+                    <div id="exp-detail-text" class="mt-3 text-center text-xs text-slate-300 py-1.5 bg-slate-800 rounded">
+                        초기상태(9/10): 자산 ₩550,000 = 부채 ₩250,000 + 자본금 ₩300,000 + 이익잉여금 ₩0
+                    </div>
+                </div>
+            </div>
+
+            <!-- 실습 2: 2교시 확인 퀴즈 -->
+            <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
+                <h3 class="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-circle-question text-emerald-600"></i> [10분 퀴즈] 2교시 핵심 이해도 점검
+                </h3>
+                <div class="space-y-4">
+                    <!-- Q1 -->
+                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                        <div class="font-bold text-slate-900 text-sm mb-2">Q1. 기업이 벌어들인 순이익 중 주주에게 현금배당금을 지급하였을 때의 회계적 성격과 등식에 미치는 영향으로 가장 올바른 것은?</div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs">
+                            <button onclick="checkQuiz(1, 'A', this)" class="q-btn-1 p-2.5 bg-white border rounded-lg text-left hover:bg-sky-50 transition">A. 손익계산서의 '영업외비용'으로 기록되어 당기순이익을 직접 감소시킨다.</button>
+                            <button onclick="checkQuiz(1, 'B', this)" class="q-btn-1 p-2.5 bg-white border rounded-lg text-left hover:bg-sky-50 transition">B. 비용이 아니며, 이익잉여금(자본)에서 직접 차감되어 순자산을 감소시킨다.</button>
+                            <button onclick="checkQuiz(1, 'C', this)" class="q-btn-1 p-2.5 bg-white border rounded-lg text-left hover:bg-sky-50 transition">C. 부채(미지급금)를 증가시키고 자본에는 아무런 변동을 주지 않는다.</button>
+                            <button onclick="checkQuiz(1, 'D', this)" class="q-btn-1 p-2.5 bg-white border rounded-lg text-left hover:bg-sky-50 transition">D. 자본금 계정에서 직접 차감되는 감자 거래로 처리된다.</button>
+                        </div>
+                        <div id="q-feedback-1" class="hidden text-xs mt-2 p-2.5 rounded"></div>
+                    </div>
+
+                    <!-- Q2 -->
+                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                        <div class="font-bold text-slate-900 text-sm mb-2">Q2. 글로벌세탁(주)의 9월 28일 거래(용역대금 ₩560,000 중 현금 ₩400,000 수령, 잔액 ₩160,000은 외상)가 회계등식에 미친 영향으로 옳은 것은?</div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs">
+                            <button onclick="checkQuiz(2, 'A', this)" class="q-btn-2 p-2.5 bg-white border rounded-lg text-left hover:bg-sky-50 transition">A. 현금 400,000 증가, 부채 160,000 증가, 수익 560,000 증가</button>
+                            <button onclick="checkQuiz(2, 'B', this)" class="q-btn-2 p-2.5 bg-white border rounded-lg text-left hover:bg-sky-50 transition">B. 현금 400,000 증가, 매출채권 160,000 증가, 수익(자본) 560,000 증가</button>
+                            <button onclick="checkQuiz(2, 'C', this)" class="q-btn-2 p-2.5 bg-white border rounded-lg text-left hover:bg-sky-50 transition">C. 현금 400,000 증가, 수익은 수령액인 400,000만 인식</button>
+                            <button onclick="checkQuiz(2, 'D', this)" class="q-btn-2 p-2.5 bg-white border rounded-lg text-left hover:bg-sky-50 transition">D. 매출채권 160,000 증가, 이익잉여금 160,000 증가 (현금 부분은 수익 제외)</button>
+                        </div>
+                        <div id="q-feedback-2" class="hidden text-xs mt-2 p-2.5 rounded"></div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 py-4 mt-8 text-center text-xs text-slate-500 no-print">
+        <div class="max-w-6xl mx-auto px-4">
+            수원대학교 경영공학대학 회계원리 강의자료 | 담당교수: 김동선 교수 | Ch.02 회계거래와 회계등식 (2교시)
+        </div>
+    </footer>
+
+    <!-- Logic Script -->
+    <script>
+        let currentPage = 1;
+        const totalPages = 10;
+
+        function updatePagination() {
+            for (let i = 1; i <= totalPages; i++) {
+                const pageEl = document.getElementById(`page-${i}`);
+                const dotEl = document.getElementById(`dot-${i}`);
+                if (pageEl) {
+                    if (i === currentPage) {
+                        pageEl.classList.add('active');
+                    } else {
+                        pageEl.classList.remove('active');
+                    }
+                }
+                if (dotEl) {
+                    if (i === currentPage) {
+                        dotEl.classList.add('active');
+                    } else {
+                        dotEl.classList.remove('active');
+                    }
+                }
+            }
+            const curIndicator = document.getElementById('current-page-num');
+            if (curIndicator) curIndicator.innerText = currentPage;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function nextPage() {
+            if (currentPage < totalPages) {
+                currentPage++;
+                updatePagination();
+            }
+        }
+
+        function prevPage() {
+            if (currentPage > 1) {
+                currentPage--;
+                updatePagination();
+            }
+        }
+
+        function goToPage(pageNum) {
+            if (pageNum >= 1 && pageNum <= totalPages) {
+                currentPage = pageNum;
+                updatePagination();
+            }
+        }
+
+        function switchMainTab(tab) {
+            const lectureSec = document.getElementById('section-lecture');
+            const practiceSec = document.getElementById('section-practice');
+            const tabLecture = document.getElementById('tab-lecture');
+            const tabPractice = document.getElementById('tab-practice');
+
+            if (tab === 'lecture') {
+                lectureSec.classList.remove('hidden');
+                practiceSec.classList.add('hidden');
+                tabLecture.classList.add('active');
+                tabPractice.classList.remove('active');
+            } else {
+                lectureSec.classList.add('hidden');
+                practiceSec.classList.remove('hidden');
+                tabLecture.classList.remove('active');
+                tabPractice.classList.add('active');
+            }
+        }
+
+        // 실습 1 로직
+        const expData = {
+            1: { asset: 950000, liab: 250000, eq: 700000, desc: "9/18: 용역수익 발생 (+40만) -> 자산(현금 85만+소모품 10만)=₩950,000, 자본(자본금 30만+이익잉여금 40만)=₩700,000" },
+            2: { asset: 570000, liab: 250000, eq: 320000, desc: "9/19~20: 운송비(-5만), 급여(-30만), 배당(-3만) -> 자산(현금 47만+소모품 10만)=₩570,000, 이익잉여금 ₩20,000" },
+            3: { asset: 1100000, liab: 220000, eq: 880000, desc: "9/25~28: 외상상환(-3만), 외상매출(+56만) -> 자산(현금 84만+채권 16만+소모품 10만)=₩1,100,000, 부채 22만, 잉여금 58만" },
+            4: { asset: 630000, liab: 222000, eq: 408000, desc: "9/30 결산: 임차료(-40만), 소모품비(-7만), 미지급이자(+2천) -> 자산=₩630,000, 부채=₩222,000, 자본금=₩300,000, 잉여금=₩108,000" }
+        };
+
+        function applyExpStep(step) {
+            const data = expData[step];
+            document.getElementById('exp-asset').innerText = `₩${data.asset.toLocaleString()}`;
+            document.getElementById('exp-liab').innerText = `₩${data.liab.toLocaleString()}`;
+            document.getElementById('exp-equity').innerText = `₩${data.eq.toLocaleString()}`;
+            document.getElementById('exp-detail-text').innerText = data.desc;
+        }
+
+        // 실습 2: 퀴즈 로직
+        const quizAnswers = {
+            1: { ans: 'B', exp: "현금배당금은 비용이 아니라 사내에 유보된 이익잉여금을 주주에게 직접 환원하는 것이므로 이익잉여금(자본)에서 직접 차감됩니다." },
+            2: { ans: 'B', exp: "용역을 제공한 시점에 전체 용역대가 560,000원을 수익으로 인식하고, 수령한 현금 400,000원과 외상매출금(매출채권) 160,000원을 각각 자산으로 기록합니다." }
+        };
+
+        function checkQuiz(qNum, choice, btn) {
+            const btns = document.querySelectorAll(`.q-btn-${qNum}`);
+            const fb = document.getElementById(`q-feedback-${qNum}`);
+            const correctAns = quizAnswers[qNum].ans;
+
+            btns.forEach(b => {
+                b.className = `q-btn-${qNum} p-2.5 bg-white border rounded-lg text-left transition`;
+            });
+
+            fb.classList.remove('hidden');
+            if (choice === correctAns) {
+                btn.classList.add('bg-emerald-100', 'border-emerald-500', 'text-emerald-900', 'font-bold');
+                fb.className = "text-xs mt-2 p-2.5 rounded bg-emerald-50 text-emerald-900 border border-emerald-200 block";
+                fb.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-600"></i> <strong>정답!</strong> ${quizAnswers[qNum].exp}`;
+            } else {
+                btn.classList.add('bg-rose-100', 'border-rose-500', 'text-rose-900');
+                fb.className = "text-xs mt-2 p-2.5 rounded bg-rose-50 text-rose-900 border border-rose-200 block";
+                fb.innerHTML = `<i class="fa-solid fa-circle-xmark text-rose-600"></i> <strong>다시 생각해보세요!</strong> ${quizAnswers[qNum].exp}`;
+            }
+        }
+
+        function downloadPDF() {
+            switchMainTab('lecture');
+            setTimeout(() => {
+                window.print();
+            }, 300);
+        }
+    </script>
 </body>
 </html>

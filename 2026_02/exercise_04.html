@@ -1,0 +1,135 @@
+﻿<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>[4주차 실습과제] 거래의 기록과 장부 | 수원대학교 회계원리</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Noto Sans KR', sans-serif; }
+    .j-box { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col justify-between">
+
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm">
+    <div class="max-w-4xl mx-auto px-4 flex justify-between items-center h-12">
+      <div class="flex items-center gap-2">
+        <span class="bg-blue-900 text-white text-[11px] px-2 py-0.5 rounded-full font-bold">수원대 회계원리</span>
+        <h1 class="font-bold text-slate-800 text-xs sm:text-sm">4주차 실습과제 및 연습문제</h1>
+      </div>
+      <div class="flex items-center gap-1.5 text-xs">
+        <a href="202602_04_01.html" class="px-2 py-1 bg-slate-100 hover:bg-slate-200 rounded text-slate-700">1차시</a>
+        <a href="202602_04_02.html" class="px-2 py-1 bg-slate-100 hover:bg-slate-200 rounded text-slate-700">2차시</a>
+        <a href="202602_04_03.html" class="px-2 py-1 bg-slate-100 hover:bg-slate-200 rounded text-slate-700">3차시</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-1 max-w-4xl w-full mx-auto px-4 py-6 space-y-6">
+
+    <!-- 배너 -->
+    <div class="bg-gradient-to-r from-blue-900 to-indigo-800 text-white p-6 rounded-2xl shadow-sm">
+      <span class="text-xs bg-white/20 px-2.5 py-1 rounded-full font-semibold mb-2 inline-block">Ch.03 자가진단 및 과제</span>
+      <h2 class="text-xl sm:text-2xl font-extrabold mb-1">4주차 거래의 기록과 장부 실습과제</h2>
+      <p class="text-xs sm:text-sm text-blue-100">개념 퀴즈 3문항을 풀고, 기업 거래 5제의 분개 및 보통예금 잔액을 도출해 보세요.</p>
+    </div>
+
+    <!-- Part 1: 개념 확인 -->
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+      <h3 class="text-base sm:text-lg font-bold text-slate-900 border-b pb-2 flex items-center gap-2">
+        <i class="fa-solid fa-circle-check text-blue-600"></i> [Part 1] 핵심 개념 객관식 퀴즈 (3제)
+      </h3>
+
+      <div class="p-3 bg-slate-50 border rounded-xl space-y-2 text-xs sm:text-sm">
+        <div class="font-bold text-slate-800">Q1. 동적 회계등식에 대한 설명으로 옳은 것은?</div>
+        <div class="space-y-1 text-xs">
+          <div>① 자산 + 부채 = 자본 + 수익 + 비용</div>
+          <div>② 자산 + 비용 = 부채 + 자본 + 수익</div>
+          <div>③ 자산 + 자본 = 부채 + 수익 - 비용</div>
+        </div>
+        <details class="bg-white p-2.5 rounded border text-xs text-blue-900">
+          <summary class="font-bold cursor-pointer text-blue-700">👉 정답 확인</summary>
+          <div class="mt-1.5 leading-relaxed"><strong>정답: ②번</strong> (기초자본 + 수익 - 비용 = 기말자본에서 비용을 좌변으로 이항)</div>
+        </details>
+      </div>
+
+      <div class="p-3 bg-slate-50 border rounded-xl space-y-2 text-xs sm:text-sm">
+        <div class="font-bold text-slate-800">Q2. 다음 중 정상 잔액(Normal Balance)이 차변에 위치하는 것은?</div>
+        <div class="space-y-1 text-xs">
+          <div>① 보통예금, 선급금, 여비교통비</div>
+          <div>② 단기차입금, 선수금, 이자수익</div>
+          <div>③ 미지급금, 자본금, 급여</div>
+        </div>
+        <details class="bg-white p-2.5 rounded border text-xs text-blue-900">
+          <summary class="font-bold cursor-pointer text-blue-700">👉 정답 확인</summary>
+          <div class="mt-1.5 leading-relaxed"><strong>정답: ①번</strong> (자산인 보통예금·선급금과 비용인 여비교통비의 정상 잔액은 차변)</div>
+        </details>
+      </div>
+
+      <div class="p-3 bg-slate-50 border rounded-xl space-y-2 text-xs sm:text-sm">
+        <div class="font-bold text-slate-800">Q3. 분개장에 기록된 분개를 총계정원장으로 옮겨 적는 절차는?</div>
+        <div class="space-y-1 text-xs">
+          <div>① 결산 (Closing)</div>
+          <div>② 전기 (Posting)</div>
+          <div>③ 수정분개 (Adjusting)</div>
+        </div>
+        <details class="bg-white p-2.5 rounded border text-xs text-blue-900">
+          <summary class="font-bold cursor-pointer text-blue-700">👉 정답 확인</summary>
+          <div class="mt-1.5 leading-relaxed"><strong>정답: ②번</strong> (분개장에서 각 계정별 원장으로 옮겨 적는 절차는 '전기')</div>
+        </details>
+      </div>
+    </div>
+
+    <!-- Part 2: 실습 과제 -->
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+      <h3 class="text-base sm:text-lg font-bold text-slate-900 border-b pb-2 flex items-center gap-2">
+        <i class="fa-solid fa-pen-to-square text-blue-600"></i> [Part 2] 실전 종합 분개 및 원장 잔액 계산 과제
+      </h3>
+      <p class="text-xs sm:text-sm text-slate-600">
+        다음 (주)수원의 3월 거래를 읽고 <strong>(1) 거래별 분개</strong>를 작성한 후, <strong>(2) 3월 말 보통예금 최종 잔액</strong>을 산출해 보세요.
+      </p>
+
+      <div class="bg-slate-50 p-4 rounded-xl border text-xs space-y-1.5 leading-relaxed">
+        <div>• <strong>3월 2일:</strong> 자본금 15,000,000원을 출자받아 보통예금에 입금하다.</div>
+        <div>• <strong>3월 7일:</strong> 업무용 사무가구(비품) 3,000,000원을 보통예금에서 이체하여 구매하다.</div>
+        <div>• <strong>3월 15일:</strong> 컨설팅 용역 대금 5,000,000원을 보통예금으로 입금받다.</div>
+        <div>• <strong>3월 22일:</strong> 직원 당월 급여 2,500,000원을 보통예금에서 이체하여 지급하다.</div>
+        <div>• <strong>3월 31일:</strong> 은행 단기차입금 2,000,000원과 이자비용 50,000원을 보통예금에서 상환하다.</div>
+      </div>
+
+      <details class="bg-blue-50 p-4 rounded-xl border border-blue-200 text-xs">
+        <summary class="font-bold text-blue-800 cursor-pointer">👉 모범 분개 및 잔액 해설 펼치기</summary>
+        <div class="mt-3 space-y-3 text-slate-700">
+          <div>
+            <strong class="block mb-1 text-slate-900">[거래별 모범 분개]</strong>
+            <div class="j-box bg-white p-2.5 rounded border text-[11px] space-y-1">
+              <div>3/2: (차) 보통예금 15,000,000 / (대) 자본금 15,000,000</div>
+              <div>3/7: (차) 비품 3,000,000 / (대) 보통예금 3,000,000</div>
+              <div>3/15: (차) 보통예금 5,000,000 / (대) 용역수익 5,000,000</div>
+              <div>3/22: (차) 급여 2,500,000 / (대) 보통예금 2,500,000</div>
+              <div>3/31: (차) 단기차입금 2,000,000, 이자비용 50,000 / (대) 보통예금 2,050,000</div>
+            </div>
+          </div>
+          <div>
+            <strong class="block mb-1 text-slate-900">[3월 말 보통예금 T계정 잔액]</strong>
+            <div class="bg-white p-2.5 rounded border text-xs">
+              • 차변(입금): 15,000,000 + 5,000,000 = 20,000,000원<br>
+              • 대변(출금): 3,000,000 + 2,500,000 + 2,050,000 = 7,550,000원<br>
+              👉 <strong>3월 말 보통예금 차변 잔액: 12,450,000원</strong>
+            </div>
+          </div>
+        </div>
+      </details>
+    </div>
+
+  </main>
+
+  <footer class="text-center py-4 text-slate-400 text-xs border-t bg-white">
+    수원대학교 경영공학대학 회계원리 © 2026
+  </footer>
+
+</body>
+</html>

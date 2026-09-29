@@ -1,0 +1,444 @@
+﻿<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>[4주차 1차시] 계정의 체계와 T계정 | 수원대학교 회계원리</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Noto Sans KR', sans-serif; }
+    .slide-page { display: none; }
+    .slide-page.active { display: flex; animation: fadeIn 0.25s ease-in-out; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+    .page-btn.active { background-color: #2563eb !important; color: white !important; font-weight: bold; border-color: #1d4ed8 !important; }
+
+    @media print {
+      @page { size: A4 landscape; margin: 10mm 12mm; }
+      body { background-color: #ffffff !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; padding: 0 !important; }
+      header, .no-print, #top-nav-controller { display: none !important; }
+      main { max-width: 100% !important; padding: 0 !important; margin: 0 !important; }
+      .slide-page { display: block !important; opacity: 1 !important; page-break-after: always !important; break-after: page !important; min-height: 180mm !important; margin-bottom: 0 !important; border: 1px solid #cbd5e1 !important; border-radius: 12px !important; padding: 24px 28px !important; }
+    }
+  </style>
+</head>
+<body class="bg-slate-100 text-slate-800 antialiased min-h-screen flex flex-col justify-between">
+
+  <!-- 1. 고정 상단 헤더 & 슬라이드 네비게이션 바 -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm no-print">
+    <!-- 최상단 타이틀 바 -->
+    <div class="max-w-5xl mx-auto px-4 flex justify-between items-center h-12">
+      <div class="flex items-center gap-2">
+        <span class="bg-blue-900 text-white text-[11px] px-2 py-0.5 rounded-full font-bold">수원대 회계원리</span>
+        <h1 class="font-bold text-slate-800 text-xs sm:text-sm">4주차 1차시: 계정과 T계정</h1>
+      </div>
+      <div class="flex items-center gap-2">
+        <button onclick="window.print()" class="text-[11px] bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold px-2.5 py-1 rounded border border-slate-300 transition flex items-center gap-1">
+          <i class="fa-solid fa-print"></i> PDF/인쇄
+        </button>
+      </div>
+    </div>
+
+    <!-- ★ 상단 슬라이드 퀵 이동 버튼 바 (1~10) ★ -->
+    <div id="top-nav-controller" class="border-t border-slate-100 bg-slate-50/95 py-2 px-4 shadow-inner">
+      <div class="max-w-5xl mx-auto flex items-center justify-between gap-2">
+        <button onclick="prevPage()" class="px-3 py-1.5 bg-white hover:bg-slate-100 text-slate-700 text-xs font-bold rounded-lg border border-slate-300 transition flex items-center gap-1 shrink-0">
+          <i class="fa-solid fa-chevron-left text-[10px]"></i> <span class="hidden sm:inline">이전</span>
+        </button>
+        
+        <div class="flex items-center gap-1.5 overflow-x-auto py-0.5 px-1 max-w-full">
+          <button onclick="goToPage(1)" class="page-btn active w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">1</button>
+          <button onclick="goToPage(2)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">2</button>
+          <button onclick="goToPage(3)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">3</button>
+          <button onclick="goToPage(4)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">4</button>
+          <button onclick="goToPage(5)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">5</button>
+          <button onclick="goToPage(6)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">6</button>
+          <button onclick="goToPage(7)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">7</button>
+          <button onclick="goToPage(8)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">8</button>
+          <button onclick="goToPage(9)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">9</button>
+          <button onclick="goToPage(10)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">10</button>
+        </div>
+
+        <button onclick="nextPage()" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-lg transition flex items-center gap-1 shrink-0">
+          <span class="hidden sm:inline">다음</span> <i class="fa-solid fa-chevron-right text-[10px]"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- 2. 한 화면 단일 슬라이드 컨테이너 -->
+  <main class="flex-1 max-w-4xl w-full mx-auto px-4 py-4 flex flex-col justify-center">
+
+    <!-- Slide 1: 표지 -->
+    <div class="slide-page active bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-1">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 01 / 10</span>
+        <span>수원대학교 경영공학대학</span>
+      </div>
+      <div class="text-center my-auto py-6">
+        <div class="inline-block p-4 bg-blue-50 text-blue-700 rounded-2xl mb-3">
+          <i class="fa-solid fa-scale-balanced text-4xl"></i>
+        </div>
+        <span class="text-xs font-bold text-blue-700 tracking-wider block mb-1">CH.03 거래의 기록과 회계장부</span>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mb-3">1차시: 계정의 체계와 T계정</h2>
+        <p class="text-slate-600 text-xs sm:text-sm max-w-lg mx-auto leading-relaxed">
+          동적 회계등식의 원리를 이해하고,<br>T계정의 차변·대변 기입 규칙 및 정상 잔액을 마스터합니다.
+        </p>
+      </div>
+      <div class="text-center text-xs text-slate-400 border-t pt-3">
+        상단의 숫자 버튼(1~10) 또는 키보드 방향키(←, →)로 슬라이드를 넘길 수 있습니다.
+      </div>
+    </div>
+
+    <!-- Slide 2: 학습 목표 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-2">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 02 / 10</span>
+        <span>학습 목표 (50분 설계)</span>
+      </div>
+      <div class="my-auto">
+        <h3 class="text-lg sm:text-xl font-bold text-slate-900 mb-5 flex items-center gap-2">
+          <i class="fa-solid fa-bullseye text-blue-600"></i> 이번 1차시 핵심 학습 목표
+        </h3>
+        <div class="grid sm:grid-cols-3 gap-3.5">
+          <div class="p-4 bg-slate-50 border rounded-xl">
+            <span class="w-6 h-6 rounded bg-blue-600 text-white font-bold flex items-center justify-center text-xs mb-2">1</span>
+            <h4 class="font-bold text-slate-800 text-xs sm:text-sm mb-1">동적 회계등식 확장</h4>
+            <p class="text-xs text-slate-600 leading-relaxed">$자산 + 비용 = 부채 + 자본 + 수익$의 도출 원리를 이해한다.</p>
+          </div>
+          <div class="p-4 bg-slate-50 border rounded-xl">
+            <span class="w-6 h-6 rounded bg-blue-600 text-white font-bold flex items-center justify-center text-xs mb-2">2</span>
+            <h4 class="font-bold text-slate-800 text-xs sm:text-sm mb-1">5대 계정과목 분류</h4>
+            <p class="text-xs text-slate-600 leading-relaxed">외상매출금 vs 미수금, 외상매입금 vs 미지급금 등 유사 계정을 구분한다.</p>
+          </div>
+          <div class="p-4 bg-slate-50 border rounded-xl">
+            <span class="w-6 h-6 rounded bg-blue-600 text-white font-bold flex items-center justify-center text-xs mb-2">3</span>
+            <h4 class="font-bold text-slate-800 text-xs sm:text-sm mb-1">T계정 차·대변 원칙</h4>
+            <p class="text-xs text-slate-600 leading-relaxed">각 계정별 증가/감소의 위치와 정상 잔액(Normal Balance)을 체득한다.</p>
+          </div>
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3 flex justify-between">
+        <span>시간 배분: 이론 25분 / 실습 25분</span>
+        <span>Check: 왼쪽(Debit)과 오른쪽(Credit)</span>
+      </div>
+    </div>
+
+    <!-- Slide 3: 동적 회계등식 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-3">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 03 / 10</span>
+        <span>이론 심화 1</span>
+      </div>
+      <div class="my-auto">
+        <h3 class="text-lg sm:text-xl font-bold text-slate-900 mb-3 flex items-center gap-2">
+          <i class="fa-solid fa-arrow-trend-up text-blue-600"></i> 동적 회계등식(Dynamic Equation)의 원리
+        </h3>
+        <p class="text-xs sm:text-sm text-slate-600 mb-4 leading-relaxed">
+          정적 등식(스냅샷)에 영업활동(수익과 비용)이 결합되어 균형을 이루는 과정입니다.
+        </p>
+        <div class="bg-slate-900 text-white p-5 rounded-xl text-center space-y-2">
+          <div class="text-slate-400 text-xs">기초자본 + (수익 - 비용) = 기말자본</div>
+          <div class="text-base sm:text-xl font-extrabold text-blue-400 tracking-wide">
+            자산 + 비용(차변 합) = 부채 + 자본 + 수익(대변 합)
+          </div>
+        </div>
+        <div class="mt-4 p-3 bg-blue-50 border border-blue-100 rounded-lg text-xs text-slate-700 leading-relaxed">
+          💡 <strong>핵심 논리:</strong> 등호(=) 좌측의 <strong>자산과 비용은 차변(왼쪽)</strong>에서 증가하고, 우측의 <strong>부채, 자본, 수익은 대변(오른쪽)</strong>에서 증가합니다.
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3">
+        대차평균의 원리가 성립하는 수학적 근거
+      </div>
+    </div>
+
+    <!-- Slide 4: 계정과목 체계표 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-4">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 04 / 10</span>
+        <span>이론 심화 2</span>
+      </div>
+      <div class="my-auto">
+        <h3 class="text-lg sm:text-xl font-bold text-slate-900 mb-3 flex items-center gap-2">
+          <i class="fa-solid fa-folder-tree text-blue-600"></i> 5대 계정과목 분류 체계
+        </h3>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse text-xs">
+            <thead>
+              <tr class="bg-slate-100 border-b text-slate-700">
+                <th class="p-2.5">요소</th>
+                <th class="p-2.5">대표 계정과목</th>
+                <th class="p-2.5">정상 잔액</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100">
+              <tr><td class="p-2.5 font-bold text-blue-700">자산</td><td class="p-2.5">현금, 보통예금, 외상매출금, 미수금, 선급금, 비품</td><td class="p-2.5 font-semibold text-blue-600">차변 (Left)</td></tr>
+              <tr><td class="p-2.5 font-bold text-rose-700">부채</td><td class="p-2.5">외상매입금, 미지급금, 선수금, 예수금, 단기차입금</td><td class="p-2.5 font-semibold text-rose-600">대변 (Right)</td></tr>
+              <tr><td class="p-2.5 font-bold text-purple-700">자본</td><td class="p-2.5">자본금, 이익잉여금</td><td class="p-2.5 font-semibold text-purple-600">대변 (Right)</td></tr>
+              <tr><td class="p-2.5 font-bold text-amber-700">비용</td><td class="p-2.5">급여, 임차료, 수도광열비, 여비교통비</td><td class="p-2.5 font-semibold text-amber-600">차변 (Left)</td></tr>
+              <tr><td class="p-2.5 font-bold text-emerald-700">수익</td><td class="p-2.5">용역수익, 상품매출, 이자수익</td><td class="p-2.5 font-semibold text-emerald-600">대변 (Right)</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3">
+        상거래 채권/채무 vs 비상거래 채권/채무 구분 필수
+      </div>
+    </div>
+
+    <!-- Slide 5: T계정 구조 및 기입 원칙 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-5">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 05 / 10</span>
+        <span>원리 정리 1</span>
+      </div>
+      <div class="my-auto">
+        <h3 class="text-lg sm:text-xl font-bold text-slate-900 mb-3 flex items-center gap-2">
+          <i class="fa-solid fa-table-columns text-blue-600"></i> T계정 차변·대변 기입 규칙
+        </h3>
+        <div class="grid sm:grid-cols-2 gap-4 my-2">
+          <div class="border-2 border-blue-500 rounded-xl p-4 bg-blue-50/30">
+            <div class="text-center font-bold text-blue-900 border-b border-blue-200 pb-1.5 mb-2 text-sm">
+              [ 차변 / Debit / 왼쪽 ]
+            </div>
+            <ul class="space-y-1.5 text-xs text-slate-700">
+              <li><i class="fa-solid fa-plus text-blue-600 mr-1"></i> <strong>자산의 증가 (+)</strong></li>
+              <li><i class="fa-solid fa-minus text-rose-500 mr-1"></i> 부채의 감소 (-)</li>
+              <li><i class="fa-solid fa-minus text-purple-500 mr-1"></i> 자본의 감소 (-)</li>
+              <li><i class="fa-solid fa-plus text-amber-600 mr-1"></i> <strong>비용의 발생 (+)</strong></li>
+            </ul>
+          </div>
+          <div class="border-2 border-rose-500 rounded-xl p-4 bg-rose-50/30">
+            <div class="text-center font-bold text-rose-900 border-b border-rose-200 pb-1.5 mb-2 text-sm">
+              [ 대변 / Credit / 오른쪽 ]
+            </div>
+            <ul class="space-y-1.5 text-xs text-slate-700">
+              <li><i class="fa-solid fa-minus text-blue-500 mr-1"></i> 자산의 감소 (-)</li>
+              <li><i class="fa-solid fa-plus text-rose-600 mr-1"></i> <strong>부채의 증가 (+)</strong></li>
+              <li><i class="fa-solid fa-plus text-purple-600 mr-1"></i> <strong>자본의 증가 (+)</strong></li>
+              <li><i class="fa-solid fa-plus text-emerald-600 mr-1"></i> <strong>수익의 발생 (+)</strong></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3">
+        차변(Debit: Dr.) / 대변(Credit: Cr.)
+      </div>
+    </div>
+
+    <!-- Slide 6: 정상 잔액 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-6">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 06 / 10</span>
+        <span>원리 정리 2</span>
+      </div>
+      <div class="my-auto">
+        <h3 class="text-lg sm:text-xl font-bold text-slate-900 mb-3 flex items-center gap-2">
+          <i class="fa-solid fa-scale-unbalanced-flip text-blue-600"></i> 정상 잔액(Normal Balance)의 법칙
+        </h3>
+        <p class="text-xs text-slate-600 mb-4">계정의 증가액이 감소액보다 크므로, 증가하는 쪽에 잔액이 남습니다.</p>
+        <div class="grid grid-cols-5 gap-2 text-center text-xs">
+          <div class="bg-blue-50 border border-blue-200 p-3 rounded-lg"><span class="block text-blue-600 font-bold mb-1">자산</span><strong>차변</strong></div>
+          <div class="bg-rose-50 border border-rose-200 p-3 rounded-lg"><span class="block text-rose-600 font-bold mb-1">부채</span><strong>대변</strong></div>
+          <div class="bg-purple-50 border border-purple-200 p-3 rounded-lg"><span class="block text-purple-600 font-bold mb-1">자본</span><strong>대변</strong></div>
+          <div class="bg-amber-50 border border-amber-200 p-3 rounded-lg"><span class="block text-amber-600 font-bold mb-1">비용</span><strong>차변</strong></div>
+          <div class="bg-emerald-50 border border-emerald-200 p-3 rounded-lg"><span class="block text-emerald-600 font-bold mb-1">수익</span><strong>대변</strong></div>
+        </div>
+        <div class="mt-4 p-3 bg-rose-50 border border-rose-200 rounded-lg text-xs text-rose-900">
+          ⚠️ <strong>오류 감지:</strong> 만약 현금 계정 잔액이 대변에 나타나면, 분개나 전기에 착오가 발생한 것입니다!
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3">
+        시산표 오류 검증의 기본 잣대
+      </div>
+    </div>
+
+    <!-- Slide 7: [실습 1] 계정과목 판별 워크시트 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-7">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-amber-600 bg-amber-50 px-2.5 py-1 rounded border border-amber-200">SLIDE 07 / 10 · 실습 1</span>
+        <span>현장 실습</span>
+      </div>
+      <div class="my-auto">
+        <h3 class="text-lg sm:text-xl font-bold text-slate-900 mb-2 flex items-center gap-2">
+          <i class="fa-solid fa-pen-clip text-amber-600"></i> [실습 1] 8대 계정과목 요소 판별
+        </h3>
+        <p class="text-xs text-slate-600 mb-3">각 과목의 요소와 정상 잔액 위치(차변/대변)를 맞춰보세요:</p>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
+          <div class="p-2.5 bg-slate-50 border rounded">1. 선수금 <span class="text-slate-400">[ ? / ? ]</span></div>
+          <div class="p-2.5 bg-slate-50 border rounded">2. 선급금 <span class="text-slate-400">[ ? / ? ]</span></div>
+          <div class="p-2.5 bg-slate-50 border rounded">3. 미수금 <span class="text-slate-400">[ ? / ? ]</span></div>
+          <div class="p-2.5 bg-slate-50 border rounded">4. 미지급금 <span class="text-slate-400">[ ? / ? ]</span></div>
+          <div class="p-2.5 bg-slate-50 border rounded">5. 예수금 <span class="text-slate-400">[ ? / ? ]</span></div>
+          <div class="p-2.5 bg-slate-50 border rounded">6. 감가상각비 <span class="text-slate-400">[ ? / ? ]</span></div>
+          <div class="p-2.5 bg-slate-50 border rounded">7. 이익잉여금 <span class="text-slate-400">[ ? / ? ]</span></div>
+          <div class="p-2.5 bg-slate-50 border rounded">8. 임대료수익 <span class="text-slate-400">[ ? / ? ]</span></div>
+        </div>
+        <button onclick="document.getElementById('ans-s7').classList.toggle('hidden')" class="mt-3 text-xs bg-amber-100 hover:bg-amber-200 text-amber-900 font-bold px-3 py-1.5 rounded transition">
+          👉 모범 정답 보기 / 닫기
+        </button>
+        <div id="ans-s7" class="hidden mt-2 p-2.5 bg-slate-100 rounded text-[11px] text-slate-700 leading-relaxed">
+          1. 선수금(부채/대변) | 2. 선급금(자산/차변) | 3. 미수금(자산/차변) | 4. 미지급금(부채/대변)<br>
+          5. 예수금(부채/대변) | 6. 감가상각비(비용/차변) | 7. 이익잉여금(자본/대변) | 8. 임대료수익(수익/대변)
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3">
+        채권은 자산, 채무는 부채
+      </div>
+    </div>
+
+    <!-- Slide 8: [실습 2] 거래 발생과 T계정 기록 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-8">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-amber-600 bg-amber-50 px-2.5 py-1 rounded border border-amber-200">SLIDE 08 / 10 · 실습 2</span>
+        <span>현장 실습</span>
+      </div>
+      <div class="my-auto">
+        <h3 class="text-lg sm:text-xl font-bold text-slate-900 mb-2 flex items-center gap-2">
+          <i class="fa-solid fa-calculator text-amber-600"></i> [실습 2] 거래 발생 시 T계정 증감 기록
+        </h3>
+        <p class="text-xs text-slate-600 mb-3">
+          <strong>[상황]</strong> 은행에서 현금 10,000,000원을 단기 차입하여 보통예금에 입금하다.
+        </p>
+        <div class="grid sm:grid-cols-2 gap-3 text-xs">
+          <div class="border rounded-lg p-3 bg-slate-50">
+            <span class="font-bold text-blue-700 block mb-1">보통예금 (자산 증가)</span>
+            <div class="bg-blue-100 text-blue-900 p-2 rounded text-center font-bold">
+              👉 보통예금 T계정 [차변(왼쪽)]에 10,000,000원
+            </div>
+          </div>
+          <div class="border rounded-lg p-3 bg-slate-50">
+            <span class="font-bold text-rose-700 block mb-1">단기차입금 (부채 증가)</span>
+            <div class="bg-rose-100 text-rose-900 p-2 rounded text-center font-bold">
+              👉 단기차입금 T계정 [대변(오른쪽)]에 10,000,000원
+            </div>
+          </div>
+        </div>
+        <div class="mt-3 p-2 bg-emerald-50 border border-emerald-200 rounded text-xs text-emerald-800 font-semibold text-center">
+          대차평균: 차변 10,000,000원 = 대변 10,000,000원 일치!
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3">
+        거래의 이중성이 T계정에 차/대변으로 동시 반영되는 원리
+      </div>
+    </div>
+
+    <!-- Slide 9: 핵심 요약 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-9">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 09 / 10</span>
+        <span>핵심 요약</span>
+      </div>
+      <div class="my-auto">
+        <h3 class="text-lg sm:text-xl font-bold text-slate-900 mb-4 flex items-center gap-2">
+          <i class="fa-solid fa-list-check text-blue-600"></i> 1차시 강의 핵심 요약
+        </h3>
+        <div class="space-y-2.5 text-xs sm:text-sm">
+          <div class="p-3 bg-slate-50 border rounded-xl flex items-center gap-2.5">
+            <span class="bg-blue-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold shrink-0">1</span>
+            <span><strong>동적 등식:</strong> $자산 + 비용 = 부채 + 자본 + 수익$의 수학적 대칭 균형</span>
+          </div>
+          <div class="p-3 bg-slate-50 border rounded-xl flex items-center gap-2.5">
+            <span class="bg-blue-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold shrink-0">2</span>
+            <span><strong>T계정 기입:</strong> 자산·비용 증가는 차변(Left), 부채·자본·수익 증가는 대변(Right)</span>
+          </div>
+          <div class="p-3 bg-slate-50 border rounded-xl flex items-center gap-2.5">
+            <span class="bg-blue-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold shrink-0">3</span>
+            <span><strong>정상 잔액:</strong> 각 계정의 증가가 기입되는 위치에 잔액이 남는 것이 원칙</span>
+          </div>
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3">
+        다음 2차시: 분개(Journalizing)와 분개장 실무
+      </div>
+    </div>
+
+    <!-- Slide 10: 인터랙티브 퀴즈 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-10">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded border border-emerald-200">SLIDE 10 / 10 · 퀴즈</span>
+        <span>1차시 마무리</span>
+      </div>
+      <div class="my-auto">
+        <h3 class="text-base sm:text-lg font-bold text-slate-900 mb-2 flex items-center gap-2">
+          <i class="fa-solid fa-circle-question text-emerald-600"></i> [자가진단 퀴즈]
+        </h3>
+        <div class="bg-slate-50 p-4 rounded-xl border mb-3">
+          <p class="text-xs sm:text-sm font-bold text-slate-800 mb-2">
+            Q. 다음 중 정상 잔액이 '대변(Right)'에 남는 계정으로만 묶인 것은?
+          </p>
+          <div class="space-y-1.5">
+            <button onclick="checkQuiz(1, 'A', this)" class="q-btn-1 w-full text-left p-2 bg-white border rounded text-xs hover:bg-slate-100 transition">A) 보통예금, 비품, 급여</button>
+            <button onclick="checkQuiz(1, 'B', this)" class="q-btn-1 w-full text-left p-2 bg-white border rounded text-xs hover:bg-slate-100 transition">B) 단기차입금, 자본금, 용역수익</button>
+            <button onclick="checkQuiz(1, 'C', this)" class="q-btn-1 w-full text-left p-2 bg-white border rounded text-xs hover:bg-slate-100 transition">C) 선급금, 외상매출금, 임차료</button>
+          </div>
+          <div id="q-feedback-1" class="hidden mt-2 p-2 rounded text-xs"></div>
+        </div>
+        <div class="p-3 bg-blue-50 border border-blue-100 rounded-xl text-center text-xs">
+          🎉 1차시 완료! 10분 휴식 후 <strong>[2차시: 분개 실무]</strong>로 이어집니다.
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3 flex justify-between">
+        <span>4주차 1차시 종료</span>
+        <a href="202602_04_02.html" class="text-blue-600 font-bold hover:underline">2차시 이동 →</a>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- 하단 저작권 푸터 -->
+  <footer class="text-center py-3 text-slate-400 text-xs border-t bg-white no-print">
+    수원대학교 경영공학대학 회계원리 © 2026
+  </footer>
+
+  <script>
+    let currentPage = 1;
+    const totalPages = 10;
+
+    function goToPage(page) {
+      if (page < 1 || page > totalPages) return;
+      document.querySelectorAll('.slide-page').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.page-btn').forEach(d => d.classList.remove('active'));
+      
+      const target = document.getElementById(`page-${page}`);
+      if (target) target.classList.add('active');
+      
+      const btns = document.querySelectorAll('.page-btn');
+      if (btns[page - 1]) btns[page - 1].classList.add('active');
+      
+      currentPage = page;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function nextPage() { if (currentPage < totalPages) goToPage(currentPage + 1); }
+    function prevPage() { if (currentPage > 1) goToPage(currentPage - 1); }
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === 'PageDown') nextPage();
+      if (e.key === 'ArrowLeft' || e.key === 'PageUp') prevPage();
+    });
+
+    const quizAnswers = {
+      1: { ans: 'B', exp: '부채, 자본, 수익 계정은 대변에 증가가 기록되므로 정상 잔액이 대변에 남습니다.' }
+    };
+
+    function checkQuiz(qNum, choice, btn) {
+      const btns = document.querySelectorAll(`.q-btn-${qNum}`);
+      const fb = document.getElementById(`q-feedback-${qNum}`);
+      btns.forEach(b => { b.className = `q-btn-${qNum} w-full text-left p-2 bg-white border rounded text-xs transition`; });
+      fb.classList.remove('hidden');
+
+      if (choice === quizAnswers[qNum].ans) {
+        btn.classList.add('bg-emerald-100', 'border-emerald-500', 'text-emerald-900', 'font-bold');
+        fb.className = "text-xs mt-2 p-2 rounded bg-emerald-50 text-emerald-900 border border-emerald-200 block";
+        fb.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-600 mr-1"></i> <strong>정답입니다!</strong> ${quizAnswers[qNum].exp}`;
+      } else {
+        btn.classList.add('bg-rose-100', 'border-rose-500', 'text-rose-900');
+        fb.className = "text-xs mt-2 p-2 rounded bg-rose-50 text-rose-900 border border-rose-200 block";
+        fb.innerHTML = `<i class="fa-solid fa-circle-xmark text-rose-600 mr-1"></i> <strong>오답입니다!</strong> ${quizAnswers[qNum].exp}`;
+      }
+    }
+  </script>
+</body>
+</html>

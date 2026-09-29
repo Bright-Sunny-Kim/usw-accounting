@@ -1,0 +1,419 @@
+﻿<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>[4주차 2차시] 분개 실무와 분개장 | 수원대학교 회계원리</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Noto Sans KR', sans-serif; }
+    .slide-page { display: none; }
+    .slide-page.active { display: flex; animation: fadeIn 0.25s ease-in-out; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+    .page-btn.active { background-color: #2563eb !important; color: white !important; font-weight: bold; border-color: #1d4ed8 !important; }
+    .j-box { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+
+    @media print {
+      @page { size: A4 landscape; margin: 10mm 12mm; }
+      body { background-color: #ffffff !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; padding: 0 !important; }
+      header, .no-print, #top-nav-controller { display: none !important; }
+      main { max-width: 100% !important; padding: 0 !important; margin: 0 !important; }
+      .slide-page { display: block !important; opacity: 1 !important; page-break-after: always !important; break-after: page !important; min-height: 180mm !important; margin-bottom: 0 !important; border: 1px solid #cbd5e1 !important; border-radius: 12px !important; padding: 24px 28px !important; }
+    }
+  </style>
+</head>
+<body class="bg-slate-100 text-slate-800 antialiased min-h-screen flex flex-col justify-between">
+
+  <!-- 고정 상단 헤더 & 슬라이드 퀵 이동 바 -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm no-print">
+    <div class="max-w-5xl mx-auto px-4 flex justify-between items-center h-12">
+      <div class="flex items-center gap-2">
+        <span class="bg-blue-900 text-white text-[11px] px-2 py-0.5 rounded-full font-bold">수원대 회계원리</span>
+        <h1 class="font-bold text-slate-800 text-xs sm:text-sm">4주차 2차시: 분개 실무와 분개장</h1>
+      </div>
+      <div class="flex items-center gap-2">
+        <button onclick="window.print()" class="text-[11px] bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold px-2.5 py-1 rounded border border-slate-300 transition flex items-center gap-1">
+          <i class="fa-solid fa-print"></i> PDF/인쇄
+        </button>
+      </div>
+    </div>
+
+    <!-- 상단 1~10 퀵 버튼 -->
+    <div id="top-nav-controller" class="border-t border-slate-100 bg-slate-50/95 py-2 px-4 shadow-inner">
+      <div class="max-w-5xl mx-auto flex items-center justify-between gap-2">
+        <button onclick="prevPage()" class="px-3 py-1.5 bg-white hover:bg-slate-100 text-slate-700 text-xs font-bold rounded-lg border border-slate-300 transition flex items-center gap-1 shrink-0">
+          <i class="fa-solid fa-chevron-left text-[10px]"></i> <span class="hidden sm:inline">이전</span>
+        </button>
+        <div class="flex items-center gap-1.5 overflow-x-auto py-0.5 px-1 max-w-full">
+          <button onclick="goToPage(1)" class="page-btn active w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">1</button>
+          <button onclick="goToPage(2)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">2</button>
+          <button onclick="goToPage(3)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">3</button>
+          <button onclick="goToPage(4)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">4</button>
+          <button onclick="goToPage(5)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">5</button>
+          <button onclick="goToPage(6)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">6</button>
+          <button onclick="goToPage(7)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">7</button>
+          <button onclick="goToPage(8)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">8</button>
+          <button onclick="goToPage(9)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">9</button>
+          <button onclick="goToPage(10)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">10</button>
+        </div>
+        <button onclick="nextPage()" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-lg transition flex items-center gap-1 shrink-0">
+          <span class="hidden sm:inline">다음</span> <i class="fa-solid fa-chevron-right text-[10px]"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- 1화면 단일 슬라이드 영역 -->
+  <main class="flex-1 max-w-4xl w-full mx-auto px-4 py-4 flex flex-col justify-center">
+
+    <!-- Slide 1: 표지 -->
+    <div class="slide-page active bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-1">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 01 / 10</span>
+        <span>수원대학교 경영공학대학</span>
+      </div>
+      <div class="text-center my-auto py-6">
+        <div class="inline-block p-4 bg-blue-50 text-blue-700 rounded-2xl mb-3">
+          <i class="fa-solid fa-pen-nib text-4xl"></i>
+        </div>
+        <span class="text-xs font-bold text-blue-700 tracking-wider block mb-1">CH.03 거래의 기록과 회계장부</span>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mb-3">2차시: 분개(Journalizing)와 분개장</h2>
+        <p class="text-slate-600 text-xs sm:text-sm max-w-lg mx-auto leading-relaxed">
+          거래 분석에서 분개장 기록까지의 3단계 메커니즘과<br>
+          복합분개(Compound Entry) 실무 테크닉을 집중 훈련합니다.
+        </p>
+      </div>
+      <div class="text-center text-xs text-slate-400 border-t pt-3">
+        상단 퀵 버튼(1~10)으로 원하는 슬라이드로 이동할 수 있습니다.
+      </div>
+    </div>
+
+    <!-- Slide 2: 학습 목표 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-2">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 02 / 10</span>
+        <span>학습 목표 (50분 설계)</span>
+      </div>
+      <div class="my-auto">
+        <h3 class="text-lg sm:text-xl font-bold text-slate-900 mb-4 flex items-center gap-2">
+          <i class="fa-solid fa-bullseye text-blue-600"></i> 2차시 핵심 학습 목표
+        </h3>
+        <div class="grid sm:grid-cols-3 gap-3.5">
+          <div class="p-4 bg-slate-50 border rounded-xl">
+            <span class="w-6 h-6 rounded bg-blue-600 text-white font-bold flex items-center justify-center text-xs mb-2">1</span>
+            <h4 class="font-bold text-slate-800 text-xs sm:text-sm mb-1">분개의 3단계 숙달</h4>
+            <p class="text-xs text-slate-600 leading-relaxed">거래 식별 $\rightarrow$ 계정 증감 판별 $\rightarrow$ 대차 금액 일치 원칙 완벽 적용</p>
+          </div>
+          <div class="p-4 bg-slate-50 border rounded-xl">
+            <span class="w-6 h-6 rounded bg-blue-600 text-white font-bold flex items-center justify-center text-xs mb-2">2</span>
+            <h4 class="font-bold text-slate-800 text-xs sm:text-sm mb-1">복합분개 마스터</h4>
+            <p class="text-xs text-slate-600 leading-relaxed">계약금 선지급 및 외상 잔액 등 3개 이상 계정이 결합된 거래 분개 작성</p>
+          </div>
+          <div class="p-4 bg-slate-50 border rounded-xl">
+            <span class="w-6 h-6 rounded bg-blue-600 text-white font-bold flex items-center justify-center text-xs mb-2">3</span>
+            <h4 class="font-bold text-slate-800 text-xs sm:text-sm mb-1">분개장 서식 이해</h4>
+            <p class="text-xs text-slate-600 leading-relaxed">원시 장부로서 일자, 적요, 원장면수(F), 대차 금액 기입 규칙 습득</p>
+          </div>
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3 flex justify-between">
+        <span>시간: 이론 20분 / 집중 실습 30분</span>
+        <span>Check: 차변합계 = 대변합계</span>
+      </div>
+    </div>
+
+    <!-- Slide 3: 분개의 개념 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-3">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 03 / 10</span>
+        <span>이론 정리 1</span>
+      </div>
+      <div class="my-auto">
+        <h3 class="text-lg sm:text-xl font-bold text-slate-900 mb-3 flex items-center gap-2">
+          <i class="fa-solid fa-book-bookmark text-blue-600"></i> 분개(Journalizing)의 의의와 역할
+        </h3>
+        <p class="text-xs sm:text-sm text-slate-600 mb-4 leading-relaxed">
+          분개란 거래가 일어났을 때 <strong>(1) 어떤 계정의, (2) 차변/대변 어느 쪽에, (3) 얼마로 기록할지</strong> 결정하는 과정입니다.
+        </p>
+        <div class="grid sm:grid-cols-2 gap-3 text-xs">
+          <div class="p-3.5 bg-blue-50 border border-blue-200 rounded-xl">
+            <strong class="text-blue-900 text-sm block mb-1">왜 원장에 바로 적지 않는가?</strong>
+            <p class="text-slate-600 leading-relaxed">원장에 곧바로 적으면 거래의 원인과 결과를 동시에 파악하기 어렵고, 오류가 났을 때 원인을 추적하기 어렵습니다.</p>
+          </div>
+          <div class="p-3.5 bg-emerald-50 border border-emerald-200 rounded-xl">
+            <strong class="text-emerald-900 text-sm block mb-1">원시 장부(Book of Original Entry)</strong>
+            <p class="text-slate-600 leading-relaxed">분개장(Journal)에 일자순으로 먼저 기록함으로써 거래 누락을 방지하고 양쪽 대차 균형을 1차 검증합니다.</p>
+          </div>
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3">
+        거래의 원인과 결과를 한 줄에 묶어주는 역할
+      </div>
+    </div>
+
+    <!-- Slide 4: 분개 3단계 메커니즘 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-4">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 04 / 10</span>
+        <span>이론 정리 2</span>
+      </div>
+      <div class="my-auto">
+        <h3 class="text-lg sm:text-xl font-bold text-slate-900 mb-4 flex items-center gap-2">
+          <i class="fa-solid fa-shoe-prints text-blue-600"></i> 분개의 3단계 절차
+        </h3>
+        <div class="space-y-3 text-xs sm:text-sm">
+          <div class="p-3 bg-slate-50 border rounded-xl flex items-start gap-3">
+            <span class="bg-blue-600 text-white rounded-lg px-2 py-1 text-xs font-bold shrink-0">STEP 1</span>
+            <div>
+              <strong class="text-slate-800 block mb-0.5">거래 분석 및 관련 계정 식별</strong>
+              <p class="text-slate-600 text-xs">증빙서류(세금계산서, 영수증)를 통해 영향을 받는 5대 요소와 계정과목을 찾는다.</p>
+            </div>
+          </div>
+          <div class="p-3 bg-slate-50 border rounded-xl flex items-start gap-3">
+            <span class="bg-blue-600 text-white rounded-lg px-2 py-1 text-xs font-bold shrink-0">STEP 2</span>
+            <div>
+              <strong class="text-slate-800 block mb-0.5">차변 / 대변 증감 결정</strong>
+              <p class="text-slate-600 text-xs">거래의 8요소 규칙에 따라 각 계정이 차변(왼쪽)인지 대변(오른쪽)인지 판정한다.</p>
+            </div>
+          </div>
+          <div class="p-3 bg-slate-50 border rounded-xl flex items-start gap-3">
+            <span class="bg-blue-600 text-white rounded-lg px-2 py-1 text-xs font-bold shrink-0">STEP 3</span>
+            <div>
+              <strong class="text-slate-800 block mb-0.5">금액 기록 및 대차 일치 확인</strong>
+              <p class="text-slate-600 text-xs">차변 금액 합계와 대변 금액 합계가 일치하는지 최종 확인한다.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3">
+        차변은 왼쪽에 딱 붙여 쓰고, 대변은 오른쪽으로 한 칸 들여쓰는 것이 관례
+      </div>
+    </div>
+
+    <!-- Slide 5: 단순분개 vs 복합분개 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-5">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 05 / 10</span>
+        <span>실무 이론</span>
+      </div>
+      <div class="my-auto">
+        <h3 class="text-lg sm:text-xl font-bold text-slate-900 mb-3 flex items-center gap-2">
+          <i class="fa-solid fa-code-fork text-blue-600"></i> 단순분개 vs 복합분개(Compound Entry)
+        </h3>
+        <div class="grid sm:grid-cols-2 gap-3 text-xs mb-3">
+          <div class="border rounded-xl p-3.5 bg-slate-50">
+            <strong class="text-slate-800 text-xs font-bold block mb-1">단순분개 (Simple)</strong>
+            <p class="text-slate-600 mb-2">차변 1개 계정 : 대변 1개 계정 1:1 대응</p>
+            <div class="j-box bg-white p-2 rounded border text-[11px]">
+              (차) 현금 100 / (대) 자본금 100
+            </div>
+          </div>
+          <div class="border rounded-xl p-3.5 bg-blue-50/50 border-blue-200">
+            <strong class="text-blue-900 text-xs font-bold block mb-1">복합분개 (Compound)</strong>
+            <p class="text-slate-600 mb-2">어느 한쪽 또는 양쪽에 2개 이상의 계정이 결합</p>
+            <div class="j-box bg-white p-2 rounded border text-[11px]">
+              (차) 차량운반구 100<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;(대) 현금 30, 미지급금 70
+            </div>
+          </div>
+        </div>
+        <p class="text-[11px] text-slate-500 bg-slate-100 p-2.5 rounded-lg">
+          💡 복합분개 시에도 <strong>[차변 총액 = 대변 총액]</strong> 공식은 절대적으로 유지되어야 합니다.
+        </p>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3">
+        실제 기업 거래의 80% 이상은 복합분개로 발생
+      </div>
+    </div>
+
+    <!-- Slide 6: [실무 예제 1] 출자 및 차입 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-6">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded border border-emerald-200">SLIDE 06 / 10 · 예제 1</span>
+        <span>실무 예제</span>
+      </div>
+      <div class="my-auto">
+        <h3 class="text-lg sm:text-xl font-bold text-slate-900 mb-2 flex items-center gap-2">
+          <i class="fa-solid fa-building text-emerald-600"></i> [예제 1] 창업 출자 및 은행 차입
+        </h3>
+        <div class="space-y-3 text-xs">
+          <div class="bg-slate-50 p-3 rounded-lg border">
+            <strong>거래 (1):</strong> 주주들이 20,000,000원을 출자하여 보통예금 계좌에 입금하다.
+            <div class="j-box bg-white p-2 mt-1.5 rounded border text-blue-800 font-bold">
+              (차) 보통예금 20,000,000 [자산↑] / (대) 자본금 20,000,000 [자본↑]
+            </div>
+          </div>
+          <div class="bg-slate-50 p-3 rounded-lg border">
+            <strong>거래 (2):</strong> 은행에서 6개월 만기로 10,000,000원을 차입하여 보통예금에 넣다.
+            <div class="j-box bg-white p-2 mt-1.5 rounded border text-rose-800 font-bold">
+              (차) 보통예금 10,000,000 [자산↑] / (대) 단기차입금 10,000,000 [부채↑]
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3">
+        자산 증가(차변)와 자본/부채 증가(대변)의 결합
+      </div>
+    </div>
+
+    <!-- Slide 7: [실무 예제 2] 복합 비품 구입 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-7">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded border border-emerald-200">SLIDE 07 / 10 · 예제 2</span>
+        <span>실무 예제</span>
+      </div>
+      <div class="my-auto">
+        <h3 class="text-lg sm:text-xl font-bold text-slate-900 mb-2 flex items-center gap-2">
+          <i class="fa-solid fa-laptop text-emerald-600"></i> [예제 2] 유형자산 복합 매입 분개
+        </h3>
+        <p class="text-xs text-slate-600 mb-2">
+          <strong>[거래]</strong> 업무용 컴퓨터 5,000,000원을 구입하고, 2,000,000원은 보통예금 이체, 잔액 3,000,000원은 다음 달에 지급하기로 하다.
+        </p>
+        <div class="j-box bg-slate-50 p-3 rounded-xl border text-xs space-y-1">
+          <div class="text-blue-700 font-bold">(차) 비품 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5,000,000 &nbsp;&nbsp;[자산의 증가]</div>
+          <div class="text-rose-700 font-bold pl-8">(대) 보통예금 2,000,000 &nbsp;&nbsp;[자산의 감소]</div>
+          <div class="text-rose-700 font-bold pl-8">(대) 미지급금 3,000,000 &nbsp;&nbsp;[부채의 증가]</div>
+        </div>
+        <div class="mt-2.5 p-2 bg-amber-50 border border-amber-200 rounded text-[11px] text-amber-900">
+          ⚠️ <strong>외상매입금 금지:</strong> 상품/원재료 매입이 아니므로 <em>'미지급금'</em>으로 회계처리!
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3">
+        차변 합계(5,000,000) = 대변 합계(2,000,000 + 3,000,000)
+      </div>
+    </div>
+
+    <!-- Slide 8: [실습 1] 매출 및 복합 입금 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-8">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-amber-600 bg-amber-50 px-2.5 py-1 rounded border border-amber-200">SLIDE 08 / 10 · 실습 1</span>
+        <span>현장 실습</span>
+      </div>
+      <div class="my-auto">
+        <h3 class="text-lg sm:text-xl font-bold text-slate-900 mb-2 flex items-center gap-2">
+          <i class="fa-solid fa-hand-holding-dollar text-amber-600"></i> [실습 1] 용역 매출과 외상 분개
+        </h3>
+        <p class="text-xs text-slate-600 mb-3 leading-relaxed">
+          <strong>[문제]</strong> 컨설팅 용역 4,000,000원을 제공하고, 1,000,000원은 즉시 보통예금으로 입금받고 잔액 3,000,000원은 익월에 받기로 하다. 분개를 작성해 보세요.
+        </p>
+        <button onclick="document.getElementById('ans-s8').classList.toggle('hidden')" class="text-xs bg-amber-100 hover:bg-amber-200 text-amber-900 font-bold px-3 py-1.5 rounded transition">
+          👉 모범 분개 열기 / 닫기
+        </button>
+        <div id="ans-s8" class="hidden mt-2.5 j-box bg-slate-50 p-3 rounded-lg border text-xs">
+          <div class="text-blue-700 font-bold">(차) 보통예금 1,000,000 [자산↑]</div>
+          <div class="text-blue-700 font-bold">(차) 매출채권 3,000,000 [자산↑]</div>
+          <div class="text-emerald-700 font-bold pl-8">(대) 용역수익 4,000,000 [수익↑]</div>
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3">
+        차변에 2개 계정이 나타나는 복합분개 유형
+      </div>
+    </div>
+
+    <!-- Slide 9: [실습 2] 비용 복합 지급 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-9">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-amber-600 bg-amber-50 px-2.5 py-1 rounded border border-amber-200">SLIDE 09 / 10 · 실습 2</span>
+        <span>현장 실습</span>
+      </div>
+      <div class="my-auto">
+        <h3 class="text-lg sm:text-xl font-bold text-slate-900 mb-2 flex items-center gap-2">
+          <i class="fa-solid fa-receipt text-amber-600"></i> [실습 2] 사무실 월세 및 관리비 분개
+        </h3>
+        <p class="text-xs text-slate-600 mb-3 leading-relaxed">
+          <strong>[문제]</strong> 3월분 사무실 월세 1,200,000원과 수도광열비 200,000원을 보통예금 계좌에서 이체하여 지급하다.
+        </p>
+        <button onclick="document.getElementById('ans-s9').classList.toggle('hidden')" class="text-xs bg-amber-100 hover:bg-amber-200 text-amber-900 font-bold px-3 py-1.5 rounded transition">
+          👉 모범 분개 열기 / 닫기
+        </button>
+        <div id="ans-s9" class="hidden mt-2.5 j-box bg-slate-50 p-3 rounded-lg border text-xs">
+          <div class="text-amber-800 font-bold">(차) 임차료 &nbsp;&nbsp;&nbsp;1,200,000 [비용↑]</div>
+          <div class="text-amber-800 font-bold">(차) 수도광열비 &nbsp;200,000 [비용↑]</div>
+          <div class="text-rose-700 font-bold pl-8">(대) 보통예금 1,400,000 [자산↓]</div>
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3">
+        비용의 발생(차변)과 자산의 감소(대변)
+      </div>
+    </div>
+
+    <!-- Slide 10: 2차시 퀴즈 및 마무리 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-10">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded border border-emerald-200">SLIDE 10 / 10 · 퀴즈</span>
+        <span>2차시 마무리</span>
+      </div>
+      <div class="my-auto">
+        <h3 class="text-base sm:text-lg font-bold text-slate-900 mb-2 flex items-center gap-2">
+          <i class="fa-solid fa-circle-question text-emerald-600"></i> [자가진단 퀴즈]
+        </h3>
+        <div class="bg-slate-50 p-4 rounded-xl border mb-3">
+          <p class="text-xs sm:text-sm font-bold text-slate-800 mb-2">
+            Q. "사무용 프린터(비품)를 40만 원에 외상으로 구입하다"의 올바른 대변 계정과목은?
+          </p>
+          <div class="space-y-1.5">
+            <button onclick="checkQuiz(1, 'A', this)" class="q-btn-1 w-full text-left p-2 bg-white border rounded text-xs hover:bg-slate-100 transition">A) 외상매입금 400,000원</button>
+            <button onclick="checkQuiz(1, 'B', this)" class="q-btn-1 w-full text-left p-2 bg-white border rounded text-xs hover:bg-slate-100 transition">B) 미지급금 400,000원</button>
+            <button onclick="checkQuiz(1, 'C', this)" class="q-btn-1 w-full text-left p-2 bg-white border rounded text-xs hover:bg-slate-100 transition">C) 외상매출금 400,000원</button>
+          </div>
+          <div id="q-feedback-1" class="hidden mt-2 p-2 rounded text-xs"></div>
+        </div>
+        <div class="p-3 bg-blue-50 border border-blue-100 rounded-xl text-center text-xs">
+          🎉 2차시 완료! 10분 휴식 후 <strong>[3차시: 원장 전기와 대차평균 검증]</strong>으로 이어집니다.
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3 flex justify-between">
+        <a href="202602_04_01.html" class="text-slate-500 hover:underline">← 1차시 복습</a>
+        <a href="202602_04_03.html" class="text-blue-600 font-bold hover:underline">3차시 이동 →</a>
+      </div>
+    </div>
+
+  </main>
+
+  <footer class="text-center py-3 text-slate-400 text-xs border-t bg-white no-print">
+    수원대학교 경영공학대학 회계원리 © 2026
+  </footer>
+
+  <script>
+    let currentPage = 1;
+    const totalPages = 10;
+    function goToPage(page) {
+      if (page < 1 || page > totalPages) return;
+      document.querySelectorAll('.slide-page').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.page-btn').forEach(d => d.classList.remove('active'));
+      const target = document.getElementById(`page-${page}`);
+      if (target) target.classList.add('active');
+      const btns = document.querySelectorAll('.page-btn');
+      if (btns[page - 1]) btns[page - 1].classList.add('active');
+      currentPage = page;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    function nextPage() { if (currentPage < totalPages) goToPage(currentPage + 1); }
+    function prevPage() { if (currentPage > 1) goToPage(currentPage - 1); }
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === 'PageDown') nextPage();
+      if (e.key === 'ArrowLeft' || e.key === 'PageUp') prevPage();
+    });
+
+    const quizAnswers = { 1: { ans: 'B', exp: '일반 상거래(상품매매) 이외의 비품 구입 채무는 미지급금으로 회계처리합니다.' } };
+    function checkQuiz(qNum, choice, btn) {
+      const btns = document.querySelectorAll(`.q-btn-${qNum}`);
+      const fb = document.getElementById(`q-feedback-${qNum}`);
+      btns.forEach(b => { b.className = `q-btn-${qNum} w-full text-left p-2 bg-white border rounded text-xs transition`; });
+      fb.classList.remove('hidden');
+      if (choice === quizAnswers[qNum].ans) {
+        btn.classList.add('bg-emerald-100', 'border-emerald-500', 'text-emerald-900', 'font-bold');
+        fb.className = "text-xs mt-2 p-2 rounded bg-emerald-50 text-emerald-900 border border-emerald-200 block";
+        fb.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-600 mr-1"></i> <strong>정답입니다!</strong> ${quizAnswers[qNum].exp}`;
+      } else {
+        btn.classList.add('bg-rose-100', 'border-rose-500', 'text-rose-900');
+        fb.className = "text-xs mt-2 p-2 rounded bg-rose-50 text-rose-900 border border-rose-200 block";
+        fb.innerHTML = `<i class="fa-solid fa-circle-xmark text-rose-600 mr-1"></i> <strong>오답입니다!</strong> ${quizAnswers[qNum].exp}`;
+      }
+    }
+  </script>
+</body>
+</html>
