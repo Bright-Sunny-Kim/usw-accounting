@@ -157,44 +157,34 @@
 
   <!-- 구글 시트 웹 앱 통신 스크립트 -->
   <script>
-    // 교수님의 웹 앱 URL 탑재
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxkVGaxS_AzDYms9MhtaWK1LMcgTTeMWaiZ4w1U-iE2weua61l0YO2zXkaIKmj8pR08/exec";
-
-    // 퀴즈 정답 정의
     const correctAnswers = { q1: "B", q2: "A", q3: "B" };
-    const correctBalance = 12450000; // 보통예금 최종 잔액 정답 (12,450,000원)
+    const correctBalance = 12450000;
 
     function submitToGoogleSheet() {
       const studentId = document.getElementById("studentId").value.trim();
       const studentName = document.getElementById("studentName").value.trim();
       const cashInput = document.getElementById("cashBalanceInput").value.trim();
 
-      // 1. 필수 입력값 검증
       if (!studentId || !studentName) {
         alert("학번과 성명을 모두 입력해 주세요!");
         document.getElementById("studentId").focus();
         return;
       }
 
-      // 2. 객관식 답변 수집 및 채점
       let score = 0;
       let userAnswers = {};
-
       for (let i = 1; i <= 3; i++) {
         const selected = document.querySelector(`input[name="q${i}"]:checked`);
         const userChoice = selected ? selected.value : "-";
         userAnswers[`q${i}`] = userChoice;
-        if (userChoice === correctAnswers[`q${i}`]) {
-          score++;
-        }
+        if (userChoice === correctAnswers[`q${i}`]) score++;
       }
 
-      // 3. 보통예금 잔액 정답 여부 판정
       const userBalanceNum = parseInt(cashInput, 10);
       const isBalanceCorrect = (userBalanceNum === correctBalance);
       const balanceStatusText = isBalanceCorrect ? "정답 (12,450,000원)" : `오답 (입력: ${cashInput || '미입력'})`;
 
-      // 4. 전송할 JSON 데이터 구성 (Apps Script 04주차 완벽 호환)
       const payload = {
         week: "04주차",
         studentId: studentId,
@@ -210,13 +200,11 @@
         finalGrade: (score === 3 && isBalanceCorrect) ? "만점 (우수)" : "정상제출"
       };
 
-      // 5. 버튼 로딩 상태 표시
       const btn = document.getElementById("submitBtn");
       const statusDiv = document.getElementById("submitStatus");
       btn.disabled = true;
       btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i> 구글 시트로 전송 중입니다...`;
 
-      // 6. Google Apps Script Web App으로 전송
       fetch(SCRIPT_URL, {
         method: "POST",
         mode: "no-cors",
