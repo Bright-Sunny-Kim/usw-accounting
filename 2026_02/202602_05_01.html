@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>[5주차 1차시] 시산표의 원리와 작성 | 수원대학교 회계원리</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Noto Sans KR', sans-serif; }
+    .slide-page { display: none; }
+    .slide-page.active { display: flex; animation: fadeIn 0.25s ease-in-out; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+    .page-btn.active { background-color: #2563eb !important; color: white !important; font-weight: bold; border-color: #1d4ed8 !important; }
+    .t-balance-table th, .t-balance-table td { padding: 6px 10px; font-size: 12px; }
+
+    @media print {
+      @page { size: A4 landscape; margin: 10mm 12mm; }
+      body { background-color: #ffffff !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; padding: 0 !important; }
+      header, .no-print, #top-nav-controller { display: none !important; }
+      main { max-width: 100% !important; padding: 0 !important; margin: 0 !important; }
+      .slide-page { display: block !important; opacity: 1 !important; page-break-after: always !important; break-after: page !important; min-height: 180mm !important; margin-bottom: 0 !important; border: 1px solid #cbd5e1 !important; border-radius: 12px !important; padding: 24px 28px !important; }
+    }
+  </style>
+</head>
+<body class="bg-slate-100 text-slate-800 antialiased min-h-screen flex flex-col justify-between">
+
+  <!-- 1. 고정 상단 헤더 & 슬라이드 네비게이션 바 -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm no-print">
+    <div class="max-w-5xl mx-auto px-4 flex justify-between items-center h-12">
+      <div class="flex items-center gap-2">
+        <span class="bg-blue-900 text-white text-[11px] px-2 py-0.5 rounded-full font-bold">수원대 회계원리</span>
+        <h1 class="font-bold text-slate-800 text-xs sm:text-sm">5주차 1차시: 시산표(Trial Balance)의 원리와 작성</h1>
+      </div>
+      <div class="flex items-center gap-2">
+        <button onclick="window.print()" class="text-[11px] bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold px-2.5 py-1 rounded border border-slate-300 transition flex items-center gap-1">
+          <i class="fa-solid fa-print"></i> PDF/인쇄
+        </button>
+      </div>
+    </div>
+
+    <!-- 상단 1~10 퀵 이동 버튼 바 -->
+    <div id="top-nav-controller" class="border-t border-slate-100 bg-slate-50/95 py-2 px-4 shadow-inner">
+      <div class="max-w-5xl mx-auto flex items-center justify-between gap-2">
+        <button onclick="prevPage()" class="px-3 py-1.5 bg-white hover:bg-slate-100 text-slate-700 text-xs font-bold rounded-lg border border-slate-300 transition flex items-center gap-1 shrink-0">
+          <i class="fa-solid fa-chevron-left text-[10px]"></i> <span class="hidden sm:inline">이전</span>
+        </button>
+        
+        <div class="flex items-center gap-1.5 overflow-x-auto py-0.5 px-1 max-w-full">
+          <button onclick="goToPage(1)" class="page-btn active w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">1</button>
+          <button onclick="goToPage(2)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">2</button>
+          <button onclick="goToPage(3)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">3</button>
+          <button onclick="goToPage(4)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">4</button>
+          <button onclick="goToPage(5)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">5</button>
+          <button onclick="goToPage(6)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">6</button>
+          <button onclick="goToPage(7)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">7</button>
+          <button onclick="goToPage(8)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">8</button>
+          <button onclick="goToPage(9)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">9</button>
+          <button onclick="goToPage(10)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">10</button>
+        </div>
+
+        <button onclick="nextPage()" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-lg transition flex items-center gap-1 shrink-0">
+          <span class="hidden sm:inline">다음</span> <i class="fa-solid fa-chevron-right text-[10px]"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- 2. 한 화면 단일 슬라이드 컨테이너 -->
+  <main class="flex-1 max-w-4xl w-full mx-auto px-4 py-4 flex flex-col justify-center">
+
+    <!-- Slide 1: 표지 -->
+    <div class="slide-page active bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-1">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 01 / 10</span>
+        <span>수원대학교 경영공학대학</span>
+      </div>
+      <div class="text-center my-auto py-6">
+        <div class="inline-block p-4 bg-indigo-50 text-indigo-700 rounded-2xl mb-3 shadow-inner">
+          <i class="fa-solid fa-table-list text-4xl"></i>
+        </div>
+        <span class="text-xs font-bold text-indigo-700 tracking-wider block mb-1">CH.03 거래의 기록과 회계장부 (2)</span>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mb-3">1차시: 시산표(Trial Balance)의 원리와 작성</h2>
+        <p class="text-slate-600 text-xs sm:text-sm max-w-lg mx-auto leading-relaxed">
+          총계정원장의 각 계정 잔액을 한곳에 집계하여<br>
+          대차평균의 원리를 검증하고 재무제표 작성의 디딤돌을 놓습니다.
+        </p>
+      </div>
+      <div class="text-center text-xs text-slate-400 border-t pt-3">
+        상단의 숫자 버튼(1~10) 또는 키보드 방향키(←, →)로 슬라이드를 넘길 수 있습니다.
+      </div>
+    </div>
+
+    <!-- Slide 2: 학습 목표 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-2">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 02 / 10</span>
+        <span>학습 목표 (50분 설계)</span>
+      </div>
+      <div class="my-auto">
+        <h3 class="text-lg sm:text-xl font-bold text-slate-900 mb-5 flex items-center gap-2">
+          <i class="fa-solid fa-bullseye text-blue-600"></i> 이번 1차시 핵심 학습 목표
+        </h3>
+        <div class="grid sm:grid-cols-3 gap-3.5">
+          <div class="p-4 bg-slate-50 border rounded-xl hover:border-blue-400 transition">
+            <span class="w-6 h-6 rounded bg-blue-600 text-white font-bold flex items-center justify-center text-xs mb-2">1</span>
+            <h4 class="font-bold text-slate-800 text-xs sm:text-sm mb-1">시산표의 본질과 목적</h4>
+            <p class="text-xs text-slate-600 leading-relaxed">시산표가 필수 장부(분개장·원장)와 구분되는 보조 서류로서 가지는 2대 목적을 파악한다.</p>
+          </div>
+          <div class="p-4 bg-slate-50 border rounded-xl hover:border-blue-400 transition">
+            <span class="w-6 h-6 rounded bg-blue-600 text-white font-bold flex items-center justify-center text-xs mb-2">2</span>
+            <h4 class="font-bold text-slate-800 text-xs sm:text-sm mb-1">시산표 등식과 양식</h4>
+            <p class="text-xs text-slate-600 leading-relaxed">합계·잔액·합계잔액시산표의 형태와 $(자산 + 비용 + 배당금 = 부채 + 자본 + 수익)$ 등식을 이해한다.</p>
+          </div>
+          <div class="p-4 bg-slate-50 border rounded-xl hover:border-blue-400 transition">
+            <span class="w-6 h-6 rounded bg-blue-600 text-white font-bold flex items-center justify-center text-xs mb-2">3</span>
+            <h4 class="font-bold text-slate-800 text-xs sm:text-sm mb-1">시산표 작성 실무</h4>
+            <p class="text-xs text-slate-600 leading-relaxed">글로벌세탁㈜의 실제 원장 잔액 데이터를 기초로 대차 합계가 일치하는 시산표를 직접 작성한다.</p>
+          </div>
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3 flex justify-between">
+        <span>회계순환과정 제3단계: 시산표의 작성</span>
+        <span>교재 Ch.03 (p.38~41)</span>
+      </div>
+    </div>
+
+    <!-- Slide 3: 시산표의 정의와 의의 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-3">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 03 / 10</span>
+        <span>시산표의 개념</span>
+      </div>
+      <div class="my-auto space-y-4">
+        <h3 class="text-lg sm:text-xl font-bold text-slate-900 flex items-center gap-2">
+          <i class="fa-solid fa-clipboard-check text-blue-600"></i> 시산표(Trial Balance)란 무엇인가?
+        </h3>
+        
+        <div class="p-4 bg-blue-50 border-l-4 border-blue-600 rounded-r-xl">
+          <p class="text-xs sm:text-sm text-slate-800 leading-relaxed">
+            <strong class="text-blue-900">시산표(Trial Balance)</strong>는 총계정원장에 있는 <strong>모든 계정의 잔액(또는 총액)</strong>을 결산에 앞서 한 장의 표에 집약해 놓은 요약표입니다.
+          </p>
+        </div>
+
+        <div class="grid sm:grid-cols-2 gap-3 text-xs">
+          <div class="p-3.5 bg-slate-50 border rounded-xl space-y-1.5">
+            <div class="font-bold text-slate-900 flex items-center gap-1.5">
+              <i class="fa-solid fa-book text-slate-500"></i> 장부 체계에서의 위상
+            </div>
+            <p class="text-slate-600 leading-relaxed">
+              분개장과 원장은 회계시스템의 법정 <strong>주요부(Primary Books)</strong>이지만, 시산표는 결산의 정확성을 시험(Trial)하기 위한 <strong>보조적 작업표(Working Paper)</strong>입니다.
+            </p>
+          </div>
+          <div class="p-3.5 bg-indigo-50 border border-indigo-200 rounded-xl space-y-1.5">
+            <div class="font-bold text-indigo-900 flex items-center gap-1.5">
+              <i class="fa-solid fa-flag-checkered text-indigo-600"></i> 시산표 작성의 2대 목적
+            </div>
+            <ul class="text-slate-700 space-y-1 list-disc list-inside">
+              <li><strong>대차평균 일치 검증:</strong> 분개와 원장 전기가 산술적으로 정확한지 자기검증</li>
+              <li><strong>재무제표 작성 편의:</strong> 모든 계정 잔액이 한눈에 모여 FS 작성이 용이</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3">
+        "Trial"은 '시험해 본다'는 의미로, 결산 수정에 들어가기 전 장부 기록의 균형을 시험하는 표입니다.
+      </div>
+    </div>
+
+    <!-- Slide 4: 시산표의 3대 양식 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-4">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 04 / 10</span>
+        <span>시산표의 종류</span>
+      </div>
+      <div class="my-auto space-y-4">
+        <h3 class="text-lg sm:text-xl font-bold text-slate-900 flex items-center gap-2">
+          <i class="fa-solid fa-layer-group text-blue-600"></i> 시산표의 3가지 서식 비교
+        </h3>
+
+        <div class="grid sm:grid-cols-3 gap-3 text-xs">
+          <!-- 1. 합계시산표 -->
+          <div class="p-3.5 bg-slate-50 border rounded-xl flex flex-col justify-between">
+            <div>
+              <span class="px-2 py-0.5 bg-slate-200 text-slate-700 rounded font-bold text-[11px]">합계시산표</span>
+              <h4 class="font-bold text-slate-800 text-sm mt-1.5 mb-1">Total Trial Balance</h4>
+              <p class="text-slate-600 leading-relaxed">
+                각 계정의 차변 총합과 대변 총합을 그대로 적는 표.
+              </p>
+            </div>
+            <div class="mt-2 pt-2 border-t text-[11px] text-slate-500">
+              분개장의 거래 총액과 원장 전기 총액 일치 여부를 대조하기 좋음
+            </div>
+          </div>
+
+          <!-- 2. 잔액시산표 (가장 널리 쓰임) -->
+          <div class="p-3.5 bg-blue-50 border-2 border-blue-400 rounded-xl flex flex-col justify-between shadow-sm">
+            <div>
+              <span class="px-2 py-0.5 bg-blue-600 text-white rounded font-bold text-[11px]">가장 보편적 ★</span>
+              <h4 class="font-bold text-blue-900 text-sm mt-1.5 mb-1">잔액시산표 (Balance TB)</h4>
+              <p class="text-slate-700 leading-relaxed">
+                각 계정의 <strong>최종 정상 잔액(Normal Balance)</strong>만을 차변 또는 대변에 기입하는 표.
+              </p>
+            </div>
+            <div class="mt-2 pt-2 border-t border-blue-200 text-[11px] text-blue-800 font-semibold">
+              재무상태표·손익계산서 작성과 직결되는 표준 양식
+            </div>
+          </div>
+
+          <!-- 3. 합계잔액시산표 -->
+          <div class="p-3.5 bg-slate-50 border rounded-xl flex flex-col justify-between">
+            <div>
+              <span class="px-2 py-0.5 bg-slate-200 text-slate-700 rounded font-bold text-[11px]">실무 전산회계</span>
+              <h4 class="font-bold text-slate-800 text-sm mt-1.5 mb-1">합계잔액시산표</h4>
+              <p class="text-slate-600 leading-relaxed">
+                안쪽에는 각 계정의 합계를, 바깥쪽에는 잔액을 동시에 표시하는 종합 양식.
+              </p>
+            </div>
+            <div class="mt-2 pt-2 border-t text-[11px] text-slate-500">
+              ERP 및 더존/세무사랑 등 실무 프로그램 기본 서식
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-amber-50 p-2.5 rounded-lg border border-amber-200 text-xs text-amber-900 flex items-center gap-2">
+          <i class="fa-solid fa-lightbulb text-amber-600"></i>
+          <span>우리 교재와 본 강의에서는 가장 직관적이고 표준적인 <strong>[잔액시산표]</strong>를 중심으로 다룹니다.</span>
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3">
+        잔액시산표의 차변 합계와 대변 합계는 반드시 일치해야 합니다.
+      </div>
+    </div>
+
+    <!-- Slide 5: 시산표 등식의 구조 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-5">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 05 / 10</span>
+        <span>시산표 등식 (교재 p.40)</span>
+      </div>
+      <div class="my-auto space-y-4">
+        <h3 class="text-lg sm:text-xl font-bold text-slate-900 flex items-center gap-2">
+          <i class="fa-solid fa-scale-unbalanced text-blue-600"></i> 시산표 등식(Trial Balance Equation)
+        </h3>
+
+        <!-- 메인 등식 배너 -->
+        <div class="bg-slate-900 text-white p-4 rounded-xl text-center shadow">
+          <div class="text-xs text-blue-300 font-bold uppercase tracking-wider mb-1">Trial Balance Equation</div>
+          <div class="text-sm sm:text-lg font-black tracking-wide text-emerald-300">
+            자산 + 비용 + 배당금 = 부채 + 자본 + 수익
+          </div>
+        </div>
+
+        <!-- 시산표 T자형 구조 시각화 -->
+        <div class="border-2 border-slate-300 rounded-xl overflow-hidden text-xs">
+          <div class="bg-slate-200 py-1.5 px-3 font-bold text-center border-b border-slate-300">
+            시산표 (Trial Balance) 구조
+          </div>
+          <div class="grid grid-cols-2 divide-x divide-slate-300">
+            <!-- 차변 (Left) -->
+            <div class="p-3 bg-blue-50/50 space-y-2">
+              <div class="font-bold text-blue-900 border-b border-blue-200 pb-1 flex justify-between">
+                <span>[차변 Debit] 잔액 남는 계정</span>
+                <span class="text-[11px] text-blue-600">자산 · 비용 · 배당금</span>
+              </div>
+              <ul class="space-y-1 text-slate-700">
+                <li class="flex items-center gap-1.5"><i class="fa-solid fa-coins text-blue-500 text-[10px]"></i> <strong>자산(Assets):</strong> 현금, 매출채권, 소모품, 비품</li>
+                <li class="flex items-center gap-1.5"><i class="fa-solid fa-receipt text-rose-500 text-[10px]"></i> <strong>비용(Expenses):</strong> 급여, 임차료, 운송비</li>
+                <li class="flex items-center gap-1.5"><i class="fa-solid fa-hand-holding-dollar text-purple-500 text-[10px]"></i> <strong>배당금(Dividends):</strong> 자본의 차감 항목</li>
+              </ul>
+            </div>
+            <!-- 대변 (Right) -->
+            <div class="p-3 bg-emerald-50/50 space-y-2">
+              <div class="font-bold text-emerald-900 border-b border-emerald-200 pb-1 flex justify-between">
+                <span>[대변 Credit] 잔액 남는 계정</span>
+                <span class="text-[11px] text-emerald-600">부채 · 자본 · 수익</span>
+              </div>
+              <ul class="space-y-1 text-slate-700">
+                <li class="flex items-center gap-1.5"><i class="fa-solid fa-file-invoice text-amber-500 text-[10px]"></i> <strong>부채(Liabilities):</strong> 미지급금, 차입금</li>
+                <li class="flex items-center gap-1.5"><i class="fa-solid fa-building-columns text-emerald-600 text-[10px]"></i> <strong>자본(Equity):</strong> 자본금(Common Stock)</li>
+                <li class="flex items-center gap-1.5"><i class="fa-solid fa-chart-line text-teal-600 text-[10px]"></i> <strong>수익(Revenues):</strong> 용역매출, 세탁수익</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3">
+        배당금은 자본을 감소시키는 항목이므로 정상 잔액이 차변에 위치합니다.
+      </div>
+    </div>
+
+    <!-- Slide 6: 실전 데이터 - 글로벌세탁(주)의 원장 잔액 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-6">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 06 / 10</span>
+        <span>실전 데이터 (교재 p.36~37)</span>
+      </div>
+      <div class="my-auto space-y-3">
+        <h3 class="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
+          <i class="fa-solid fa-database text-blue-600"></i> 글로벌세탁㈜ 9월 30일 원장 잔액 집계
+        </h3>
+        <p class="text-xs text-slate-600">
+          4주차에서 학습한 분개와 전기를 거친 후, 각 T계정에 남아있는 최종 잔액 현황입니다:
+        </p>
+
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs">
+          <div class="p-2.5 bg-slate-50 border rounded-lg">
+            <span class="text-slate-500 text-[11px]">자산 (차변)</span>
+            <div class="font-bold text-slate-800">현금 ￦440,000</div>
+          </div>
+          <div class="p-2.5 bg-slate-50 border rounded-lg">
+            <span class="text-slate-500 text-[11px]">자산 (차변)</span>
+            <div class="font-bold text-slate-800">매출채권 ￦160,000</div>
+          </div>
+          <div class="p-2.5 bg-slate-50 border rounded-lg">
+            <span class="text-slate-500 text-[11px]">자산 (차변)</span>
+            <div class="font-bold text-slate-800">소모품 ￦100,000</div>
+          </div>
+          <div class="p-2.5 bg-slate-50 border rounded-lg">
+            <span class="text-slate-500 text-[11px]">부채 (대변)</span>
+            <div class="font-bold text-amber-700">미지급금 ￦20,000</div>
+          </div>
+          <div class="p-2.5 bg-slate-50 border rounded-lg">
+            <span class="text-slate-500 text-[11px]">부채 (대변)</span>
+            <div class="font-bold text-amber-700">차입금 ￦200,000</div>
+          </div>
+          <div class="p-2.5 bg-slate-50 border rounded-lg">
+            <span class="text-slate-500 text-[11px]">자본 (대변)</span>
+            <div class="font-bold text-emerald-700">자본금 ￦300,000</div>
+          </div>
+          <div class="p-2.5 bg-slate-50 border rounded-lg">
+            <span class="text-slate-500 text-[11px]">자본차감 (차변)</span>
+            <div class="font-bold text-purple-700">배당금 ￦30,000</div>
+          </div>
+          <div class="p-2.5 bg-slate-50 border rounded-lg">
+            <span class="text-slate-500 text-[11px]">수익 (대변)</span>
+            <div class="font-bold text-blue-700">용역매출 ￦960,000</div>
+          </div>
+          <div class="p-2.5 bg-slate-50 border rounded-lg">
+            <span class="text-slate-500 text-[11px]">비용 (차변)</span>
+            <div class="font-bold text-rose-700">임차료 ￦400,000</div>
+          </div>
+          <div class="p-2.5 bg-slate-50 border rounded-lg">
+            <span class="text-slate-500 text-[11px]">비용 (차변)</span>
+            <div class="font-bold text-rose-700">급여 ￦300,000</div>
+          </div>
+          <div class="p-2.5 bg-slate-50 border rounded-lg col-span-2 sm:col-span-1">
+            <span class="text-slate-500 text-[11px]">비용 (차변)</span>
+            <div class="font-bold text-rose-700">운송비 ￦50,000</div>
+          </div>
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3">
+        이제 이 데이터들을 시산표 차변과 대변에 각각 올바르게 배치해 봅니다.
+      </div>
+    </div>
+
+    <!-- Slide 7: 글로벌세탁(주) 완성된 시산표 (교재 p.41) -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-7">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 07 / 10</span>
+        <span>완성된 시산표 (표 3-9)</span>
+      </div>
+      <div class="my-auto space-y-2">
+        <div class="flex justify-between items-end">
+          <div>
+            <h3 class="text-base sm:text-lg font-bold text-slate-900">글로벌세탁㈜ 수정전시산표</h3>
+            <span class="text-[11px] text-slate-500">20×1년 9월 30일 현재 (단위: 원)</span>
+          </div>
+          <span class="bg-emerald-100 text-emerald-800 text-[11px] font-bold px-2 py-0.5 rounded">
+            대차평균 일치 검증 완료
+          </span>
+        </div>
+
+        <div class="border rounded-xl overflow-hidden shadow-sm">
+          <table class="w-full text-left t-balance-table">
+            <thead class="bg-slate-800 text-white">
+              <tr>
+                <th class="w-2/5">계정과목</th>
+                <th class="text-right w-3/10">차변 (Debit)</th>
+                <th class="text-right w-3/10">대변 (Credit)</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-200 bg-slate-50/50">
+              <tr><td>현금</td><td class="text-right font-mono">￦ 440,000</td><td class="text-right font-mono">-</td></tr>
+              <tr><td>매출채권</td><td class="text-right font-mono">160,000</td><td class="text-right font-mono">-</td></tr>
+              <tr><td>소모품</td><td class="text-right font-mono">100,000</td><td class="text-right font-mono">-</td></tr>
+              <tr class="bg-amber-50/40"><td>미지급금</td><td class="text-right font-mono">-</td><td class="text-right font-mono text-amber-900">￦ 20,000</td></tr>
+              <tr class="bg-amber-50/40"><td>차입금</td><td class="text-right font-mono">-</td><td class="text-right font-mono text-amber-900">200,000</td></tr>
+              <tr class="bg-emerald-50/40"><td>자본금</td><td class="text-right font-mono">-</td><td class="text-right font-mono text-emerald-900">300,000</td></tr>
+              <tr><td>배당금</td><td class="text-right font-mono text-purple-700">30,000</td><td class="text-right font-mono">-</td></tr>
+              <tr class="bg-blue-50/40"><td>용역매출 (세탁수익)</td><td class="text-right font-mono">-</td><td class="text-right font-mono text-blue-900">960,000</td></tr>
+              <tr><td>임차료</td><td class="text-right font-mono text-rose-700">400,000</td><td class="text-right font-mono">-</td></tr>
+              <tr><td>급여</td><td class="text-right font-mono text-rose-700">300,000</td><td class="text-right font-mono">-</td></tr>
+              <tr><td>운송비</td><td class="text-right font-mono text-rose-700">50,000</td><td class="text-right font-mono">-</td></tr>
+            </tbody>
+            <tfoot class="bg-slate-900 text-white font-bold border-t-2 border-slate-900">
+              <tr>
+                <td>합 계 (Total)</td>
+                <td class="text-right font-mono text-emerald-300">￦ 1,480,000</td>
+                <td class="text-right font-mono text-emerald-300">￦ 1,480,000</td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-2 flex justify-between">
+        <span>차변 합계(1,480,000) = 대변 합계(1,480,000)</span>
+        <span class="text-emerald-600 font-bold">대차 일치 ✓</span>
+      </div>
+    </div>
+
+    <!-- Slide 8: 시산표 계정과목 배열 원칙 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-8">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 08 / 10</span>
+        <span>시산표 작성 실무 팁</span>
+      </div>
+      <div class="my-auto space-y-4">
+        <h3 class="text-lg sm:text-xl font-bold text-slate-900 flex items-center gap-2">
+          <i class="fa-solid fa-arrow-down-1-9 text-blue-600"></i> 시산표 계정과목 표준 배열 순서
+        </h3>
+
+        <div class="p-3 bg-slate-50 border rounded-xl text-xs space-y-2">
+          <p class="text-slate-700 leading-relaxed">
+            시산표의 계정과목은 무작위로 나열하지 않고, 향후 재무제표를 신속하게 작성할 수 있도록 <strong>[재무상태표 계정 → 손익계산서 계정]</strong> 순서로 표준 정렬합니다.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-5 gap-2 text-center text-xs font-bold">
+          <div class="p-3 bg-blue-50 border border-blue-200 rounded-xl">
+            <span class="text-blue-600 block text-sm mb-1">1</span>
+            자산<br><span class="text-[10px] font-normal text-slate-500">유동성 배열</span>
+          </div>
+          <div class="p-3 bg-amber-50 border border-amber-200 rounded-xl">
+            <span class="text-amber-600 block text-sm mb-1">2</span>
+            부채<br><span class="text-[10px] font-normal text-slate-500">상환기일 순</span>
+          </div>
+          <div class="p-3 bg-emerald-50 border border-emerald-200 rounded-xl">
+            <span class="text-emerald-600 block text-sm mb-1">3</span>
+            자본<br><span class="text-[10px] font-normal text-slate-500">자본금/배당</span>
+          </div>
+          <div class="p-3 bg-indigo-50 border border-indigo-200 rounded-xl">
+            <span class="text-indigo-600 block text-sm mb-1">4</span>
+            수익<br><span class="text-[10px] font-normal text-slate-500">영업수익 우선</span>
+          </div>
+          <div class="p-3 bg-rose-50 border border-rose-200 rounded-xl">
+            <span class="text-rose-600 block text-sm mb-1">5</span>
+            비용<br><span class="text-[10px] font-normal text-slate-500">매출원가/판관비</span>
+          </div>
+        </div>
+
+        <div class="p-3 bg-blue-50/50 rounded-xl border border-blue-100 text-xs text-slate-600 leading-relaxed">
+          💡 이렇게 순서대로 작성해 두면, 위쪽(1~3번) 계정들은 그대로 <strong>재무상태표(BS)</strong>로, 아래쪽(4~5번) 계정들은 <strong>손익계산서(IS)</strong>로 손쉽게 이관할 수 있습니다.
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3">
+        시산표는 결산 프로세스를 단순화해 주는 가교(Bridge) 역할을 수행합니다.
+      </div>
+    </div>
+
+    <!-- Slide 9: 1차시 핵심 요약 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-9">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 09 / 10</span>
+        <span>핵심 요약 (Takeaways)</span>
+      </div>
+      <div class="my-auto space-y-3.5">
+        <h3 class="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
+          <i class="fa-solid fa-bookmark text-blue-600"></i> 1차시 핵심 정리
+        </h3>
+        <div class="space-y-2 text-xs sm:text-sm">
+          <div class="p-3 bg-slate-50 border rounded-xl flex items-start gap-2.5">
+            <span class="bg-blue-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs shrink-0 mt-0.5 font-bold">1</span>
+            <div>
+              <strong>시산표의 2대 목적:</strong> 대차평균의 원리를 통해 장부 기록의 산술적 오류를 검증하고, 재무제표 작성을 용이하게 함.
+            </div>
+          </div>
+          <div class="p-3 bg-slate-50 border rounded-xl flex items-start gap-2.5">
+            <span class="bg-blue-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs shrink-0 mt-0.5 font-bold">2</span>
+            <div>
+              <strong>시산표 등식:</strong> $자산 + 비용 + 배당금 = 부채 + 자본 + 수익$ (차변 정상잔액 합계 = 대변 정상잔액 합계).
+            </div>
+          </div>
+          <div class="p-3 bg-slate-50 border rounded-xl flex items-start gap-2.5">
+            <span class="bg-blue-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs shrink-0 mt-0.5 font-bold">3</span>
+            <div>
+              <strong>실무적 위상:</strong> 분개장과 원장은 필수 장부이지만, 시산표는 결산 편의를 위한 결산 예비서류임.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3">
+        다음 2차시: 시산표의 오류 검증력과 한계 & 사개치부법
+      </div>
+    </div>
+
+    <!-- Slide 10: 인터랙티브 퀴즈 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-10">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded border border-emerald-200">SLIDE 10 / 10 · 퀴즈</span>
+        <span>1차시 점검</span>
+      </div>
+      <div class="my-auto">
+        <h3 class="text-base sm:text-lg font-bold text-slate-900 mb-2 flex items-center gap-2">
+          <i class="fa-solid fa-circle-question text-emerald-600"></i> [자가진단 퀴즈]
+        </h3>
+        <div class="bg-slate-50 p-4 rounded-xl border mb-3">
+          <p class="text-xs sm:text-sm font-bold text-slate-800 mb-2">
+            Q. 시산표(Trial Balance)에 대한 설명 중 가장 옳지 않은 것은?
+          </p>
+          <div class="space-y-1.5">
+            <button onclick="checkQuiz(1, 'A', this)" class="q-btn-1 w-full text-left p-2.5 bg-white border rounded text-xs hover:bg-slate-100 transition">
+              A) 시산표는 분개장이나 원장과 마찬가지로 법적으로 반드시 보관해야 하는 필수 기본장부이다.
+            </button>
+            <button onclick="checkQuiz(1, 'B', this)" class="q-btn-1 w-full text-left p-2.5 bg-white border rounded text-xs hover:bg-slate-100 transition">
+              B) 시산표 등식은 [자산 + 비용 + 배당금 = 부채 + 자본 + 수익]으로 표현된다.
+            </button>
+            <button onclick="checkQuiz(1, 'C', this)" class="q-btn-1 w-full text-left p-2.5 bg-white border rounded text-xs hover:bg-slate-100 transition">
+              C) 잔액시산표는 총계정원장의 각 계정별 최종 잔액만을 모아서 작성한 표이다.
+            </button>
+          </div>
+          <div id="q-feedback-1" class="hidden mt-2 p-2 rounded text-xs"></div>
+        </div>
+        <div class="p-3 bg-blue-50 border border-blue-100 rounded-xl text-center text-xs">
+          🎉 1차시 수고하셨습니다! 잠시 휴식 후 <strong>[2차시: 시산표의 오류 검증력과 사개치부법]</strong>으로 이어집니다.
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3 flex justify-between">
+        <span>5주차 1차시 완료</span>
+        <a href="202602_05_02.html" class="text-blue-600 font-bold hover:underline">2차시 이동 →</a>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- 하단 푸터 -->
+  <footer class="text-center py-3 text-slate-400 text-xs border-t bg-white no-print">
+    수원대학교 경영공학대학 회계원리 © 2026
+  </footer>
+
+  <script>
+    let currentPage = 1;
+    const totalPages = 10;
+
+    function goToPage(page) {
+      if (page < 1 || page > totalPages) return;
+      document.querySelectorAll('.slide-page').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.page-btn').forEach(d => d.classList.remove('active'));
+      
+      const target = document.getElementById(`page-${page}`);
+      if (target) target.classList.add('active');
+      
+      const btns = document.querySelectorAll('.page-btn');
+      if (btns[page - 1]) btns[page - 1].classList.add('active');
+      
+      currentPage = page;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function nextPage() { if (currentPage < totalPages) goToPage(currentPage + 1); }
+    function prevPage() { if (currentPage > 1) goToPage(currentPage - 1); }
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === 'PageDown') nextPage();
+      if (e.key === 'ArrowLeft' || e.key === 'PageUp') prevPage();
+    });
+
+    const quizAnswers = {
+      1: { ans: 'A', exp: '분개장과 총계정원장은 필수 기본장부(주요부)이지만, 시산표는 결산 절차를 돕기 위한 보조적 서류(작업표)에 해당합니다.' }
+    };
+
+    function checkQuiz(qNum, choice, btn) {
+      const btns = document.querySelectorAll(`.q-btn-${qNum}`);
+      const fb = document.getElementById(`q-feedback-${qNum}`);
+      btns.forEach(b => { b.className = `q-btn-${qNum} w-full text-left p-2.5 bg-white border rounded text-xs transition`; });
+      fb.classList.remove('hidden');
+
+      if (choice === quizAnswers[qNum].ans) {
+        btn.classList.add('bg-emerald-100', 'border-emerald-500', 'text-emerald-900', 'font-bold');
+        fb.className = "text-xs mt-2 p-2 rounded bg-emerald-50 text-emerald-900 border border-emerald-200 block";
+        fb.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-600 mr-1"></i> <strong>정답입니다!</strong> ${quizAnswers[qNum].exp}`;
+      } else {
+        btn.classList.add('bg-rose-100', 'border-rose-500', 'text-rose-900');
+        fb.className = "text-xs mt-2 p-2 rounded bg-rose-50 text-rose-900 border border-rose-200 block";
+        fb.innerHTML = `<i class="fa-solid fa-circle-xmark text-rose-600 mr-1"></i> <strong>오답입니다!</strong> ${quizAnswers[qNum].exp}`;
+      }
+    }
+  </script>
+</body>
+</html>

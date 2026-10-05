@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>[5주차 3차시] 수정전시산표와 경영분석(ROA) | 수원대학교 회계원리</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Noto Sans KR', sans-serif; }
+    .slide-page { display: none; }
+    .slide-page.active { display: flex; animation: fadeIn 0.25s ease-in-out; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+    .page-btn.active { background-color: #2563eb !important; color: white !important; font-weight: bold; border-color: #1d4ed8 !important; }
+
+    @media print {
+      @page { size: A4 landscape; margin: 10mm 12mm; }
+      body { background-color: #ffffff !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; padding: 0 !important; }
+      header, .no-print, #top-nav-controller { display: none !important; }
+      main { max-width: 100% !important; padding: 0 !important; margin: 0 !important; }
+      .slide-page { display: block !important; opacity: 1 !important; page-break-after: always !important; break-after: page !important; min-height: 180mm !important; margin-bottom: 0 !important; border: 1px solid #cbd5e1 !important; border-radius: 12px !important; padding: 24px 28px !important; }
+    }
+  </style>
+</head>
+<body class="bg-slate-100 text-slate-800 antialiased min-h-screen flex flex-col justify-between">
+
+  <!-- 1. 고정 상단 헤더 & 슬라이드 네비게이션 바 -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm no-print">
+    <div class="max-w-5xl mx-auto px-4 flex justify-between items-center h-12">
+      <div class="flex items-center gap-2">
+        <span class="bg-blue-900 text-white text-[11px] px-2 py-0.5 rounded-full font-bold">수원대 회계원리</span>
+        <h1 class="font-bold text-slate-800 text-xs sm:text-sm">5주차 3차시: 수정전시산표와 경영분석(ROA)</h1>
+      </div>
+      <div class="flex items-center gap-2">
+        <button onclick="window.print()" class="text-[11px] bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold px-2.5 py-1 rounded border border-slate-300 transition flex items-center gap-1">
+          <i class="fa-solid fa-print"></i> PDF/인쇄
+        </button>
+      </div>
+    </div>
+
+    <!-- 상단 1~10 퀵 이동 버튼 바 -->
+    <div id="top-nav-controller" class="border-t border-slate-100 bg-slate-50/95 py-2 px-4 shadow-inner">
+      <div class="max-w-5xl mx-auto flex items-center justify-between gap-2">
+        <button onclick="prevPage()" class="px-3 py-1.5 bg-white hover:bg-slate-100 text-slate-700 text-xs font-bold rounded-lg border border-slate-300 transition flex items-center gap-1 shrink-0">
+          <i class="fa-solid fa-chevron-left text-[10px]"></i> <span class="hidden sm:inline">이전</span>
+        </button>
+        
+        <div class="flex items-center gap-1.5 overflow-x-auto py-0.5 px-1 max-w-full">
+          <button onclick="goToPage(1)" class="page-btn active w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">1</button>
+          <button onclick="goToPage(2)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">2</button>
+          <button onclick="goToPage(3)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">3</button>
+          <button onclick="goToPage(4)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">4</button>
+          <button onclick="goToPage(5)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">5</button>
+          <button onclick="goToPage(6)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">6</button>
+          <button onclick="goToPage(7)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">7</button>
+          <button onclick="goToPage(8)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">8</button>
+          <button onclick="goToPage(9)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">9</button>
+          <button onclick="goToPage(10)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">10</button>
+        </div>
+
+        <button onclick="nextPage()" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-lg transition flex items-center gap-1 shrink-0">
+          <span class="hidden sm:inline">다음</span> <i class="fa-solid fa-chevron-right text-[10px]"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- 2. 슬라이드 본문 컨테이너 -->
+  <main class="flex-1 max-w-4xl w-full mx-auto px-4 py-4 flex flex-col justify-center">
+
+    <!-- Slide 1: 표지 -->
+    <div class="slide-page active bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-1">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 01 / 10</span>
+        <span>수원대학교 경영공학대학</span>
+      </div>
+      <div class="text-center my-auto py-6">
+        <div class="inline-block p-4 bg-sky-50 text-sky-700 rounded-2xl mb-3 shadow-inner">
+          <i class="fa-solid fa-chart-pie text-4xl"></i>
+        </div>
+        <span class="text-xs font-bold text-sky-700 tracking-wider block mb-1">CH.03 거래의 기록과 회계장부 (2)</span>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mb-3">3차시: 수정전시산표와 경영분석(ROA)</h2>
+        <p class="text-slate-600 text-xs sm:text-sm max-w-lg mx-auto leading-relaxed">
+          수정전시산표가 가진 결산의 한계를 짚어보고,<br>
+          회계정보의 핵심 지표인 총자산이익률(ROA)을 통해 실제 기업(신세계·현대백화점)을 분석합니다.
+        </p>
+      </div>
+      <div class="text-center text-xs text-slate-400 border-t pt-3">
+        상단 퀵 버튼(1~10) 또는 키보드 방향키(←, →)로 이동할 수 있습니다.
+      </div>
+    </div>
+
+    <!-- Slide 2: 학습 목표 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-2">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 02 / 10</span>
+        <span>학습 목표 (50분 설계)</span>
+      </div>
+      <div class="my-auto">
+        <h3 class="text-lg sm:text-xl font-bold text-slate-900 mb-5 flex items-center gap-2">
+          <i class="fa-solid fa-bullseye text-blue-600"></i> 이번 3차시 핵심 학습 목표
+        </h3>
+        <div class="grid sm:grid-cols-3 gap-3.5">
+          <div class="p-4 bg-slate-50 border rounded-xl hover:border-sky-400 transition">
+            <span class="w-6 h-6 rounded bg-sky-600 text-white font-bold flex items-center justify-center text-xs mb-2">1</span>
+            <h4 class="font-bold text-slate-800 text-xs sm:text-sm mb-1">수정전시산표 한계 이해</h4>
+            <p class="text-xs text-slate-600 leading-relaxed">기중 거래만 반영된 상태에서 기말 결산수정(Adjusting)이 왜 필수적인지 당위성을 파악한다.</p>
+          </div>
+          <div class="p-4 bg-slate-50 border rounded-xl hover:border-sky-400 transition">
+            <span class="w-6 h-6 rounded bg-sky-600 text-white font-bold flex items-center justify-center text-xs mb-2">2</span>
+            <h4 class="font-bold text-slate-800 text-xs sm:text-sm mb-1">총자산이익률(ROA) 도출</h4>
+            <p class="text-xs text-slate-600 leading-relaxed">총자산 활용 효율성을 나타내는 $ROA = \frac{\text{당기순이익}}{\text{평균총자산}}$ 공식을 체득한다.</p>
+          </div>
+          <div class="p-4 bg-slate-50 border rounded-xl hover:border-sky-400 transition">
+            <span class="w-6 h-6 rounded bg-sky-600 text-white font-bold flex items-center justify-center text-xs mb-2">3</span>
+            <h4 class="font-bold text-slate-800 text-xs sm:text-sm mb-1">실전 백화점 기업 분석</h4>
+            <p class="text-xs text-slate-600 leading-relaxed">신세계와 현대백화점의 실전 ROA 데이터를 비교하여 경영 성과 차이를 해석한다.</p>
+          </div>
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3 flex justify-between">
+        <span>회계정보의 활용 및 결산 연결</span>
+        <span>교재 Ch.03 (p.43~44)</span>
+      </div>
+    </div>
+
+    <!-- Slide 3: 왜 '수정 전' 시산표인가? -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-3">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 03 / 10</span>
+        <span>수정전시산표의 본질</span>
+      </div>
+      <div class="my-auto space-y-3.5">
+        <h3 class="text-lg sm:text-xl font-bold text-slate-900 flex items-center gap-2">
+          <i class="fa-solid fa-hourglass-half text-amber-500"></i> 왜 '수정 전(Unadjusted)' 시산표인가?
+        </h3>
+        
+        <div class="p-4 bg-slate-50 border rounded-xl text-xs space-y-2">
+          <p class="text-slate-800 leading-relaxed">
+            지금까지 작성한 시산표는 <strong>기중(During the period)</strong>에 발생한 외부 거래(매출, 매입, 입출금 등)만을 집계한 것입니다. 그러나 회계기간 말에는 <strong>증빙 서류가 저절로 오지 않는 내부 가치 변동</strong>이 존재합니다.
+          </p>
+        </div>
+
+        <div class="grid sm:grid-cols-2 gap-3 text-xs">
+          <div class="p-3 bg-amber-50/70 border border-amber-200 rounded-xl space-y-1.5">
+            <div class="font-bold text-amber-950 flex items-center gap-1.5">
+              <i class="fa-solid fa-clock text-amber-600"></i> 시간의 경과에 따른 변동
+            </div>
+            <ul class="text-slate-700 space-y-1 list-disc list-inside text-[11px]">
+              <li><strong>차입금 경과이자:</strong> 이자 지급일이 아직 안 되었으나 발생한 이자비용</li>
+              <li><strong>선급보험료의 경과:</strong> 1년치 낸 보험료 중 당기 경과분 소멸</li>
+              <li><strong>임대료 미수분:</strong> 용역은 제공했으나 월말에 청구할 수익</li>
+            </ul>
+          </div>
+
+          <div class="p-3 bg-rose-50/70 border border-rose-200 rounded-xl space-y-1.5">
+            <div class="font-bold text-rose-950 flex items-center gap-1.5">
+              <i class="fa-solid fa-box-open text-rose-600"></i> 자산의 실질 소모 및 마모
+            </div>
+            <ul class="text-slate-700 space-y-1 list-disc list-inside text-[11px]">
+              <li><strong>소모품의 실제 사용액:</strong> 창고에서 실제로 꺼내 쓴 소모품비</li>
+              <li><strong>유형자산 감가상각:</strong> 차량·비품을 1년간 사용하여 가치 하락</li>
+              <li><strong>매출채권 대손:</strong> 외상값 중 떼일 것으로 예상되는 손실</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3">
+        이 미반영 항목들을 정리하는 작업이 바로 다음 6주차에 배울 '결산수정분개(Adjusting Entries)'입니다!
+      </div>
+    </div>
+
+    <!-- Slide 4: 수정전시산표로 재무제표를 만들면 생기는 왜곡 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-4">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 04 / 10</span>
+        <span>발생주의 원칙</span>
+      </div>
+      <div class="my-auto space-y-3.5">
+        <h3 class="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
+          <i class="fa-solid fa-triangle-exclamation text-rose-600"></i> 수정하지 않고 결산하면 어떤 일이 벌어질까?
+        </h3>
+
+        <div class="p-3.5 bg-rose-50 border border-rose-200 rounded-xl text-xs space-y-2">
+          <div class="font-bold text-rose-900 flex items-center gap-1.5">
+            <i class="fa-solid fa-circle-xmark text-rose-600"></i> [사례] 글로벌세탁(주)의 소모품 ￦100,000의 진실
+          </div>
+          <p class="text-slate-700 leading-relaxed text-[11px]">
+            수정전시산표에는 소모품이 <strong>자산 ￦100,000</strong>으로 그대로 적혀 있습니다. 그러나 9월 30일 퇴근 전 창고를 실사해 보니, 세탁 세제와 옷걸이 <strong>￦70,000원어치를 이미 사용</strong>하고 창고에는 <strong>￦30,000원</strong>만 남아 있었습니다!
+          </p>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3 text-xs">
+          <div class="p-3 bg-slate-50 border rounded-xl space-y-1">
+            <span class="font-bold text-rose-700 block">수정전 상태로 발표 시 (왜곡)</span>
+            <ul class="text-[11px] text-slate-600 space-y-0.5">
+              <li>• 자산(소모품) 7만원 과대계상</li>
+              <li>• 비용(소모품비) 7만원 과소계상</li>
+              <li>• <strong>당기순이익 7만원 뻥튀기!</strong> ⚠️</li>
+            </ul>
+          </div>
+          <div class="p-3 bg-emerald-50 border border-emerald-200 rounded-xl space-y-1">
+            <span class="font-bold text-emerald-800 block">결산수정 반영 시 (진실)</span>
+            <ul class="text-[11px] text-slate-700 space-y-0.5">
+              <li>• 실제 남은 자산 3만원만 표기</li>
+              <li>• 사용분 7만원을 당기 비용으로 반영</li>
+              <li>• <strong>정확한 실질 경영성과 공시!</strong> ✓</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3">
+        수정전시산표는 결산의 '완성'이 아니라, 결산수정을 시작하기 위한 '출발점'입니다.
+      </div>
+    </div>
+
+    <!-- Slide 5: 회계정보의 활용 - 총자산이익률(ROA) -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-5">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 05 / 10</span>
+        <span>회계정보 활용 (교재 p.43)</span>
+      </div>
+      <div class="my-auto space-y-3.5">
+        <h3 class="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
+          <i class="fa-solid fa-chart-line text-blue-600"></i> 총자산이익률(Return On Assets : ROA)
+        </h3>
+
+        <div class="p-4 bg-slate-900 text-white rounded-xl text-center shadow">
+          <div class="text-xs text-sky-300 font-bold uppercase tracking-wider mb-1">총자산이익률 도출 공식</div>
+          <div class="text-base sm:text-xl font-black tracking-wide text-emerald-300">
+            총자산이익률(ROA) = ( 당기순이익 ÷ 평균 총자산 ) × 100 (%)
+          </div>
+        </div>
+
+        <div class="grid sm:grid-cols-2 gap-3 text-xs">
+          <div class="p-3.5 bg-blue-50 border border-blue-200 rounded-xl space-y-1">
+            <div class="font-bold text-blue-900 flex items-center gap-1.5">
+              <i class="fa-solid fa-bullseye text-blue-600"></i> 지표의 경영학적 의미
+            </div>
+            <p class="text-slate-600 leading-relaxed text-[11px]">
+              주주 돈(자본)뿐만 아니라 은행 대출(부채)까지 포함한 <strong>회사의 모든 자산 자원(Total Assets)</strong>을 경영자가 얼마나 효율적으로 굴려 순이익을 창출했는가를 나타내는 종합 효율성 지표입니다.
+            </p>
+          </div>
+
+          <div class="p-3.5 bg-slate-50 border rounded-xl space-y-1">
+            <div class="font-bold text-slate-800 flex items-center gap-1.5">
+              <i class="fa-solid fa-divide text-slate-500"></i> 분모의 '평균 총자산' 계산법
+            </div>
+            <p class="text-slate-600 leading-relaxed text-[11px]">
+              분자의 당기순이익은 1년 동안 벌어들인 금액(Flow)이므로, 분모의 자산(Stock)도 기초 자산과 기말 자산의 평균값인 <strong>(기초자산 + 기말자산) ÷ 2</strong>를 사용하는 것이 원칙입니다.
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3">
+        ROA가 높을수록 적은 자산으로도 많은 이익을 뽑아내는 '고효율 알짜 기업'임을 의미합니다.
+      </div>
+    </div>
+
+    <!-- Slide 6: ROA와 ROE 비교 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-6">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 06 / 10</span>
+        <span>지표 비교</span>
+      </div>
+      <div class="my-auto space-y-3.5">
+        <h3 class="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
+          <i class="fa-solid fa-scale-balanced text-indigo-600"></i> 총자산이익률(ROA) vs 자기자본이익률(ROE)
+        </h3>
+
+        <div class="grid sm:grid-cols-2 gap-3 text-xs">
+          <!-- ROA 카드 -->
+          <div class="p-3.5 bg-blue-50 border border-blue-200 rounded-xl space-y-2">
+            <div class="flex justify-between items-center">
+              <span class="font-bold text-blue-900 text-sm">ROA (총자산이익률)</span>
+              <span class="px-2 py-0.5 bg-blue-200 text-blue-800 text-[10px] font-bold rounded">기업 전체 관점</span>
+            </div>
+            <div class="font-mono text-[11px] bg-white p-2 rounded border text-blue-800">
+              당기순이익 ÷ 총자산(부채+자본)
+            </div>
+            <ul class="text-[11px] text-slate-600 space-y-1 list-disc list-inside">
+              <li>자금 조달 원천(빚이든 내 돈이든)과 무관하게 회사의 순수한 영업·자산운용 능력을 측정</li>
+              <li>경영자의 총체적 자원관리 역량 평가에 적합</li>
+            </ul>
+          </div>
+
+          <!-- ROE 카드 -->
+          <div class="p-3.5 bg-emerald-50 border border-emerald-200 rounded-xl space-y-2">
+            <div class="flex justify-between items-center">
+              <span class="font-bold text-emerald-900 text-sm">ROE (자기자본이익률)</span>
+              <span class="px-2 py-0.5 bg-emerald-200 text-emerald-800 text-[10px] font-bold rounded">주주 투자자 관점</span>
+            </div>
+            <div class="font-mono text-[11px] bg-white p-2 rounded border text-emerald-800">
+              당기순이익 ÷ 자기자본(순자산)
+            </div>
+            <ul class="text-[11px] text-slate-600 space-y-1 list-disc list-inside">
+              <li>주주가 출자한 종잣돈 대비 얼마의 이익을 남겼는지를 평가 (2주차에서 학습)</li>
+              <li>부채를 많이 끌어다 쓰면 ROE가 뻥튀기되는 '레버리지 효과' 발생 가능</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="p-2.5 bg-slate-50 border rounded-lg text-[11px] text-slate-600 leading-relaxed text-center">
+          💡 부채가 많은 기업은 겉보기에 ROE가 높아 보일 수 있으므로, 반드시 <strong>ROA를 함께 확인</strong>해야 기업의 진짜 실력을 파악할 수 있습니다!
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3">
+        경영공학 및 투자 분석에서는 ROA와 ROE의 격차(레버리지도)를 중요하게 모니터링합니다.
+      </div>
+    </div>
+
+    <!-- Slide 7: 실전 기업 분석 - 신세계 vs 현대백화점 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-7">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 07 / 10</span>
+        <span>실전 기업 분석 (교재 p.44)</span>
+      </div>
+      <div class="my-auto space-y-3">
+        <div class="flex justify-between items-end">
+          <div>
+            <h3 class="text-base sm:text-lg font-bold text-slate-900">
+              <i class="fa-solid fa-building text-blue-600 mr-1"></i> 신세계 vs 현대백화점의 총자산이익률(ROA)
+            </h3>
+            <span class="text-[11px] text-slate-500">국내 대표 유통 백화점 2사의 2024년 경영 성과 비교</span>
+          </div>
+          <span class="text-[11px] bg-slate-200 text-slate-700 px-2 py-0.5 rounded font-bold">DART 공시 기반</span>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3 text-xs">
+          <!-- 신세계 카드 -->
+          <div class="p-3.5 bg-blue-50/60 border-2 border-blue-300 rounded-xl space-y-2">
+            <div class="flex justify-between items-center border-b border-blue-200 pb-1.5">
+              <strong class="text-blue-900 text-sm">㈜신세계</strong>
+              <span class="text-xs font-bold text-blue-700 bg-blue-100 px-2 py-0.5 rounded">흑자 유지</span>
+            </div>
+            <div class="space-y-1">
+              <div class="flex justify-between text-slate-600">
+                <span>2024년 ROA</span>
+                <span class="font-bold text-blue-900 text-sm">1.25 %</span>
+              </div>
+              <p class="text-[11px] text-slate-600 leading-relaxed pt-1">
+                • 소비 심리 위축 및 고금리로 전년 대비 순이익이 다소 감소하였으나, 안정적인 흑자 구조와 자산 효율을 유지함.
+              </p>
+            </div>
+          </div>
+
+          <!-- 현대백화점 카드 -->
+          <div class="p-3.5 bg-rose-50/60 border-2 border-rose-300 rounded-xl space-y-2">
+            <div class="flex justify-between items-center border-b border-rose-200 pb-1.5">
+              <strong class="text-rose-900 text-sm">㈜현대백화점</strong>
+              <span class="text-xs font-bold text-rose-700 bg-rose-100 px-2 py-0.5 rounded">적자 상태</span>
+            </div>
+            <div class="space-y-1">
+              <div class="flex justify-between text-slate-600">
+                <span>2024년 ROA</span>
+                <span class="font-bold text-rose-900 text-sm">-0.006 %</span>
+              </div>
+              <p class="text-[11px] text-slate-600 leading-relaxed pt-1">
+                • 대전 아울렛 화재 여파 및 연결 자회사의 손실로 적자를 기록. 손실 폭은 줄였으나 흑자 전환에는 미달함.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="p-2.5 bg-slate-50 border rounded-lg text-[11px] text-slate-700 leading-relaxed">
+          📌 <strong>시사점:</strong> 백화점과 같은 대규모 부동산·인프라 장치산업은 총자산 규모(수조~십수조 원)가 워낙 크기 때문에, 자산운용 효율성이 조금만 떨어져도 ROA가 급격히 저하됩니다.
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-2 flex justify-between">
+        <span>출처: 삼일회계법인 회계원리 교재 분석자료</span>
+        <span>자산 규모 대비 이익창출능력 검증</span>
+      </div>
+    </div>
+
+    <!-- Slide 8: 경영공학 관점 - 시산표 데이터와 경영 의사결정 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-8">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 08 / 10</span>
+        <span>경영공학 인사이트</span>
+      </div>
+      <div class="my-auto space-y-3.5">
+        <h3 class="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
+          <i class="fa-solid fa-network-wired text-indigo-600"></i> 경영공학도를 위한 회계 데이터 인사이트
+        </h3>
+
+        <div class="p-3.5 bg-indigo-50/70 border border-indigo-200 rounded-xl space-y-1 text-xs">
+          <div class="font-bold text-indigo-950">단순 회계기록(Bookkeeping)을 넘어 비즈니스 애널리틱스로!</div>
+          <p class="text-slate-700 leading-relaxed text-[11px]">
+            회계원리의 T계정과 시산표는 단순한 숫자의 나열이 아닙니다. ERP 데이터베이스 내의 <strong>트랜잭션 로그(Transaction Log)</strong>이자, 기업의 건강 상태를 진단하는 <strong>생체 신호(Vital Sign)</strong>입니다.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-3 gap-2 text-center text-xs">
+          <div class="p-3 bg-slate-50 border rounded-xl">
+            <i class="fa-solid fa-database text-blue-600 text-lg mb-1 block"></i>
+            <strong class="text-slate-800 block mb-0.5">데이터 무결성</strong>
+            <span class="text-[10px] text-slate-500">대차평균 원리를 통한 오류 제로화</span>
+          </div>
+          <div class="p-3 bg-slate-50 border rounded-xl">
+            <i class="fa-solid fa-chart-column text-emerald-600 text-lg mb-1 block"></i>
+            <strong class="text-slate-800 block mb-0.5">지표 최적화</strong>
+            <span class="text-[10px] text-slate-500">ROA, ROE, 재고자산회전율 모니터링</span>
+          </div>
+          <div class="p-3 bg-slate-50 border rounded-xl">
+            <i class="fa-solid fa-lightbulb text-amber-500 text-lg mb-1 block"></i>
+            <strong class="text-slate-800 block mb-0.5">의사결정 지원</strong>
+            <span class="text-[10px] text-slate-500">자원 배분 및 원가 절감 솔루션 도출</span>
+          </div>
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3">
+        경영공학의 시스템적 사고로 회계 데이터를 해석할 때 최고의 경쟁력이 발휘됩니다.
+      </div>
+    </div>
+
+    <!-- Slide 9: Ch.03 대단원 종합 정리 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-9">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 09 / 10</span>
+        <span>Ch.03 대단원 총정리</span>
+      </div>
+      <div class="my-auto space-y-3">
+        <h3 class="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
+          <i class="fa-solid fa-circle-nodes text-blue-600"></i> 4주차·5주차: 거래의 기록과 장부 완성 로드맵
+        </h3>
+
+        <!-- 3단계 로드맵 가로 정렬 -->
+        <div class="grid grid-cols-3 gap-2 text-xs">
+          <div class="p-3 bg-slate-50 border rounded-xl">
+            <span class="bg-blue-600 text-white px-2 py-0.5 rounded text-[10px] font-bold">1단계</span>
+            <h4 class="font-bold text-slate-800 mt-1 mb-0.5">분개장의 기입</h4>
+            <p class="text-[11px] text-slate-500">거래 발생 $\rightarrow$ 차·대변 분석 $\rightarrow$ 분개장 날짜순 기록</p>
+          </div>
+          <div class="p-3 bg-slate-50 border rounded-xl">
+            <span class="bg-blue-600 text-white px-2 py-0.5 rounded text-[10px] font-bold">2단계</span>
+            <h4 class="font-bold text-slate-800 mt-1 mb-0.5">총계정원장 전기</h4>
+            <p class="text-[11px] text-slate-500">분개장에서 각 계정별 T계정으로 옮겨 적고 잔액 도출</p>
+          </div>
+          <div class="p-3 bg-emerald-50 border border-emerald-300 rounded-xl">
+            <span class="bg-emerald-600 text-white px-2 py-0.5 rounded text-[10px] font-bold">3단계</span>
+            <h4 class="font-bold text-emerald-900 mt-1 mb-0.5">수정전시산표 작성</h4>
+            <p class="text-[11px] text-slate-600">모든 계정 잔액 집계 $\rightarrow$ 대차평균 검증 $\rightarrow$ ROA 조기 진단</p>
+          </div>
+        </div>
+
+        <div class="p-2.5 bg-blue-50 border border-blue-200 rounded-xl text-center text-xs text-blue-900 font-semibold">
+          🚀 다음 6주차부터는 회계의 꽃인 <strong>[Ch.04 회계순환과정의 완료: 결산수정분개]</strong>로 진입합니다!
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-2 flex justify-between">
+        <span>Ch.03 완강 달성을 축하합니다!</span>
+        <span>수원대 회계원리</span>
+      </div>
+    </div>
+
+    <!-- Slide 10: 인터랙티브 퀴즈 & 실습 이동 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-10">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded border border-emerald-200">SLIDE 10 / 10 · 퀴즈</span>
+        <span>3차시 점검</span>
+      </div>
+      <div class="my-auto">
+        <h3 class="text-base sm:text-lg font-bold text-slate-900 mb-2 flex items-center gap-2">
+          <i class="fa-solid fa-circle-question text-emerald-600"></i> [자가진단 퀴즈]
+        </h3>
+        <div class="bg-slate-50 p-4 rounded-xl border mb-3">
+          <p class="text-xs sm:text-sm font-bold text-slate-800 mb-2">
+            Q. (주)수원의 당기순이익이 2억원이고, 기초 총자산이 18억원, 기말 총자산이 22억원일 때 <strong>[총자산이익률(ROA)]</strong>은 얼마인가?
+          </p>
+          <div class="space-y-1.5">
+            <button onclick="checkQuiz(1, 'A', this)" class="q-btn-1 w-full text-left p-2.5 bg-white border rounded text-xs hover:bg-slate-100 transition">
+              A) 8.0 %
+            </button>
+            <button onclick="checkQuiz(1, 'B', this)" class="q-btn-1 w-full text-left p-2.5 bg-white border rounded text-xs hover:bg-slate-100 transition">
+              B) 10.0 %
+            </button>
+            <button onclick="checkQuiz(1, 'C', this)" class="q-btn-1 w-full text-left p-2.5 bg-white border rounded text-xs hover:bg-slate-100 transition">
+              C) 12.5 %
+            </button>
+          </div>
+          <div id="q-feedback-1" class="hidden mt-2 p-2 rounded text-xs"></div>
+        </div>
+        <div class="p-3 bg-amber-50 border border-amber-200 rounded-xl text-center text-xs text-amber-900">
+          📝 3교시 이론 수업을 마쳤습니다. 이제 <strong>[5주차 종합 실습과제]</strong>를 풀고 구글 시트에 답안을 제출하세요!
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3 flex justify-between">
+        <span>5주차 3차시 완료</span>
+        <a href="exercise_05.html" class="text-amber-800 font-bold hover:underline">5주차 실습과제 입장 →</a>
+      </div>
+    </div>
+
+  </main>
+
+  <footer class="text-center py-3 text-slate-400 text-xs border-t bg-white no-print">
+    수원대학교 경영공학대학 회계원리 © 2026
+  </footer>
+
+  <script>
+    let currentPage = 1;
+    const totalPages = 10;
+
+    function goToPage(page) {
+      if (page < 1 || page > totalPages) return;
+      document.querySelectorAll('.slide-page').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.page-btn').forEach(d => d.classList.remove('active'));
+      
+      const target = document.getElementById(`page-${page}`);
+      if (target) target.classList.add('active');
+      
+      const btns = document.querySelectorAll('.page-btn');
+      if (btns[page - 1]) btns[page - 1].classList.add('active');
+      
+      currentPage = page;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function nextPage() { if (currentPage < totalPages) goToPage(currentPage + 1); }
+    function prevPage() { if (currentPage > 1) goToPage(currentPage - 1); }
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === 'PageDown') nextPage();
+      if (e.key === 'ArrowLeft' || e.key === 'PageUp') prevPage();
+    });
+
+    const quizAnswers = {
+      1: { 
+        ans: 'B', 
+        exp: '평균 총자산 = (18억 + 22억) ÷ 2 = 20억원입니다. 따라서 ROA = (2억원 ÷ 20억원) × 100 = 10.0% 입니다.' 
+      }
+    };
+
+    function checkQuiz(qNum, choice, btn) {
+      const btns = document.querySelectorAll(`.q-btn-${qNum}`);
+      const fb = document.getElementById(`q-feedback-${qNum}`);
+      btns.forEach(b => { b.className = `q-btn-${qNum} w-full text-left p-2.5 bg-white border rounded text-xs transition`; });
+      fb.classList.remove('hidden');
+
+      if (choice === quizAnswers[qNum].ans) {
+        btn.classList.add('bg-emerald-100', 'border-emerald-500', 'text-emerald-900', 'font-bold');
+        fb.className = "text-xs mt-2 p-2 rounded bg-emerald-50 text-emerald-900 border border-emerald-200 block";
+        fb.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-600 mr-1"></i> <strong>정답입니다!</strong> ${quizAnswers[qNum].exp}`;
+      } else {
+        btn.classList.add('bg-rose-100', 'border-rose-500', 'text-rose-900');
+        fb.className = "text-xs mt-2 p-2 rounded bg-rose-50 text-rose-900 border border-rose-200 block";
+        fb.innerHTML = `<i class="fa-solid fa-circle-xmark text-rose-600 mr-1"></i> <strong>오답입니다!</strong> ${quizAnswers[qNum].exp}`;
+      }
+    }
+  </script>
+</body>
+</html>

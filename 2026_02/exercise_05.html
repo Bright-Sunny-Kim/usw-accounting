@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>[5주차 실습과제] 수정전시산표와 대차평균 검증 | 수원대학교 회계원리</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Noto Sans KR', sans-serif; }
+  </style>
+</head>
+<body class="bg-slate-100 text-slate-800 antialiased min-h-screen flex flex-col justify-between">
+
+  <!-- 상단 네비게이션 헤더 -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm">
+    <div class="max-w-4xl mx-auto px-4 flex justify-between items-center h-12">
+      <div class="flex items-center gap-2">
+        <span class="bg-blue-900 text-white text-[11px] px-2 py-0.5 rounded-full font-bold">수원대 회계원리</span>
+        <h1 class="font-bold text-slate-800 text-xs sm:text-sm">5주차 실습과제 및 구글시트 제출</h1>
+      </div>
+      <div class="flex items-center gap-1 text-xs">
+        <a href="202602_05_01.html" class="px-2 py-1 bg-slate-100 hover:bg-slate-200 rounded text-slate-700">1차시</a>
+        <a href="202602_05_02.html" class="px-2 py-1 bg-slate-100 hover:bg-slate-200 rounded text-slate-700">2차시</a>
+        <a href="202602_05_03.html" class="px-2 py-1 bg-slate-100 hover:bg-slate-200 rounded text-slate-700">3차시</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- 메인 폼 컨테이너 -->
+  <main class="flex-1 max-w-3xl w-full mx-auto px-4 py-6 space-y-6">
+
+    <!-- 안내 배너 -->
+    <div class="bg-gradient-to-r from-blue-950 via-indigo-900 to-slate-900 text-white p-6 rounded-2xl shadow-sm">
+      <span class="text-xs bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 px-2.5 py-1 rounded-full font-semibold mb-2 inline-block">
+        <i class="fa-solid fa-cloud-arrow-up mr-1"></i> 구글 시트 실시간 자동 채점 연동
+      </span>
+      <h2 class="text-xl sm:text-2xl font-black mb-1">5주차 시산표와 대차평균 검증 실습 평가</h2>
+      <p class="text-xs sm:text-sm text-slate-300">
+        학번과 이름을 입력하고 문제를 푼 후 맨 아래 <strong>[구글 시트에 답안 제출하기]</strong> 버튼을 누르면 교수님 시트로 실시간 전송 및 채점됩니다.
+      </p>
+    </div>
+
+    <!-- 1. 학생 기본 정보 입력란 -->
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-3">
+      <h3 class="text-base font-bold text-slate-900 border-b pb-2 flex items-center gap-2">
+        <i class="fa-solid fa-user-graduate text-blue-600"></i> 제출 학생 정보 (필수)
+      </h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">학번 (Student ID)</label>
+          <input type="text" id="studentId" placeholder="예: 20261234" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">성명 (Name)</label>
+          <input type="text" id="studentName" placeholder="예: 홍길동" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent">
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. Part 1: 개념 확인 객관식 3제 -->
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+      <h3 class="text-base font-bold text-slate-900 border-b pb-2 flex items-center gap-2">
+        <i class="fa-solid fa-list-check text-blue-600"></i> [Part 1] 시산표 핵심 개념 평가 (3문항)
+      </h3>
+
+      <!-- Q1 -->
+      <div class="p-4 bg-slate-50 border rounded-xl space-y-2 text-xs sm:text-sm">
+        <div class="font-bold text-slate-800">Q1. 잔액시산표의 기본 원리인 '시산표 등식'으로 올바른 것은?</div>
+        <div class="space-y-1.5 text-xs">
+          <label class="flex items-center gap-2 p-2 bg-white rounded-lg border hover:bg-slate-100 cursor-pointer">
+            <input type="radio" name="q1" value="A" class="text-blue-600"> ① 자산 + 부채 + 배당금 = 자본 + 수익 + 비용
+          </label>
+          <label class="flex items-center gap-2 p-2 bg-white rounded-lg border hover:bg-slate-100 cursor-pointer">
+            <input type="radio" name="q1" value="B" class="text-blue-600"> ② 자산 + 비용 + 배당금 = 부채 + 자본 + 수익
+          </label>
+          <label class="flex items-center gap-2 p-2 bg-white rounded-lg border hover:bg-slate-100 cursor-pointer">
+            <input type="radio" name="q1" value="C" class="text-blue-600"> ③ 자산 + 수익 = 부채 + 자본 + 비용 - 배당금
+          </label>
+        </div>
+      </div>
+
+      <!-- Q2 -->
+      <div class="p-4 bg-slate-50 border rounded-xl space-y-2 text-xs sm:text-sm">
+        <div class="font-bold text-slate-800">Q2. 다음 중 시산표의 차변 합계와 대변 합계가 일치하여 시산표에서 <u>발견할 수 없는</u> 오류는?</div>
+        <div class="space-y-1.5 text-xs">
+          <label class="flex items-center gap-2 p-2 bg-white rounded-lg border hover:bg-slate-100 cursor-pointer">
+            <input type="radio" name="q2" value="A" class="text-blue-600"> ① 차변에 들어갈 임차료 300,000원을 대변에 반대로 전기하였다.
+          </label>
+          <label class="flex items-center gap-2 p-2 bg-white rounded-lg border hover:bg-slate-100 cursor-pointer">
+            <input type="radio" name="q2" value="B" class="text-blue-600"> ② 분개장의 현금 계정만 전기하고 매출 계정의 전기를 누락하였다.
+          </label>
+          <label class="flex items-center gap-2 p-2 bg-white rounded-lg border hover:bg-slate-100 cursor-pointer">
+            <input type="radio" name="q2" value="C" class="text-blue-600"> ③ 어떤 외상 거래 전체(차변과 대변)를 실수로 완전히 빠뜨리고 분개장에 기록하지 않았다.
+          </label>
+        </div>
+      </div>
+
+      <!-- Q3 -->
+      <div class="p-4 bg-slate-50 border rounded-xl space-y-2 text-xs sm:text-sm">
+        <div class="font-bold text-slate-800">Q3. 시산표의 차변 합계와 대변 합계의 차액이 <strong>'9의 배수'</strong>로 나누어 떨어질 때 가장 먼저 의심해야 하는 오류는?</div>
+        <div class="space-y-1.5 text-xs">
+          <label class="flex items-center gap-2 p-2 bg-white rounded-lg border hover:bg-slate-100 cursor-pointer">
+            <input type="radio" name="q3" value="A" class="text-blue-600"> ① 숫자의 자리바꿈 오류 (예: 54,000원을 45,000원으로 기입)
+          </label>
+          <label class="flex items-center gap-2 p-2 bg-white rounded-lg border hover:bg-slate-100 cursor-pointer">
+            <input type="radio" name="q3" value="B" class="text-blue-600"> ② 차변에 쓸 항목을 대변에 거꾸로 기입한 오류
+          </label>
+          <label class="flex items-center gap-2 p-2 bg-white rounded-lg border hover:bg-slate-100 cursor-pointer">
+            <input type="radio" name="q3" value="C" class="text-blue-600"> ③ 원장의 T계정 잔액을 덧셈할 때 100원을 틀린 단순 가산 오류
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. Part 2: 실무 시산표 작성 및 대차 합계 도출 -->
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+      <h3 class="text-base font-bold text-slate-900 border-b pb-2 flex items-center gap-2">
+        <i class="fa-solid fa-calculator text-blue-600"></i> [Part 2] 실전 잔액시산표 작성 및 대차합계 도출
+      </h3>
+      
+      <div class="bg-slate-50 p-4 rounded-xl border text-xs space-y-2 leading-relaxed text-slate-700">
+        <div class="font-bold text-slate-900 mb-1">[상황] (주)수원의 5월 말 총계정원장 각 계정 잔액 현황:</div>
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 pt-1 font-mono text-[11px]">
+          <div class="p-2 bg-white rounded border">현금: ￦ 5,000,000</div>
+          <div class="p-2 bg-white rounded border">매출채권: ￦ 3,000,000</div>
+          <div class="p-2 bg-white rounded border">비품: ￦ 4,000,000</div>
+          <div class="p-2 bg-white rounded border">외상매입금: ￦ 2,500,000</div>
+          <div class="p-2 bg-white rounded border">단기차입금: ￦ 3,500,000</div>
+          <div class="p-2 bg-white rounded border">자본금: ￦ 5,000,000</div>
+          <div class="p-2 bg-white rounded border">배당금: ￦ 500,000</div>
+          <div class="p-2 bg-white rounded border">용역매출: ￦ 6,500,000</div>
+          <div class="p-2 bg-white rounded border">급여: ￦ 3,500,000</div>
+          <div class="p-2 bg-white rounded border">임차료: ￦ 1,500,000</div>
+        </div>
+        <p class="text-[11px] text-slate-500 mt-2">
+          * 각 계정이 차변 잔액인지 대변 잔액인지 판별한 후, 시산표 차변과 대변에 각각 배치하여 합계를 구하세요.
+        </p>
+      </div>
+
+      <div class="pt-2">
+        <label class="block text-xs font-bold text-slate-800 mb-1.5">
+          Q4. 위 10개 계정 잔액으로 잔액시산표를 작성했을 때, <strong>[시산표의 차변(또는 대변) 총합계액]</strong>을 숫자로 입력하세요 (원 단위):
+        </label>
+        <div class="flex items-center gap-2">
+          <input type="number" id="tbTotalInput" placeholder="예: 17500000 (콤마 없이 숫자만 입력)" class="flex-1 px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent">
+          <span class="text-xs font-bold text-slate-600">원</span>
+        </div>
+        <p class="text-[11px] text-slate-400 mt-1">* 힌트: 차변 합계(자산+비용+배당금)와 대변 합계(부채+자본+수익)는 완벽히 일치해야 합니다.</p>
+      </div>
+    </div>
+
+    <!-- 4. 제출하기 버튼 & 결과 피드백 -->
+    <div class="space-y-3">
+      <button id="submitBtn" onclick="submitToGoogleSheet()" class="w-full py-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold rounded-xl shadow-lg transition flex items-center justify-center gap-2 text-sm sm:text-base">
+        <i class="fa-solid fa-paper-plane"></i> 구글 시트에 실습 답안 제출하기
+      </button>
+      <div id="submitStatus" class="hidden p-4 rounded-xl text-center text-xs sm:text-sm font-semibold"></div>
+    </div>
+
+  </main>
+
+  <!-- 하단 푸터 -->
+  <footer class="text-center py-4 text-slate-400 text-xs border-t bg-white">
+    수원대학교 경영공학대학 회계원리 © 2026
+  </footer>
+
+  <!-- 구글 시트 웹 앱 통신 스크립트 -->
+  <script>
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxkVGaxS_AzDYms9MhtaWK1LMcgTTeMWaiZ4w1U-iE2weua61l0YO2zXkaIKmj8pR08/exec";
+    const correctAnswers = { q1: "B", q2: "C", q3: "A" };
+    const correctTotal = 17500000;
+
+    function submitToGoogleSheet() {
+      const studentId = document.getElementById("studentId").value.trim();
+      const studentName = document.getElementById("studentName").value.trim();
+      const totalInput = document.getElementById("tbTotalInput").value.trim();
+
+      if (!studentId || !studentName) {
+        alert("학번과 성명을 모두 입력해 주세요!");
+        document.getElementById("studentId").focus();
+        return;
+      }
+
+      let score = 0;
+      let userAnswers = {};
+      for (let i = 1; i <= 3; i++) {
+        const selected = document.querySelector(`input[name="q${i}"]:checked`);
+        const userChoice = selected ? selected.value : "-";
+        userAnswers[`q${i}`] = userChoice;
+        if (userChoice === correctAnswers[`q${i}`]) score++;
+      }
+
+      const userTotalNum = parseInt(totalInput, 10);
+      const isTotalCorrect = (userTotalNum === correctTotal);
+      const totalStatusText = isTotalCorrect ? "정답 (17,500,000원)" : `오답 (입력: ${totalInput || '미입력'})`;
+
+      const payload = {
+        week: "05주차",
+        studentId: studentId,
+        studentName: studentName,
+        score1: `${score}/3점`,
+        answers1: userAnswers,
+        journalStatus: "시산표 10개 계정 집계 완료",
+        cashBalance: userTotalNum ? userTotalNum.toLocaleString() + "원" : "-",
+        balanceCorrect: isTotalCorrect ? "일치" : "불일치",
+        balanceStatus: totalStatusText,
+        totalAssets: "12,000,000원 (자산총계)",
+        totalLiabEquity: "17,500,000원 (대차합계)",
+        finalGrade: (score === 3 && isTotalCorrect) ? "만점 (우수)" : "정상제출"
+      };
+
+      const btn = document.getElementById("submitBtn");
+      const statusDiv = document.getElementById("submitStatus");
+      btn.disabled = true;
+      btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i> 구글 시트로 전송 중입니다...`;
+
+      fetch(SCRIPT_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      })
+      .then(() => {
+        statusDiv.classList.remove("hidden");
+        statusDiv.className = "p-4 rounded-xl text-center text-xs sm:text-sm font-semibold bg-emerald-50 text-emerald-900 border border-emerald-300 block";
+        statusDiv.innerHTML = `
+          <div class="text-base font-bold mb-1">🎉 5주차 실습 제출이 정상 완료되었습니다!</div>
+          <p class="text-xs text-emerald-700">교수님의 구글 스프레드시트에 실시간으로 기록되었습니다. (채점 결과: 객관식 ${score}/3점, 대차합계 판정: ${isTotalCorrect ? '정답' : '오답'})</p>
+        `;
+        btn.innerHTML = `<i class="fa-solid fa-check mr-2"></i> 제출 완료됨`;
+        btn.className = "w-full py-4 bg-emerald-600 text-white font-bold rounded-xl shadow cursor-not-allowed";
+      })
+      .catch((error) => {
+        statusDiv.classList.remove("hidden");
+        statusDiv.className = "p-4 rounded-xl text-center text-xs sm:text-sm font-semibold bg-rose-50 text-rose-900 border border-rose-300 block";
+        statusDiv.innerHTML = `⚠️ 전송 중 오류가 발생했습니다: ${error}. 네트워크 연결을 확인하고 다시 시도해 주세요.`;
+        btn.disabled = false;
+        btn.innerHTML = `<i class="fa-solid fa-paper-plane mr-2"></i> 다시 제출 시도`;
+      });
+    }
+  </script>
+</body>
+</html>
