@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>[6주차 2차시] 결산수정분개 실무 (1) : 비용과 수익의 이연 | 수원대학교 회계원리</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Noto Sans KR', sans-serif; }
+    .slide-page { display: none; }
+    .slide-page.active { display: flex; animation: fadeIn 0.25s ease-in-out; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+    .page-btn.active { background-color: #2563eb !important; color: white !important; font-weight: bold; border-color: #1d4ed8 !important; }
+
+    @media print {
+      @page { size: A4 landscape; margin: 10mm 12mm; }
+      body { background-color: #ffffff !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; padding: 0 !important; }
+      header, .no-print, #top-nav-controller { display: none !important; }
+      main { max-width: 100% !important; padding: 0 !important; margin: 0 !important; }
+      .slide-page { display: block !important; opacity: 1 !important; page-break-after: always !important; break-after: page !important; min-height: 180mm !important; margin-bottom: 0 !important; border: 1px solid #cbd5e1 !important; border-radius: 12px !important; padding: 24px 28px !important; }
+    }
+  </style>
+</head>
+<body class="bg-slate-100 text-slate-800 antialiased min-h-screen flex flex-col justify-between">
+
+  <!-- 1. 고정 상단 헤더 & 슬라이드 네비게이션 바 -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm no-print">
+    <div class="max-w-5xl mx-auto px-4 flex justify-between items-center h-12">
+      <div class="flex items-center gap-2">
+        <span class="bg-blue-900 text-white text-[11px] px-2 py-0.5 rounded-full font-bold">수원대 회계원리</span>
+        <h1 class="font-bold text-slate-800 text-xs sm:text-sm">6주차 2차시: 결산수정분개 실무 (1) : 비용과 수익의 이연</h1>
+      </div>
+      <div class="flex items-center gap-2">
+        <button onclick="window.print()" class="text-[11px] bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold px-2.5 py-1 rounded border border-slate-300 transition flex items-center gap-1">
+          <i class="fa-solid fa-print"></i> PDF/인쇄
+        </button>
+      </div>
+    </div>
+
+    <!-- 상단 1~10 퀵 이동 버튼 바 -->
+    <div id="top-nav-controller" class="border-t border-slate-100 bg-slate-50/95 py-2 px-4 shadow-inner">
+      <div class="max-w-5xl mx-auto flex items-center justify-between gap-2">
+        <button onclick="prevPage()" class="px-3 py-1.5 bg-white hover:bg-slate-100 text-slate-700 text-xs font-bold rounded-lg border border-slate-300 transition flex items-center gap-1 shrink-0">
+          <i class="fa-solid fa-chevron-left text-[10px]"></i> <span class="hidden sm:inline">이전</span>
+        </button>
+        
+        <div class="flex items-center gap-1.5 overflow-x-auto py-0.5 px-1 max-w-full">
+          <button onclick="goToPage(1)" class="page-btn active w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">1</button>
+          <button onclick="goToPage(2)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">2</button>
+          <button onclick="goToPage(3)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">3</button>
+          <button onclick="goToPage(4)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">4</button>
+          <button onclick="goToPage(5)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">5</button>
+          <button onclick="goToPage(6)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">6</button>
+          <button onclick="goToPage(7)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">7</button>
+          <button onclick="goToPage(8)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">8</button>
+          <button onclick="goToPage(9)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">9</button>
+          <button onclick="goToPage(10)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">10</button>
+        </div>
+
+        <button onclick="nextPage()" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-lg transition flex items-center gap-1 shrink-0">
+          <span class="hidden sm:inline">다음</span> <i class="fa-solid fa-chevron-right text-[10px]"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- 2. 슬라이드 본문 컨테이너 -->
+  <main class="flex-1 max-w-4xl w-full mx-auto px-4 py-4 flex flex-col justify-center">
+
+    <!-- Slide 1: 표지 -->
+    <div class="slide-page active bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-1">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 01 / 10</span>
+        <span>수원대학교 경영공학대학</span>
+      </div>
+      <div class="text-center my-auto py-6">
+        <div class="inline-block p-4 bg-emerald-50 text-emerald-700 rounded-2xl mb-3 shadow-inner">
+          <i class="fa-solid fa-hourglass-half text-4xl"></i>
+        </div>
+        <span class="text-xs font-bold text-emerald-700 tracking-wider block mb-1">CH.04 회계순환과정의 완료 (1)</span>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mb-3">2차시: 결산수정분개 실무 (1) : 비용과 수익의 이연</h2>
+        <p class="text-slate-600 text-xs sm:text-sm max-w-lg mx-auto leading-relaxed">
+          현금이 먼저 오간 거래를 결산 시점에 기간 배분하는 이연(Deferrals)의 원리를 익히고,<br>
+          선급보험료·소모품·선수임대료 및 유형자산 감가상각의 회계처리를 마스터합니다.
+        </p>
+      </div>
+      <div class="text-center text-xs text-slate-400 border-t pt-3">
+        상단 퀵 버튼(1~10) 또는 키보드 방향키(←, →)로 이동할 수 있습니다.
+      </div>
+    </div>
+
+    <!-- Slide 2: 학습 목표 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-2">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 02 / 10</span>
+        <span>학습 목표 (50분 설계)</span>
+      </div>
+      <div class="my-auto">
+        <h3 class="text-lg sm:text-xl font-bold text-slate-900 mb-5 flex items-center gap-2">
+          <i class="fa-solid fa-bullseye text-blue-600"></i> 이번 2차시 핵심 학습 목표
+        </h3>
+        <div class="grid sm:grid-cols-3 gap-3.5">
+          <div class="p-4 bg-slate-50 border rounded-xl hover:border-blue-400 transition">
+            <span class="w-6 h-6 rounded bg-emerald-600 text-white font-bold flex items-center justify-center text-xs mb-2">1</span>
+            <h4 class="font-bold text-slate-800 text-xs sm:text-sm mb-1">비용의 이연 (선급비용)</h4>
+            <p class="text-xs text-slate-600 leading-relaxed">선급보험료의 기간 경과분 계산 및 소모품의 실지 재고 파악에 따른 소모액 분개를 능숙히 수행한다.</p>
+          </div>
+          <div class="p-4 bg-slate-50 border rounded-xl hover:border-blue-400 transition">
+            <span class="w-6 h-6 rounded bg-emerald-600 text-white font-bold flex items-center justify-center text-xs mb-2">2</span>
+            <h4 class="font-bold text-slate-800 text-xs sm:text-sm mb-1">수익의 이연 (선수수익)</h4>
+            <p class="text-xs text-slate-600 leading-relaxed">선수임대료 등 미리 받은 현금 중 당기에 실현된 수익과 차기 이월 부채를 구분하여 분개한다.</p>
+          </div>
+          <div class="p-4 bg-slate-50 border rounded-xl hover:border-blue-400 transition">
+            <span class="w-6 h-6 rounded bg-emerald-600 text-white font-bold flex items-center justify-center text-xs mb-2">3</span>
+            <h4 class="font-bold text-slate-800 text-xs sm:text-sm mb-1">감가상각과 왜곡 분석</h4>
+            <p class="text-xs text-slate-600 leading-relaxed">유형자산 감가상각의 원가배분 원리를 이해하고, 이연 수정 누락 시 재무제표 왜곡 효과를 분석한다.</p>
+          </div>
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3 flex justify-between">
+        <span>비용 및 수익의 이연(Deferrals) 집중 실무</span>
+        <span>교재 Ch.04</span>
+      </div>
+    </div>
+
+    <!-- Slide 3: 이연(Deferrals)의 기본 구조 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-3">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 03 / 10</span>
+        <span>이연의 메커니즘</span>
+      </div>
+      <div class="my-auto space-y-4">
+        <h3 class="text-lg sm:text-xl font-bold text-slate-900 flex items-center gap-2">
+          <i class="fa-solid fa-clock-rotate-left text-emerald-600"></i> 이연(Deferrals)이란 무엇인가?
+        </h3>
+        
+        <div class="p-4 bg-emerald-50 border-l-4 border-emerald-600 rounded-r-xl">
+          <p class="text-xs sm:text-sm text-slate-800 leading-relaxed">
+            <strong>이연(Deferral)</strong>이란 <strong class="text-emerald-900">현금의 수취나 지급이 수익·비용의 인식보다 '먼저' 발생</strong>한 거래입니다. 기중에 현금을 주고받았을 때 기록해 둔 금액 중, 기말 시점에 <strong>'이미 소멸/실현된 부분'</strong>을 당기 손익으로 바꾸고 <strong>'아직 남은 부분'</strong>을 미래로 이월(자산·부채)하는 과정입니다.
+          </p>
+        </div>
+
+        <div class="grid sm:grid-cols-2 gap-3 text-xs">
+          <div class="p-4 bg-slate-50 border rounded-xl space-y-2">
+            <span class="font-bold text-blue-700 block text-sm"><i class="fa-solid fa-arrow-down-long"></i> 1. 비용의 이연 (선급비용)</span>
+            <p class="text-slate-600 leading-relaxed">
+              <strong>과거:</strong> 현금 지출 (자산 또는 비용 처리)<br>
+              <strong>기말:</strong> 경과한 기간만큼 <strong>[비용]</strong> 발생, 아직 안 지난 미래분은 <strong>[자산(선급비용)]</strong>으로 차기 이월!
+            </p>
+          </div>
+          <div class="p-4 bg-slate-50 border rounded-xl space-y-2">
+            <span class="font-bold text-indigo-700 block text-sm"><i class="fa-solid fa-arrow-up-long"></i> 2. 수익의 이연 (선수수익)</span>
+            <p class="text-slate-600 leading-relaxed">
+              <strong>과거:</strong> 현금 수취 (부채 또는 수익 처리)<br>
+              <strong>기말:</strong> 용역을 제공 완료한 만큼 <strong>[수익]</strong> 실현, 아직 남아있는 의무는 <strong>[부채(선수수익)]</strong>로 차기 이월!
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3">
+        핵심 포인트: "현금 이동은 이미 끝났다. 기말에는 '얼마나 경과되었는가'만 계산한다!"
+      </div>
+    </div>
+
+    <!-- Slide 4: 선급비용 실무 - 보험료 기간배분 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-4">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 04 / 10</span>
+        <span>선급비용 실무 (보험료)</span>
+      </div>
+      <div class="my-auto space-y-3">
+        <h3 class="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
+          <i class="fa-solid fa-shield-halved text-blue-600"></i> [실전 예제] 선급보험료의 기간배분
+        </h3>
+        
+        <div class="p-3 bg-slate-50 border rounded-xl text-xs space-y-1">
+          <p><strong>[거래]</strong> 2026년 10월 1일, 1년 치 화재보험료 <strong>1,200,000원</strong>을 현금 지급하고 전액 <strong>[선급보험료(자산)]</strong>로 처리하였다. (결산일: 12월 31일)</p>
+          <div class="text-slate-500 text-[11px]">월할 계산: 월 100,000원 (당기 경과: 10, 11, 12월 = 3개월, 미경과: 9개월)</div>
+        </div>
+
+        <div class="space-y-2 text-xs">
+          <div class="p-2.5 bg-blue-50 border border-blue-200 rounded-lg">
+            <span class="font-bold text-blue-900 block mb-1">10월 1일 기중 분개 (자산 처리법)</span>
+            <div class="font-mono text-slate-800 bg-white p-2 rounded border">
+              (차) 선급보험료(자산) 1,200,000원 &nbsp;&nbsp;|&nbsp;&nbsp; (대) 현금(자산) 1,200,000원
+            </div>
+          </div>
+
+          <div class="p-2.5 bg-emerald-50 border border-emerald-300 rounded-lg">
+            <span class="font-bold text-emerald-900 block mb-1">12월 31일 결산수정분개 (당기 소멸분 3개월 배분)</span>
+            <div class="font-mono text-slate-800 bg-white p-2 rounded border font-bold">
+              (차) 보험료(비용) 300,000원 &nbsp;&nbsp;|&nbsp;&nbsp; (대) 선급보험료(자산) 300,000원
+            </div>
+          </div>
+        </div>
+
+        <div class="p-2.5 bg-slate-100 rounded-lg text-[11px] text-slate-600">
+          <strong>결과:</strong> 기말 손익계산서에는 <strong>보험료 비용 300,000원</strong>, 재무상태표에는 <strong>선급보험료 잔액 900,000원(미경과분)</strong>이 자산으로 정확히 공시됩니다!
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3">
+        만약 10월 1일에 전액 '보험료(비용)'로 처리했더라도 결산수정분개 결과 최종 재무제표는 동일해집니다.
+      </div>
+    </div>
+
+    <!-- Slide 5: 소모품과 소모품비의 결산수정 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-5">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 05 / 10</span>
+        <span>선급비용 실무 (소모품)</span>
+      </div>
+      <div class="my-auto space-y-3">
+        <h3 class="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
+          <i class="fa-solid fa-boxes-stacked text-indigo-600"></i> [실전 예제] 소모품(자산)과 소모품비(비용)
+        </h3>
+        
+        <div class="p-3 bg-slate-50 border rounded-xl text-xs space-y-1">
+          <p><strong>[거래]</strong> 기중에 사무용 소모품 <strong>500,000원</strong>을 현금 구입하고 <strong>[소모품(자산)]</strong>으로 기입함. 12월 31일 기말 창고 실사 결과, <strong>미사용 소모품 잔액이 200,000원</strong>으로 확인됨.</p>
+        </div>
+
+        <div class="p-3 bg-indigo-50/50 border border-indigo-200 rounded-xl text-xs space-y-1.5">
+          <div class="font-bold text-indigo-900">당기 소모액(비용)의 도출 공식:</div>
+          <div class="bg-white p-2 rounded border font-mono text-center font-bold text-slate-800">
+            기초 잔액(0원) + 당기 구입액(500,000원) - 기말 실사잔액(200,000원) = <strong>당기 사용액 300,000원</strong>
+          </div>
+        </div>
+
+        <div class="p-2.5 bg-emerald-50 border border-emerald-300 rounded-lg text-xs">
+          <span class="font-bold text-emerald-900 block mb-1">12월 31일 결산수정분개 (사용한 만큼 비용화)</span>
+          <div class="font-mono text-slate-800 bg-white p-2 rounded border font-bold">
+            (차) 소모품비(비용) 300,000원 &nbsp;&nbsp;|&nbsp;&nbsp; (대) 소모품(자산) 300,000원
+          </div>
+        </div>
+
+        <p class="text-[11px] text-slate-500">
+          💡 일상 업무 중 복사용지나 펜을 쓸 때마다 분개하지 않고, 기말에 창고에 남은 것만 세어서 차액을 한 번에 비용으로 텁니다!
+        </p>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3">
+        자산으로 계상된 소모품이 사용되어 효익이 소멸했으므로 비용으로 대체하는 대표적 이연 항목입니다.
+      </div>
+    </div>
+
+    <!-- Slide 6: 선수수익 실무 - 임대료 선취 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-6">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 06 / 10</span>
+        <span>선수수익 실무 (임대료)</span>
+      </div>
+      <div class="my-auto space-y-3">
+        <h3 class="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
+          <i class="fa-solid fa-building text-amber-600"></i> [실전 예제] 선수임대료의 수익 인식
+        </h3>
+        
+        <div class="p-3 bg-slate-50 border rounded-xl text-xs space-y-1">
+          <p><strong>[거래]</strong> 2026년 11월 1일, 6개월 분 사무실 임대료 <strong>600,000원</strong>을 임차인에게 미리 현금으로 받아 전액 <strong>[선수임대료(부채)]</strong>로 기록하였다. (결산일: 12월 31일)</p>
+          <div class="text-slate-500 text-[11px]">월 100,000원 (당기 경과: 11, 12월 = 2개월, 차기 미경과: 4개월)</div>
+        </div>
+
+        <div class="space-y-2 text-xs">
+          <div class="p-2.5 bg-amber-50 border border-amber-200 rounded-lg">
+            <span class="font-bold text-amber-900 block mb-1">11월 1일 기중 분개 (부채 처리법)</span>
+            <div class="font-mono text-slate-800 bg-white p-2 rounded border">
+              (차) 현금(자산) 600,000원 &nbsp;&nbsp;|&nbsp;&nbsp; (대) 선수임대료(부채) 600,000원
+            </div>
+          </div>
+
+          <div class="p-2.5 bg-emerald-50 border border-emerald-300 rounded-lg">
+            <span class="font-bold text-emerald-900 block mb-1">12월 31일 결산수정분개 (의무 이행분 2개월 수익화)</span>
+            <div class="font-mono text-slate-800 bg-white p-2 rounded border font-bold">
+              (차) 선수임대료(부채) 200,000원 &nbsp;&nbsp;|&nbsp;&nbsp; (대) 임대료수익(수익) 200,000원
+            </div>
+          </div>
+        </div>
+
+        <div class="p-2.5 bg-slate-100 rounded-lg text-[11px] text-slate-600">
+          <strong>결과:</strong> 부채가 200,000원 감소하고 당기 손익계산서에 <strong>임대료수익 200,000원</strong> 계상! 남은 <strong>400,000원은 선수임대료(유동부채)</strong>로 차기로 이월됩니다.
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3">
+        선수수익은 '돈을 미리 받았으므로 향후 서비스를 제공해야 할 의무'이므로 성격이 부채(Liability)입니다.
+      </div>
+    </div>
+
+    <!-- Slide 7: 감가상각(Depreciation)의 본질과 회계처리 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-7">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 07 / 10</span>
+        <span>유형자산 감가상각</span>
+      </div>
+      <div class="my-auto space-y-3">
+        <h3 class="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
+          <i class="fa-solid fa-truck-pickup text-blue-600"></i> 감가상각: 특별한 형태의 선급비용 배분
+        </h3>
+        
+        <div class="p-3 bg-blue-50 border-l-4 border-blue-600 rounded-r-xl text-xs text-slate-800 leading-relaxed">
+          건물이나 차량 같은 유형자산 구입은 사실상 <strong>수년 치 효익을 미리 한 번에 산 '초대형 선급비용'</strong>입니다. 따라서 감가상각은 자산의 시장가치 평가가 아니라 <strong>[취득원가를 내용연수에 걸쳐 체계적으로 비용 배분]</strong>하는 절차입니다!
+        </div>
+
+        <div class="grid sm:grid-cols-2 gap-3 text-xs">
+          <div class="p-3 bg-slate-50 border rounded-xl space-y-1">
+            <span class="font-bold text-slate-900 block">정액법 연간 상각액 공식</span>
+            <div class="bg-white p-2 rounded border font-mono text-[11px] text-center font-bold">
+              (취득원가 - 잔존가치) ÷ 내용연수
+            </div>
+            <p class="text-[10px] text-slate-500">예: 1,000만원 차량(내용연수 5년, 잔존가치 0) → 매년 200만원 상각</p>
+          </div>
+
+          <div class="p-3 bg-slate-50 border rounded-xl space-y-1">
+            <span class="font-bold text-slate-900 block">기말 결산수정분개 (간접법)</span>
+            <div class="bg-white p-2 rounded border font-mono text-[11px]">
+              (차) 감가상각비 2,000,000<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;(대) <strong>감가상각누계액</strong> 2,000,000
+            </div>
+            <p class="text-[10px] text-blue-600 font-semibold">* 차량 계정에서 직접 안 깎고 차감계정 사용</p>
+          </div>
+        </div>
+
+        <div class="p-2 bg-slate-100 rounded text-[11px] text-slate-600 text-center">
+          재무상태표 표시: 차량운반구 10,000,000원 - <strong>감가상각누계액 2,000,000원</strong> = 장부금액 8,000,000원
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3">
+        감가상각누계액은 자산의 차감적 평가계정(Contra Asset Account)으로 대변이 정상잔액입니다.
+      </div>
+    </div>
+
+    <!-- Slide 8: 이연 항목 수정분개 누락 시 재무제표 왜곡 영향 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-8">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 08 / 10</span>
+        <span>수정 누락의 왜곡 효과</span>
+      </div>
+      <div class="my-auto space-y-3">
+        <h3 class="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
+          <i class="fa-solid fa-chart-line-down text-rose-600"></i> 결산수정을 누락하면 어떤 일이 벌어질까?
+        </h3>
+        
+        <p class="text-xs text-slate-600">
+          만약 결산 시점에 이연 수정분개를 깜빡 누락했다면 재무제표가 어떻게 왜곡되는지 완벽히 정리합니다.
+        </p>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-xs text-left border-collapse border border-slate-200">
+            <thead class="bg-slate-100 text-slate-700">
+              <tr>
+                <th class="border p-2">수정 항목</th>
+                <th class="border p-2">수정분개 누락 시 손익계산서 영향</th>
+                <th class="border p-2">수정분개 누락 시 재무상태표 영향</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y text-[11px]">
+              <tr class="hover:bg-slate-50">
+                <td class="border p-2 font-bold text-blue-700">선급비용 (보험료)</td>
+                <td class="border p-2 text-rose-700 font-semibold">비용 과소계상 → <strong>당기순이익 과대계상</strong></td>
+                <td class="border p-2 text-rose-700 font-semibold"><strong>자산 과대계상</strong>, 자본(이익잉여금) 과대</td>
+              </tr>
+              <tr class="hover:bg-slate-50">
+                <td class="border p-2 font-bold text-indigo-700">선수수익 (임대료)</td>
+                <td class="border p-2 text-blue-700 font-semibold">수익 과소계상 → <strong>당기순이익 과소계상</strong></td>
+                <td class="border p-2 text-rose-700 font-semibold"><strong>부채 과대계상</strong>, 자본 과소계상</td>
+              </tr>
+              <tr class="hover:bg-slate-50">
+                <td class="border p-2 font-bold text-slate-700">감가상각비</td>
+                <td class="border p-2 text-rose-700 font-semibold">비용 과소계상 → <strong>당기순이익 과대계상</strong></td>
+                <td class="border p-2 text-rose-700 font-semibold"><strong>자산(장부금액) 과대계상</strong>, 자본 과대</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="p-2.5 bg-rose-50 border border-rose-200 rounded-lg text-xs text-rose-900">
+          ⚠️ <strong>시험 빈출 포인트:</strong> 비용을 인식 안 하면 이익은 부풀려지고(과대), 자산도 부풀려집니다!
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3">
+        재무제표의 신뢰성을 담보하기 위해 공인회계사의 외부감사에서 가장 정밀하게 검증하는 영역입니다.
+      </div>
+    </div>
+
+    <!-- Slide 9: 2차시 핵심 요약 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-9">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 09 / 10</span>
+        <span>핵심 요약 (Takeaways)</span>
+      </div>
+      <div class="my-auto space-y-3.5">
+        <h3 class="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
+          <i class="fa-solid fa-bookmark text-blue-600"></i> 2차시 핵심 정리
+        </h3>
+        <div class="space-y-2 text-xs sm:text-sm">
+          <div class="p-3 bg-slate-50 border rounded-xl flex items-start gap-2.5">
+            <span class="bg-emerald-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs shrink-0 mt-0.5 font-bold">1</span>
+            <div>
+              <strong>선급비용의 수정:</strong> 기중 선급한 금액 중 당기 경과분은 (차) 비용 / (대) 선급비용으로 털어내고, 미경과분만 자산으로 남김.
+            </div>
+          </div>
+          <div class="p-3 bg-slate-50 border rounded-xl flex items-start gap-2.5">
+            <span class="bg-emerald-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs shrink-0 mt-0.5 font-bold">2</span>
+            <div>
+              <strong>선수수익의 수정:</strong> 미리 받은 돈(부채) 중 당기에 용역을 이행한 만큼 (차) 선수수익 / (대) 수익으로 대체하여 매출/수익을 확정.
+            </div>
+          </div>
+          <div class="p-3 bg-slate-50 border rounded-xl flex items-start gap-2.5">
+            <span class="bg-emerald-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs shrink-0 mt-0.5 font-bold">3</span>
+            <div>
+              <strong>감가상각과 왜곡:</strong> 취득원가의 기간별 원가배분 절차이며, 이연 수정을 누락하면 자산이나 부채 및 당기순이익이 심각하게 왜곡됨.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3">
+        다음 3차시: 결산수정분개 실무 (2) : 발생(Accruals) & 수정후시산표 작성
+      </div>
+    </div>
+
+    <!-- Slide 10: 인터랙티브 퀴즈 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-10">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded border border-emerald-200">SLIDE 10 / 10 · 퀴즈</span>
+        <span>2차시 점검</span>
+      </div>
+      <div class="my-auto">
+        <h3 class="text-base sm:text-lg font-bold text-slate-900 mb-2 flex items-center gap-2">
+          <i class="fa-solid fa-circle-question text-emerald-600"></i> [자가진단 퀴즈]
+        </h3>
+        <div class="bg-slate-50 p-4 rounded-xl border mb-3">
+          <p class="text-xs sm:text-sm font-bold text-slate-800 mb-2">
+            Q. 2026년 7월 1일에 1년분 건물 임대료 1,200,000원을 현금으로 미리 받고 [선수임대료(부채)]로 처리하였다. 12월 31일 결산 시 필요한 수정분개는?
+          </p>
+          <div class="space-y-1.5">
+            <button onclick="checkQuiz(1, 'A', this)" class="q-btn-1 w-full text-left p-2.5 bg-white border rounded text-xs hover:bg-slate-100 transition">
+              A) (차) 선수임대료 600,000원 &nbsp;&nbsp;|&nbsp;&nbsp; (대) 임대료수익 600,000원
+            </button>
+            <button onclick="checkQuiz(1, 'B', this)" class="q-btn-1 w-full text-left p-2.5 bg-white border rounded text-xs hover:bg-slate-100 transition">
+              B) (차) 임대료수익 600,000원 &nbsp;&nbsp;|&nbsp;&nbsp; (대) 선수임대료 600,000원
+            </button>
+            <button onclick="checkQuiz(1, 'C', this)" class="q-btn-1 w-full text-left p-2.5 bg-white border rounded text-xs hover:bg-slate-100 transition">
+              C) (차) 선수임대료 1,200,000원 &nbsp;&nbsp;|&nbsp;&nbsp; (대) 현금 1,200,000원
+            </button>
+          </div>
+          <div id="q-feedback-1" class="hidden mt-2 p-2 rounded text-xs"></div>
+        </div>
+        <div class="p-3 bg-emerald-50 border border-emerald-100 rounded-xl text-center text-xs">
+          🎉 2차시 수고하셨습니다! 잠시 휴식 후 <strong>[3차시: 결산수정분개 실무 (2) : 발생(Accruals) & 수정후시산표]</strong>으로 이어집니다.
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3 flex justify-between">
+        <span>6주차 2차시 완료</span>
+        <a href="202602_06_03.html" class="text-blue-600 font-bold hover:underline">3차시 이동 →</a>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- 하단 푸터 -->
+  <footer class="text-center py-3 text-slate-400 text-xs border-t bg-white no-print">
+    수원대학교 경영공학대학 회계원리 © 2026
+  </footer>
+
+  <script>
+    let currentPage = 1;
+    const totalPages = 10;
+
+    function goToPage(page) {
+      if (page < 1 || page > totalPages) return;
+      document.querySelectorAll('.slide-page').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.page-btn').forEach(d => d.classList.remove('active'));
+      
+      const target = document.getElementById(`page-${page}`);
+      if (target) target.classList.add('active');
+      
+      const btns = document.querySelectorAll('.page-btn');
+      if (btns[page - 1]) btns[page - 1].classList.add('active');
+      
+      currentPage = page;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function nextPage() { if (currentPage < totalPages) goToPage(currentPage + 1); }
+    function prevPage() { if (currentPage > 1) goToPage(currentPage - 1); }
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === 'PageDown') nextPage();
+      if (e.key === 'ArrowLeft' || e.key === 'PageUp') prevPage();
+    });
+
+    const quizAnswers = {
+      1: { ans: 'A', exp: '7월 1일부터 12월 31일까지 6개월이 경과하여 용역 제공 의무가 실현되었으므로, 선수임대료(부채) 600,000원을 차변에서 차감하고 대변에 임대료수익 600,000원을 인식합니다.' }
+    };
+
+    function checkQuiz(qNum, choice, btn) {
+      const btns = document.querySelectorAll(`.q-btn-${qNum}`);
+      const fb = document.getElementById(`q-feedback-${qNum}`);
+      btns.forEach(b => { b.className = `q-btn-${qNum} w-full text-left p-2.5 bg-white border rounded text-xs transition`; });
+      fb.classList.remove('hidden');
+
+      if (choice === quizAnswers[qNum].ans) {
+        btn.classList.add('bg-emerald-100', 'border-emerald-500', 'text-emerald-900', 'font-bold');
+        fb.className = "text-xs mt-2 p-2 rounded bg-emerald-50 text-emerald-900 border border-emerald-200 block";
+        fb.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-600 mr-1"></i> <strong>정답입니다!</strong> ${quizAnswers[qNum].exp}`;
+      } else {
+        btn.classList.add('bg-rose-100', 'border-rose-500', 'text-rose-900');
+        fb.className = "text-xs mt-2 p-2 rounded bg-rose-50 text-rose-900 border border-rose-200 block";
+        fb.innerHTML = `<i class="fa-solid fa-circle-xmark text-rose-600 mr-1"></i> <strong>오답입니다!</strong> ${quizAnswers[qNum].exp}`;
+      }
+    }
+  </script>
+</body>
+</html>
