@@ -15,3 +15,9 @@ Thumbs.db
 
 # PPTX Original Files (대용량 원본)
 강의자료_pptx/
+
+# 시험지·정답표·스크립트 사본 (웹 비공개)
+intermed*
+교수용_비공개/
+*.gs
+예상문제.html
