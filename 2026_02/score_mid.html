@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex">
+  <title>[8주차] 중간고사 점수확인 | 수원대학교 회계원리</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Noto Sans KR', sans-serif; }
+    .tabnum { font-variant-numeric: tabular-nums; }
+  </style>
+</head>
+<body class="bg-slate-100 text-slate-800 antialiased min-h-screen flex flex-col justify-between">
+
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm">
+    <div class="max-w-4xl mx-auto px-4 flex justify-between items-center h-12">
+      <div class="flex items-center gap-2">
+        <span class="bg-blue-900 text-white text-[11px] px-2 py-0.5 rounded-full font-bold">수원대 회계원리</span>
+        <h1 class="font-bold text-slate-800 text-xs sm:text-sm">중간고사 점수확인</h1>
+      </div>
+      <a href="../index.html" class="px-2 py-1 bg-slate-100 hover:bg-slate-200 rounded text-slate-700 text-xs"><i class="fa-solid fa-house mr-1"></i>강의 홈</a>
+    </div>
+  </header>
+
+  <main class="flex-1 max-w-3xl w-full mx-auto px-4 py-6 space-y-6">
+
+    <div class="bg-gradient-to-r from-blue-950 via-indigo-900 to-slate-900 text-white p-6 rounded-2xl shadow-sm">
+      <span class="text-xs bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 px-2.5 py-1 rounded-full font-semibold mb-2 inline-block">
+        <i class="fa-solid fa-lock mr-1"></i> 본인 점수만 조회됩니다
+      </span>
+      <h2 class="text-xl sm:text-2xl font-black mb-1">2026-2학기 회계원리 중간고사 점수확인</h2>
+      <p class="text-xs sm:text-sm text-slate-300">
+        학번·이름·확인코드를 입력하면 <strong>내 점수(30점 만점)</strong>와 반 전체 <strong>평균·표준편차</strong>, 그리고 <strong>정규분포상 나의 위치</strong>를 볼 수 있습니다.
+        확인코드는 교수님께 개별로 받은 6자리 코드입니다.
+      </p>
+    </div>
+
+    <form id="f" class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4" autocomplete="off">
+      <h3 class="text-base font-bold text-slate-900 border-b pb-2 flex items-center gap-2">
+        <i class="fa-solid fa-user-graduate text-blue-600"></i> 본인 확인
+      </h3>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div>
+          <label for="sid" class="block text-xs font-bold text-slate-700 mb-1">학번</label>
+          <input id="sid" inputmode="numeric" placeholder="예: 26082001" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-600">
+        </div>
+        <div>
+          <label for="sname" class="block text-xs font-bold text-slate-700 mb-1">이름</label>
+          <input id="sname" placeholder="예: 홍길동" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-600">
+        </div>
+        <div>
+          <label for="scode" class="block text-xs font-bold text-slate-700 mb-1">확인코드 (6자리)</label>
+          <input id="scode" maxlength="8" placeholder="예: AB3K7Q" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm uppercase tracking-widest focus:outline-none focus:ring-2 focus:ring-blue-600">
+        </div>
+      </div>
+      <button id="btn" type="submit" class="w-full py-3 bg-blue-900 hover:bg-blue-800 disabled:bg-slate-400 text-white font-bold rounded-xl text-sm transition">
+        <i class="fa-solid fa-magnifying-glass mr-1"></i> 점수 확인하기
+      </button>
+      <p id="msg" class="hidden text-sm rounded-xl px-4 py-3" role="status"></p>
+    </form>
+
+    <section id="res" class="hidden space-y-6" aria-live="polite">
+      <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+        <p class="text-sm text-slate-600 mb-4"><span id="rName" class="font-bold text-slate-900"></span> 학생의 중간고사 결과입니다.</p>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
+          <div class="p-4 rounded-xl bg-blue-50 border border-blue-200">
+            <p class="text-[11px] font-bold text-blue-800 mb-1">내 점수</p>
+            <p class="text-3xl font-black text-blue-950 tabnum"><span id="rScore"></span><span class="text-sm font-semibold text-blue-700"> / 30</span></p>
+          </div>
+          <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+            <p class="text-[11px] font-bold text-slate-600 mb-1">평균</p>
+            <p class="text-2xl font-bold text-slate-900 tabnum" id="rMean"></p>
+          </div>
+          <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+            <p class="text-[11px] font-bold text-slate-600 mb-1">표준편차</p>
+            <p class="text-2xl font-bold text-slate-900 tabnum" id="rSd"></p>
+          </div>
+          <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+            <p class="text-[11px] font-bold text-slate-600 mb-1">표준점수 (z)</p>
+            <p class="text-2xl font-bold text-slate-900 tabnum" id="rZ"></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-3">
+        <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
+          <i class="fa-solid fa-chart-area text-blue-600"></i> 정규분포상 나의 위치
+        </h3>
+        <p class="text-sm text-slate-700" id="rPos"></p>
+        <svg id="chart" viewBox="0 0 640 255" class="w-full h-auto" role="img" aria-label="정규분포 곡선 위 내 점수 위치"></svg>
+        <p class="text-[11px] text-slate-500 leading-relaxed">
+          ※ 위치는 반 전체 점수가 평균 <span id="rMean2"></span>, 표준편차 <span id="rSd2"></span>(모집단 표준편차)인 정규분포를 따른다고 가정해 계산한 값입니다.
+          응시 인원이 <span id="rN"></span>명으로 많지 않아 실제 분포와 차이가 있을 수 있으니 참고용으로만 보세요. 최종 성적은 기말고사·과제·출석을 합산해 정해집니다.
+        </p>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="bg-slate-900 text-slate-400 py-6 border-t border-slate-800 text-center text-xs space-y-1">
+    <p class="font-semibold text-slate-300">수원대학교 경영공학대학 | 회계원리 (2026학년도 2학기)</p>
+    <p>점수에 이의가 있으면 담당 교수에게 문의하세요.</p>
+  </footer>
+
+<script>
+(function () {
+  var URL = "https://script.google.com/macros/s/AKfycbxkVGaxS_AzDYms9MhtaWK1LMcgTTeMWaiZ4w1U-iE2weua61l0YO2zXkaIKmj8pR08/exec";
+  var $ = function (id) { return document.getElementById(id); };
+  var NS = "http://www.w3.org/2000/svg";
+
+  function show(text, kind) {
+    var m = $("msg");
+    m.textContent = text;
+    m.className = "text-sm rounded-xl px-4 py-3 " + (kind === "err"
+      ? "bg-rose-50 text-rose-800 border border-rose-200"
+      : "bg-slate-50 text-slate-700 border border-slate-200");
+  }
+
+  // 표준정규 누적분포 Φ(z) (Abramowitz-Stegun 26.2.17, 오차 < 7.5e-8)
+  function phi(z) {
+    var t = 1 / (1 + 0.2316419 * Math.abs(z));
+    var d = 0.3989422804014327 * Math.exp(-z * z / 2);
+    var p = d * t * (0.319381530 + t * (-0.356563782 + t * (1.781477937 + t * (-1.821255978 + t * 1.330274429))));
+    return z >= 0 ? 1 - p : p;
+  }
+  function fmt(x, d) { return Number(x).toFixed(d); }
+
+  $("f").addEventListener("submit", function (e) {
+    e.preventDefault();
+    var id = $("sid").value.trim(), name = $("sname").value.trim(), code = $("scode").value.trim();
+    if (!id || !name || !code) { show("학번·이름·확인코드를 모두 입력하세요.", "err"); return; }
+    $("btn").disabled = true;
+    $("res").classList.add("hidden");
+    show("조회 중입니다… (처음 조회는 5초 정도 걸릴 수 있습니다)");
+    var q = "?action=score&id=" + encodeURIComponent(id) + "&name=" + encodeURIComponent(name) + "&code=" + encodeURIComponent(code);
+    fetch(URL + q, { method: "GET", cache: "no-store" })
+      .then(function (r) { return r.json(); })
+      .then(function (d) {
+        if (d.status === "ok") { $("msg").className = "hidden"; render(d); }
+        else {
+          var t = d.message || "조회에 실패했습니다.";
+          if (d.status === "notfound" && d.remaining !== undefined) t += " (남은 시도 " + d.remaining + "회)";
+          show(t, "err");
+        }
+      })
+      .catch(function () { show("서버에 연결하지 못했습니다. 잠시 후 다시 시도하세요.", "err"); })
+      .then(function () { $("btn").disabled = false; });
+  });
+
+  function render(d) {
+    var z = d.sd > 0 ? (d.score - d.mean) / d.sd : 0;
+    var below = phi(z) * 100, top = 100 - below;
+    $("rName").textContent = d.name;
+    $("rScore").textContent = d.score;
+    $("rMean").textContent = fmt(d.mean, 1);
+    $("rSd").textContent = fmt(d.sd, 1);
+    $("rZ").textContent = (z > 0 ? "+" : "") + fmt(z, 2);
+    $("rMean2").textContent = fmt(d.mean, 1) + "점";
+    $("rSd2").textContent = fmt(d.sd, 1) + "점";
+    $("rN").textContent = d.n;
+    var topTxt = top < 1 ? "1% 이내" : fmt(top, 0) + "%";
+    var desc = z >= 0
+      ? "평균보다 " + fmt(d.score - d.mean, 1) + "점 높습니다. "
+      : "평균보다 " + fmt(d.mean - d.score, 1) + "점 낮습니다. ";
+    $("rPos").innerHTML = desc + "정규분포로 보면 <strong class='text-blue-900'>상위 약 " + topTxt +
+      "</strong>에 해당합니다 (아래 음영 면적 = 내 점수 이하 약 " + fmt(below, 0) + "%).";
+    draw(d.mean, d.sd, d.score, d.max || 30);
+    $("res").classList.remove("hidden");
+    $("res").scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  function el(tag, attrs, text) {
+    var e = document.createElementNS(NS, tag);
+    for (var k in attrs) e.setAttribute(k, attrs[k]);
+    if (text !== undefined) e.textContent = text;
+    return e;
+  }
+
+  function draw(mu, sd, x0, max) {
+    var svg = $("chart"); while (svg.firstChild) svg.removeChild(svg.firstChild);
+    var W = 640, L = 34, R = 606, T = 40, B = 205;
+    var s = sd > 0 ? sd : 1;
+    var lo = mu - 3.5 * s, hi = mu + 3.5 * s;
+    var X = function (v) { return L + (v - lo) / (hi - lo) * (R - L); };
+    var pdf = function (v) { return Math.exp(-0.5 * Math.pow((v - mu) / s, 2)); };
+    var Y = function (p) { return B - p * (B - T); };
+    var xs = Math.min(Math.max(x0, lo), hi);
+
+    // ±1σ, ±2σ 띠
+    [[2, "#eef2ff"], [1, "#e0e7ff"]].forEach(function (b) {
+      svg.appendChild(el("rect", { x: X(mu - b[0] * s), y: T, width: X(mu + b[0] * s) - X(mu - b[0] * s), height: B - T, fill: b[1] }));
+    });
+
+    // 내 점수 이하 음영
+    var N = 200, pts = [], shade = "M" + X(lo) + "," + B;
+    for (var i = 0; i <= N; i++) {
+      var v = lo + (hi - lo) * i / N;
+      pts.push(X(v).toFixed(1) + "," + Y(pdf(v)).toFixed(1));
+      if (v <= xs) shade += " L" + X(v).toFixed(1) + "," + Y(pdf(v)).toFixed(1);
+    }
+    shade += " L" + X(xs).toFixed(1) + "," + Y(pdf(xs)).toFixed(1) + " L" + X(xs).toFixed(1) + "," + B + " Z";
+    svg.appendChild(el("path", { d: shade, fill: "#1e3a8a", "fill-opacity": "0.22" }));
+    svg.appendChild(el("polyline", { points: pts.join(" "), fill: "none", stroke: "#1e3a8a", "stroke-width": 2.5 }));
+
+    // 축
+    svg.appendChild(el("line", { x1: L, y1: B, x2: R, y2: B, stroke: "#94a3b8" }));
+    for (var k = -3; k <= 3; k++) {
+      var xv = X(mu + k * s);
+      svg.appendChild(el("line", { x1: xv, y1: B, x2: xv, y2: B + 5, stroke: "#94a3b8" }));
+      var sc = mu + k * s;
+      var lab = k === 0 ? "평균" : (k > 0 ? "+" : "−") + Math.abs(k) + "σ";
+      svg.appendChild(el("text", { x: xv, y: B + 20, "text-anchor": "middle", "font-size": 15, fill: k === 0 ? "#0f172a" : "#64748b", "font-weight": k === 0 ? 700 : 400 }, lab));
+      svg.appendChild(el("text", { x: xv, y: B + 40, "text-anchor": "middle", "font-size": 13, fill: "#94a3b8" },
+        (sc < 0 || sc > max) ? "" : sc.toFixed(1) + "점"));
+    }
+    // 평균선
+    svg.appendChild(el("line", { x1: X(mu), y1: Y(1), x2: X(mu), y2: B, stroke: "#64748b", "stroke-dasharray": "4 4" }));
+
+    // 내 위치
+    var mx = X(xs), my = Y(pdf(xs));
+    svg.appendChild(el("line", { x1: mx, y1: T - 10, x2: mx, y2: B, stroke: "#e11d48", "stroke-width": 2.5 }));
+    svg.appendChild(el("circle", { cx: mx, cy: my, r: 6, fill: "#e11d48", stroke: "#fff", "stroke-width": 2 }));
+    var anchor = mx < 90 ? "start" : (mx > W - 90 ? "end" : "middle");
+    svg.appendChild(el("text", { x: mx, y: T - 16, "text-anchor": anchor, "font-size": 17, "font-weight": 700, fill: "#e11d48" }, "나 " + x0 + "점"));
+  }
+})();
+</script>
+</body>
+</html>
