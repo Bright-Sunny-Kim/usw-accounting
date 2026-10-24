@@ -33,34 +33,52 @@
       </span>
       <h2 class="text-xl sm:text-2xl font-black mb-1">2026-2학기 회계원리 중간고사 점수확인</h2>
       <p class="text-xs sm:text-sm text-slate-300">
-        학번·이름·확인코드를 입력하면 <strong>내 점수(30점 만점)</strong>와 반 전체 <strong>평균·표준편차</strong>, 그리고 <strong>정규분포상 나의 위치</strong>를 볼 수 있습니다.
-        확인코드는 교수님께 개별로 받은 6자리 코드입니다.
+        ① 학번·이름·이메일을 입력해 <strong>확인코드를 메일로 받고</strong>, ② 받은 코드를 입력하면 <strong>내 점수(30점 만점)</strong>와 반 전체 <strong>평균·표준편차</strong>, <strong>정규분포상 나의 위치</strong>를 볼 수 있습니다.
       </p>
     </div>
 
-    <form id="f" class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4" autocomplete="off">
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-5">
       <h3 class="text-base font-bold text-slate-900 border-b pb-2 flex items-center gap-2">
         <i class="fa-solid fa-user-graduate text-blue-600"></i> 본인 확인
       </h3>
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <label for="sid" class="block text-xs font-bold text-slate-700 mb-1">학번</label>
-          <input id="sid" inputmode="numeric" placeholder="예: 26082001" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-600">
+          <input id="sid" inputmode="numeric" autocomplete="off" placeholder="예: 26082001" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-600">
         </div>
         <div>
           <label for="sname" class="block text-xs font-bold text-slate-700 mb-1">이름</label>
-          <input id="sname" placeholder="예: 홍길동" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-600">
-        </div>
-        <div>
-          <label for="scode" class="block text-xs font-bold text-slate-700 mb-1">확인코드 (6자리)</label>
-          <input id="scode" maxlength="8" placeholder="예: AB3K7Q" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm uppercase tracking-widest focus:outline-none focus:ring-2 focus:ring-blue-600">
+          <input id="sname" autocomplete="off" placeholder="예: 홍길동" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-600">
         </div>
       </div>
-      <button id="btn" type="submit" class="w-full py-3 bg-blue-900 hover:bg-blue-800 disabled:bg-slate-400 text-white font-bold rounded-xl text-sm transition">
-        <i class="fa-solid fa-magnifying-glass mr-1"></i> 점수 확인하기
-      </button>
-      <p id="msg" class="hidden text-sm rounded-xl px-4 py-3" role="status"></p>
-    </form>
+
+      <form id="f1" class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-3" novalidate>
+        <p class="text-sm font-bold text-slate-800"><span class="inline-flex w-5 h-5 items-center justify-center rounded-full bg-blue-900 text-white text-[11px] mr-1.5">1</span>확인코드 받기</p>
+        <div class="flex flex-col sm:flex-row gap-2">
+          <input id="semail" type="email" autocomplete="email" placeholder="성적확인용 이메일 (예: hong@gmail.com)" class="flex-1 min-w-0 px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-600">
+          <button id="btn1" type="submit" class="px-4 py-2.5 bg-slate-800 hover:bg-slate-700 disabled:bg-slate-400 text-white font-bold rounded-xl text-sm transition whitespace-nowrap">
+            <i class="fa-solid fa-envelope mr-1"></i> 코드 받기
+          </button>
+        </div>
+        <ul class="text-[11px] text-slate-500 space-y-0.5 list-disc pl-4">
+          <li><strong class="text-rose-700">처음 입력한 이메일이 내 학번에 고정되며 바꿀 수 없습니다.</strong> 자주 확인하는 이메일을 정확히 입력하세요.</li>
+          <li>처음 등록은 교수님이 안내한 <strong>등록 기간</strong>에만 할 수 있습니다. 등록한 뒤에는 언제든 같은 이메일로 코드를 다시 받을 수 있습니다.</li>
+          <li>"이미 다른 이메일이 등록되어 있다"고 나오는데 본인이 등록한 적이 없다면 바로 교수님께 알려 주세요.</li>
+        </ul>
+        <p id="msg1" class="hidden text-sm rounded-xl px-4 py-3" role="status"></p>
+      </form>
+
+      <form id="f" class="p-4 rounded-xl bg-blue-50/60 border border-blue-200 space-y-3" novalidate>
+        <p class="text-sm font-bold text-slate-800"><span class="inline-flex w-5 h-5 items-center justify-center rounded-full bg-blue-900 text-white text-[11px] mr-1.5">2</span>확인코드 입력 후 점수 확인</p>
+        <div class="flex flex-col sm:flex-row gap-2">
+          <input id="scode" maxlength="8" autocomplete="one-time-code" placeholder="메일로 받은 6자리 코드" class="flex-1 min-w-0 px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm uppercase tracking-widest focus:outline-none focus:ring-2 focus:ring-blue-600">
+          <button id="btn" type="submit" class="px-4 py-2.5 bg-blue-900 hover:bg-blue-800 disabled:bg-slate-400 text-white font-bold rounded-xl text-sm transition whitespace-nowrap">
+            <i class="fa-solid fa-magnifying-glass mr-1"></i> 점수 확인하기
+          </button>
+        </div>
+        <p id="msg" class="hidden text-sm rounded-xl px-4 py-3" role="status"></p>
+      </form>
+    </div>
 
     <section id="res" class="hidden space-y-6" aria-live="polite">
       <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
@@ -111,13 +129,39 @@
   var $ = function (id) { return document.getElementById(id); };
   var NS = "http://www.w3.org/2000/svg";
 
-  function show(text, kind) {
-    var m = $("msg");
+  function show(text, kind, id) {
+    var m = $(id || "msg");
     m.textContent = text;
     m.className = "text-sm rounded-xl px-4 py-3 " + (kind === "err"
       ? "bg-rose-50 text-rose-800 border border-rose-200"
-      : "bg-slate-50 text-slate-700 border border-slate-200");
+      : kind === "ok" ? "bg-emerald-50 text-emerald-800 border border-emerald-200"
+      : "bg-white text-slate-700 border border-slate-200");
   }
+  function call(params) {
+    var q = Object.keys(params).map(function (k) { return k + "=" + encodeURIComponent(params[k]); }).join("&");
+    return fetch(URL + "?" + q, { method: "GET", cache: "no-store" }).then(function (r) { return r.json(); });
+  }
+  function failText(d, fallback) {
+    var t = d.message || fallback;
+    if ((d.status === "notfound" || d.status === "mismatch") && d.remaining !== undefined) t += " (남은 시도 " + d.remaining + "회)";
+    return t;
+  }
+
+  $("f1").addEventListener("submit", function (e) {
+    e.preventDefault();
+    var id = $("sid").value.trim(), name = $("sname").value.trim(), email = $("semail").value.trim();
+    if (!id || !name) { show("학번과 이름을 먼저 입력하세요.", "err", "msg1"); return; }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { show("이메일 주소를 정확히 입력하세요.", "err", "msg1"); return; }
+    $("btn1").disabled = true;
+    show("확인 후 메일을 보내는 중입니다… (5~10초 걸릴 수 있습니다)", "", "msg1");
+    call({ action: "sendcode", id: id, name: name, email: email })
+      .then(function (d) {
+        if (d.status === "sent") { show(d.message, "ok", "msg1"); $("scode").focus(); }
+        else show(failText(d, "코드를 보내지 못했습니다."), "err", "msg1");
+      })
+      .catch(function () { show("서버에 연결하지 못했습니다. 잠시 후 다시 시도하세요.", "err", "msg1"); })
+      .then(function () { $("btn1").disabled = false; });
+  });
 
   // 표준정규 누적분포 Φ(z) (Abramowitz-Stegun 26.2.17, 오차 < 7.5e-8)
   function phi(z) {
@@ -135,16 +179,10 @@
     $("btn").disabled = true;
     $("res").classList.add("hidden");
     show("조회 중입니다… (처음 조회는 5초 정도 걸릴 수 있습니다)");
-    var q = "?action=score&id=" + encodeURIComponent(id) + "&name=" + encodeURIComponent(name) + "&code=" + encodeURIComponent(code);
-    fetch(URL + q, { method: "GET", cache: "no-store" })
-      .then(function (r) { return r.json(); })
+    call({ action: "score", id: id, name: name, code: code })
       .then(function (d) {
         if (d.status === "ok") { $("msg").className = "hidden"; render(d); }
-        else {
-          var t = d.message || "조회에 실패했습니다.";
-          if (d.status === "notfound" && d.remaining !== undefined) t += " (남은 시도 " + d.remaining + "회)";
-          show(t, "err");
-        }
+        else show(failText(d, "조회에 실패했습니다."), "err");
       })
       .catch(function () { show("서버에 연결하지 못했습니다. 잠시 후 다시 시도하세요.", "err"); })
       .then(function () { $("btn").disabled = false; });
