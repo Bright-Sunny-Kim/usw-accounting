@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>[8주차 3차시] 정산표와 재무제표 작성 | 수원대학교 회계원리</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Noto Sans KR', sans-serif; }
+    .slide-page { display: none; }
+    .slide-page.active { display: flex; animation: fadeIn 0.25s ease-in-out; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+    .page-btn.active { background-color: #2563eb !important; color: white !important; font-weight: bold; border-color: #1d4ed8 !important; }
+    /* 장부·표 공통 */
+    .tb td, .tb th { border: 1px solid #e2e8f0; padding: 4px 6px; }
+    .tb td.n { text-align: right; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+    .ws td, .ws th { padding: 3px 3px; letter-spacing: -0.03em; }
+    .ws td.n { font-size: 9.5px; }
+    @media print { .ws { font-size: 8px !important; } }
+    .tacc { border-collapse: collapse; width: 100%; font-size: 11px; }
+    .tacc caption { font-weight: 700; padding-bottom: 2px; border-bottom: 2px solid #334155; }
+    .tacc td { padding: 2px 6px; vertical-align: top; }
+    .tacc td.l { border-right: 2px solid #334155; }
+    .tacc td.n { text-align: right; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+    .tacc tr.sum td { border-top: 1px solid #94a3b8; font-weight: 700; }
+
+    @media print {
+      @page { size: A4 landscape; margin: 10mm 12mm; }
+      body { background-color: #ffffff !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; padding: 0 !important; }
+      header, .no-print, #top-nav-controller { display: none !important; }
+      main { max-width: 100% !important; padding: 0 !important; margin: 0 !important; }
+      .slide-page { display: block !important; opacity: 1 !important; page-break-after: always !important; break-after: page !important; min-height: 180mm !important; margin-bottom: 0 !important; border: 1px solid #cbd5e1 !important; border-radius: 12px !important; padding: 24px 28px !important; }
+    }
+  </style>
+</head>
+<body class="bg-slate-100 text-slate-800 antialiased min-h-screen flex flex-col justify-between">
+
+  <!-- 1. 고정 상단 헤더 & 슬라이드 네비게이션 바 -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm no-print">
+    <div class="max-w-5xl mx-auto px-4 flex justify-between items-center h-12">
+      <div class="flex items-center gap-2">
+        <a href="../index.html" class="bg-blue-900 text-white text-[11px] px-2 py-0.5 rounded-full font-bold hover:bg-blue-800">수원대 회계원리</a>
+        <h1 class="font-bold text-slate-800 text-xs sm:text-sm">8주차 3차시: 정산표와 재무제표 작성</h1>
+      </div>
+      <div class="flex items-center gap-2">
+        <button onclick="window.print()" class="text-[11px] bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold px-2.5 py-1 rounded border border-slate-300 transition flex items-center gap-1">
+          <i class="fa-solid fa-print"></i> PDF/인쇄
+        </button>
+      </div>
+    </div>
+
+    <!-- 상단 1~10 퀵 이동 버튼 바 -->
+    <div id="top-nav-controller" class="border-t border-slate-100 bg-slate-50/95 py-2 px-4 shadow-inner">
+      <div class="max-w-5xl mx-auto flex items-center justify-between gap-2">
+        <button onclick="prevPage()" class="px-3 py-1.5 bg-white hover:bg-slate-100 text-slate-700 text-xs font-bold rounded-lg border border-slate-300 transition flex items-center gap-1 shrink-0">
+          <i class="fa-solid fa-chevron-left text-[10px]"></i> <span class="hidden sm:inline">이전</span>
+        </button>
+
+        <div class="flex items-center gap-1.5 overflow-x-auto py-0.5 px-1 max-w-full">
+          <button onclick="goToPage(1)" class="page-btn active w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">1</button>
+          <button onclick="goToPage(2)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">2</button>
+          <button onclick="goToPage(3)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">3</button>
+          <button onclick="goToPage(4)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">4</button>
+          <button onclick="goToPage(5)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">5</button>
+          <button onclick="goToPage(6)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">6</button>
+          <button onclick="goToPage(7)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">7</button>
+          <button onclick="goToPage(8)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">8</button>
+          <button onclick="goToPage(9)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">9</button>
+          <button onclick="goToPage(10)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">10</button>
+        </div>
+
+        <button onclick="nextPage()" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-lg transition flex items-center gap-1 shrink-0">
+          <span class="hidden sm:inline">다음</span> <i class="fa-solid fa-chevron-right text-[10px]"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- 2. 슬라이드 본문 컨테이너 -->
+  <main class="flex-1 max-w-4xl w-full mx-auto px-4 py-4 flex flex-col justify-center">
+
+    <!-- Slide 1: 표지 -->
+    <div class="slide-page active bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-1">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 01 / 10</span>
+        <span>수원대학교 경영공학대학</span>
+      </div>
+      <div class="text-center my-auto py-6">
+        <div class="inline-block p-4 bg-emerald-50 text-emerald-700 rounded-2xl mb-3 shadow-inner">
+          <i class="fa-solid fa-table-list text-4xl"></i>
+        </div>
+        <span class="text-xs font-bold text-emerald-700 tracking-wider block mb-1">CH.04 회계순환과정의 완료 (2)</span>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mb-3">3차시: 정산표와 재무제표 작성</h2>
+        <p class="text-slate-600 text-xs sm:text-sm max-w-lg mx-auto leading-relaxed">
+          수정전시산표부터 재무상태표까지를 한 장에 펼쳐 보는 <strong>정산표(Worksheet)</strong>를 작성하고,<br>이를 바탕으로 손익계산서와 재무상태표를 완성하며 회계순환과정 전체를 정리합니다.
+        </p>
+      </div>
+      <div class="text-center text-xs text-slate-400 border-t pt-3">
+        상단 퀵 버튼(1~10) 또는 키보드 방향키(←, →)로 이동할 수 있습니다.
+      </div>
+    </div>
+
+    <!-- Slide 2: 학습 목표 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-2">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 02 / 10</span>
+        <span>학습 목표 (50분 설계)</span>
+      </div>
+      <div class="my-auto">
+        <h3 class="text-lg sm:text-xl font-bold text-slate-900 mb-5 flex items-center gap-2">
+          <i class="fa-solid fa-bullseye text-blue-600"></i> 이번 3차시 핵심 학습 목표
+        </h3>
+        <div class="grid sm:grid-cols-3 gap-3.5">
+          <div class="p-4 bg-slate-50 border rounded-xl hover:border-blue-400 transition">
+            <span class="w-6 h-6 rounded bg-emerald-600 text-white font-bold flex items-center justify-center text-xs mb-2">1</span>
+            <h4 class="font-bold text-slate-800 text-xs sm:text-sm mb-1">정산표의 구조</h4>
+            <p class="text-xs text-slate-600 leading-relaxed">10위식 정산표의 다섯 개 영역과 각 계정이 어느 칸으로 옮겨 가는지 이해한다.</p>
+          </div>
+          <div class="p-4 bg-slate-50 border rounded-xl hover:border-blue-400 transition">
+            <span class="w-6 h-6 rounded bg-emerald-600 text-white font-bold flex items-center justify-center text-xs mb-2">2</span>
+            <h4 class="font-bold text-slate-800 text-xs sm:text-sm mb-1">재무제표 작성</h4>
+            <p class="text-xs text-slate-600 leading-relaxed">정산표(수정후시산표)에서 손익계산서와 재무상태표를 작성하고 기말 이익잉여금을 연결한다.</p>
+          </div>
+          <div class="p-4 bg-slate-50 border rounded-xl hover:border-blue-400 transition">
+            <span class="w-6 h-6 rounded bg-emerald-600 text-white font-bold flex items-center justify-center text-xs mb-2">3</span>
+            <h4 class="font-bold text-slate-800 text-xs sm:text-sm mb-1">회계순환과정 정리</h4>
+            <p class="text-xs text-slate-600 leading-relaxed">거래 식별부터 마감후시산표까지 전 과정을 정리하고, 현금기준과 발생기준의 차이를 비교한다.</p>
+          </div>
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3 flex justify-between">
+        <span>정산표 & 재무제표 작성</span><span>교재 Ch.04</span>
+      </div>
+    </div>
+
+    <!-- Slide 3: 정산표의 의의 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-3">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 03 / 10</span>
+        <span>정산표의 의의</span>
+      </div>
+      <div class="my-auto space-y-3">
+        <h3 class="text-lg sm:text-xl font-bold text-slate-900 flex items-center gap-2">
+          <i class="fa-solid fa-table-columns text-emerald-600"></i> 정산표(Worksheet)란?
+        </h3>
+        <div class="p-4 bg-emerald-50 border-l-4 border-emerald-600 rounded-r-xl">
+          <p class="text-xs sm:text-sm text-slate-800 leading-relaxed">
+            <strong>정산표</strong>는 결산 과정을 <strong>한 장의 표</strong>에 미리 펼쳐 보는 보조 작업표입니다. 장부를 실제로 고치기 전에 수정 결과와 당기순이익을 미리 계산해 보고, 오류가 없는지 점검할 수 있습니다.
+          </p>
+        </div>
+        <div class="grid grid-cols-5 gap-1.5 text-[11px] text-center font-bold">
+          <div class="p-2 bg-slate-100 border rounded-lg">① 수정전<br>시산표</div>
+          <div class="p-2 bg-amber-50 border border-amber-300 rounded-lg text-amber-900">② 수정<br>분개</div>
+          <div class="p-2 bg-blue-50 border border-blue-300 rounded-lg text-blue-900">③ 수정후<br>시산표</div>
+          <div class="p-2 bg-emerald-50 border border-emerald-300 rounded-lg text-emerald-900">④ 손익<br>계산서</div>
+          <div class="p-2 bg-violet-50 border border-violet-300 rounded-lg text-violet-900">⑤ 재무<br>상태표</div>
+        </div>
+        <p class="text-[11px] text-slate-600 text-center">각 영역에 차변·대변 2칸씩 → 5 × 2 = <strong>10위식 정산표</strong> (②를 빼면 8위식)</p>
+        <div class="grid sm:grid-cols-2 gap-2 text-[11px]">
+          <div class="p-2.5 bg-rose-50 border border-rose-200 rounded-lg"><strong class="text-rose-800">주의 ①</strong> 정산표는 공식 재무제표가 <strong>아니며</strong> 작성이 강제되지도 않습니다.</div>
+          <div class="p-2.5 bg-rose-50 border border-rose-200 rounded-lg"><strong class="text-rose-800">주의 ②</strong> 정산표를 만들어도 수정분개·마감분개는 <strong>장부에 따로 기록</strong>해야 합니다.</div>
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3">
+        엑셀이 없던 시절 회계사들이 쓰던 "결산 시뮬레이션 시트"라고 생각하면 됩니다.
+      </div>
+    </div>
+
+    <!-- Slide 4: 정산표 작성 절차 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-4">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 04 / 10</span>
+        <span>정산표 작성 절차</span>
+      </div>
+      <div class="my-auto space-y-2.5">
+        <h3 class="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
+          <i class="fa-solid fa-shoe-prints text-blue-600"></i> 10위식 정산표 작성 5단계
+        </h3>
+        <div class="space-y-1.5 text-xs">
+          <div class="p-2.5 bg-slate-50 border rounded-lg flex gap-2"><span class="font-bold text-slate-700 shrink-0">STEP 1</span><span>수정전시산표 잔액을 옮겨 적고 대차 합계를 확인한다.</span></div>
+          <div class="p-2.5 bg-amber-50 border border-amber-200 rounded-lg flex gap-2"><span class="font-bold text-amber-800 shrink-0">STEP 2</span><span>결산수정분개를 수정분개란에 기입한다. 같은 분개의 차변·대변에 (a), (b)… 같은 기호를 붙여 짝을 표시한다. 새 계정(미수이자, 보험료 등)은 아래에 추가한다.</span></div>
+          <div class="p-2.5 bg-blue-50 border border-blue-200 rounded-lg flex gap-2"><span class="font-bold text-blue-800 shrink-0">STEP 3</span><span>수정전 잔액 ± 수정분개 = <strong>수정후시산표</strong> 잔액. 같은 쪽이면 더하고 반대쪽이면 뺀다.</span></div>
+          <div class="p-2.5 bg-emerald-50 border border-emerald-200 rounded-lg flex gap-2"><span class="font-bold text-emerald-800 shrink-0">STEP 4</span><span>수익·비용은 <strong>손익계산서</strong>란으로, 자산·부채·자본·배당금은 <strong>재무상태표</strong>란으로 옮긴다.</span></div>
+          <div class="p-2.5 bg-violet-50 border border-violet-200 rounded-lg flex gap-2"><span class="font-bold text-violet-800 shrink-0">STEP 5</span><span>손익계산서란의 대변 − 차변 = <strong>당기순이익</strong>. 이 금액을 손익계산서 <u>차변</u>과 재무상태표 <u>대변</u>에 적으면 두 영역이 모두 맞는다.</span></div>
+        </div>
+        <div class="p-2 bg-slate-100 rounded text-center text-[11px] font-semibold text-slate-700">
+          💡 STEP 5에서 재무상태표란이 맞지 않으면 계정을 엉뚱한 칸으로 옮긴 것입니다. (가장 흔한 실수: 배당금·감가상각누계액)
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3">
+        재무상태표란의 이익잉여금은 아직 기초 잔액(2,000,000원)입니다. 그래서 당기순이익을 더해 줘야 대차가 맞습니다.
+      </div>
+    </div>
+
+    <!-- Slide 5: [실전] 10위식 정산표 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-5">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 05 / 10</span>
+        <span>[실전] 10위식 정산표</span>
+      </div>
+      <div class="my-auto space-y-2">
+        <h3 class="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
+          <i class="fa-solid fa-table text-emerald-600"></i> [실전] (주)광교서비스 정산표 (2026.12.31, 단위: 원)
+        </h3>
+        <div class="overflow-x-auto border rounded-lg"><table class="tb ws w-full text-[10px] whitespace-nowrap">
+  <thead class="bg-slate-100 text-slate-800 text-center"><tr><th rowspan="2">계정과목</th><th colspan="2">수정전시산표</th><th colspan="2" class="text-amber-800">수정분개</th><th colspan="2" class="text-blue-800">수정후시산표</th><th colspan="2" class="text-emerald-800">손익계산서</th><th colspan="2" class="text-violet-800">재무상태표</th></tr>
+  <tr><th>차변</th><th>대변</th><th>차변</th><th>대변</th><th>차변</th><th>대변</th><th>차변</th><th>대변</th><th>차변</th><th>대변</th></tr></thead>
+  <tbody><tr><td class="text-left">현금</td><td class="n">7,400,000</td><td class="n"></td><td class="n"></td><td class="n"></td><td class="n bg-blue-50/60">7,400,000</td><td class="n bg-blue-50/60"></td><td class="n bg-emerald-50/60"></td><td class="n bg-emerald-50/60"></td><td class="n bg-violet-50/60">7,400,000</td><td class="n bg-violet-50/60"></td></tr><tr><td class="text-left">매출채권</td><td class="n">3,000,000</td><td class="n"></td><td class="n"></td><td class="n"></td><td class="n bg-blue-50/60">3,000,000</td><td class="n bg-blue-50/60"></td><td class="n bg-emerald-50/60"></td><td class="n bg-emerald-50/60"></td><td class="n bg-violet-50/60">3,000,000</td><td class="n bg-violet-50/60"></td></tr><tr><td class="text-left">정기예금</td><td class="n">20,000,000</td><td class="n"></td><td class="n"></td><td class="n"></td><td class="n bg-blue-50/60">20,000,000</td><td class="n bg-blue-50/60"></td><td class="n bg-emerald-50/60"></td><td class="n bg-emerald-50/60"></td><td class="n bg-violet-50/60">20,000,000</td><td class="n bg-violet-50/60"></td></tr><tr><td class="text-left">미수이자</td><td class="n"></td><td class="n"></td><td class="n text-amber-700"><sup>(f)</sup>200,000</td><td class="n"></td><td class="n bg-blue-50/60">200,000</td><td class="n bg-blue-50/60"></td><td class="n bg-emerald-50/60"></td><td class="n bg-emerald-50/60"></td><td class="n bg-violet-50/60">200,000</td><td class="n bg-violet-50/60"></td></tr><tr><td class="text-left">소모품</td><td class="n">500,000</td><td class="n"></td><td class="n"></td><td class="n text-amber-700"><sup>(b)</sup>300,000</td><td class="n bg-blue-50/60">200,000</td><td class="n bg-blue-50/60"></td><td class="n bg-emerald-50/60"></td><td class="n bg-emerald-50/60"></td><td class="n bg-violet-50/60">200,000</td><td class="n bg-violet-50/60"></td></tr><tr><td class="text-left">선급보험료</td><td class="n">1,200,000</td><td class="n"></td><td class="n"></td><td class="n text-amber-700"><sup>(a)</sup>300,000</td><td class="n bg-blue-50/60">900,000</td><td class="n bg-blue-50/60"></td><td class="n bg-emerald-50/60"></td><td class="n bg-emerald-50/60"></td><td class="n bg-violet-50/60">900,000</td><td class="n bg-violet-50/60"></td></tr><tr><td class="text-left">차량운반구</td><td class="n">10,000,000</td><td class="n"></td><td class="n"></td><td class="n"></td><td class="n bg-blue-50/60">10,000,000</td><td class="n bg-blue-50/60"></td><td class="n bg-emerald-50/60"></td><td class="n bg-emerald-50/60"></td><td class="n bg-violet-50/60">10,000,000</td><td class="n bg-violet-50/60"></td></tr><tr><td class="text-left">감가상각누계액</td><td class="n"></td><td class="n"></td><td class="n"></td><td class="n text-amber-700"><sup>(d)</sup>2,000,000</td><td class="n bg-blue-50/60"></td><td class="n bg-blue-50/60">2,000,000</td><td class="n bg-emerald-50/60"></td><td class="n bg-emerald-50/60"></td><td class="n bg-violet-50/60"></td><td class="n bg-violet-50/60">2,000,000</td></tr><tr><td class="text-left">차입금</td><td class="n"></td><td class="n">10,000,000</td><td class="n"></td><td class="n"></td><td class="n bg-blue-50/60"></td><td class="n bg-blue-50/60">10,000,000</td><td class="n bg-emerald-50/60"></td><td class="n bg-emerald-50/60"></td><td class="n bg-violet-50/60"></td><td class="n bg-violet-50/60">10,000,000</td></tr><tr><td class="text-left">미지급이자</td><td class="n"></td><td class="n"></td><td class="n"></td><td class="n text-amber-700"><sup>(e)</sup>250,000</td><td class="n bg-blue-50/60"></td><td class="n bg-blue-50/60">250,000</td><td class="n bg-emerald-50/60"></td><td class="n bg-emerald-50/60"></td><td class="n bg-violet-50/60"></td><td class="n bg-violet-50/60">250,000</td></tr><tr><td class="text-left">선수임대료</td><td class="n"></td><td class="n">600,000</td><td class="n text-amber-700"><sup>(c)</sup>200,000</td><td class="n"></td><td class="n bg-blue-50/60"></td><td class="n bg-blue-50/60">400,000</td><td class="n bg-emerald-50/60"></td><td class="n bg-emerald-50/60"></td><td class="n bg-violet-50/60"></td><td class="n bg-violet-50/60">400,000</td></tr><tr><td class="text-left">자본금</td><td class="n"></td><td class="n">25,000,000</td><td class="n"></td><td class="n"></td><td class="n bg-blue-50/60"></td><td class="n bg-blue-50/60">25,000,000</td><td class="n bg-emerald-50/60"></td><td class="n bg-emerald-50/60"></td><td class="n bg-violet-50/60"></td><td class="n bg-violet-50/60">25,000,000</td></tr><tr><td class="text-left">이익잉여금</td><td class="n"></td><td class="n">2,000,000</td><td class="n"></td><td class="n"></td><td class="n bg-blue-50/60"></td><td class="n bg-blue-50/60">2,000,000</td><td class="n bg-emerald-50/60"></td><td class="n bg-emerald-50/60"></td><td class="n bg-violet-50/60"></td><td class="n bg-violet-50/60">2,000,000</td></tr><tr><td class="text-left">배당금</td><td class="n">500,000</td><td class="n"></td><td class="n"></td><td class="n"></td><td class="n bg-blue-50/60">500,000</td><td class="n bg-blue-50/60"></td><td class="n bg-emerald-50/60"></td><td class="n bg-emerald-50/60"></td><td class="n bg-violet-50/60">500,000</td><td class="n bg-violet-50/60"></td></tr><tr><td class="text-left">용역매출</td><td class="n"></td><td class="n">8,000,000</td><td class="n"></td><td class="n"></td><td class="n bg-blue-50/60"></td><td class="n bg-blue-50/60">8,000,000</td><td class="n bg-emerald-50/60"></td><td class="n bg-emerald-50/60">8,000,000</td><td class="n bg-violet-50/60"></td><td class="n bg-violet-50/60"></td></tr><tr><td class="text-left">임대료수익</td><td class="n"></td><td class="n"></td><td class="n"></td><td class="n text-amber-700"><sup>(c)</sup>200,000</td><td class="n bg-blue-50/60"></td><td class="n bg-blue-50/60">200,000</td><td class="n bg-emerald-50/60"></td><td class="n bg-emerald-50/60">200,000</td><td class="n bg-violet-50/60"></td><td class="n bg-violet-50/60"></td></tr><tr><td class="text-left">이자수익</td><td class="n"></td><td class="n"></td><td class="n"></td><td class="n text-amber-700"><sup>(f)</sup>200,000</td><td class="n bg-blue-50/60"></td><td class="n bg-blue-50/60">200,000</td><td class="n bg-emerald-50/60"></td><td class="n bg-emerald-50/60">200,000</td><td class="n bg-violet-50/60"></td><td class="n bg-violet-50/60"></td></tr><tr><td class="text-left">급여</td><td class="n">3,000,000</td><td class="n"></td><td class="n"></td><td class="n"></td><td class="n bg-blue-50/60">3,000,000</td><td class="n bg-blue-50/60"></td><td class="n bg-emerald-50/60">3,000,000</td><td class="n bg-emerald-50/60"></td><td class="n bg-violet-50/60"></td><td class="n bg-violet-50/60"></td></tr><tr><td class="text-left">보험료</td><td class="n"></td><td class="n"></td><td class="n text-amber-700"><sup>(a)</sup>300,000</td><td class="n"></td><td class="n bg-blue-50/60">300,000</td><td class="n bg-blue-50/60"></td><td class="n bg-emerald-50/60">300,000</td><td class="n bg-emerald-50/60"></td><td class="n bg-violet-50/60"></td><td class="n bg-violet-50/60"></td></tr><tr><td class="text-left">소모품비</td><td class="n"></td><td class="n"></td><td class="n text-amber-700"><sup>(b)</sup>300,000</td><td class="n"></td><td class="n bg-blue-50/60">300,000</td><td class="n bg-blue-50/60"></td><td class="n bg-emerald-50/60">300,000</td><td class="n bg-emerald-50/60"></td><td class="n bg-violet-50/60"></td><td class="n bg-violet-50/60"></td></tr><tr><td class="text-left">감가상각비</td><td class="n"></td><td class="n"></td><td class="n text-amber-700"><sup>(d)</sup>2,000,000</td><td class="n"></td><td class="n bg-blue-50/60">2,000,000</td><td class="n bg-blue-50/60"></td><td class="n bg-emerald-50/60">2,000,000</td><td class="n bg-emerald-50/60"></td><td class="n bg-violet-50/60"></td><td class="n bg-violet-50/60"></td></tr><tr><td class="text-left">이자비용</td><td class="n"></td><td class="n"></td><td class="n text-amber-700"><sup>(e)</sup>250,000</td><td class="n"></td><td class="n bg-blue-50/60">250,000</td><td class="n bg-blue-50/60"></td><td class="n bg-emerald-50/60">250,000</td><td class="n bg-emerald-50/60"></td><td class="n bg-violet-50/60"></td><td class="n bg-violet-50/60"></td></tr><tr class="bg-slate-100 font-bold"><td class="text-left">소계</td><td class="n">45,600,000</td><td class="n">45,600,000</td><td class="n">3,250,000</td><td class="n">3,250,000</td><td class="n">48,050,000</td><td class="n">48,050,000</td><td class="n">5,850,000</td><td class="n">8,400,000</td><td class="n">42,200,000</td><td class="n">39,650,000</td></tr><tr class="font-bold text-rose-700"><td class="text-left">당기순이익</td><td></td><td></td><td></td><td></td><td></td><td></td><td class="n">2,550,000</td><td></td><td></td><td class="n">2,550,000</td></tr><tr class="bg-slate-800 text-white font-bold"><td class="text-left">합계</td><td class="n">45,600,000</td><td class="n">45,600,000</td><td class="n">3,250,000</td><td class="n">3,250,000</td><td class="n">48,050,000</td><td class="n">48,050,000</td><td class="n">8,400,000</td><td class="n">8,400,000</td><td class="n">42,200,000</td><td class="n">42,200,000</td></tr></tbody></table></div>
+        <p class="text-[10px] text-slate-500">(a) 보험료 (b) 소모품비 (c) 선수임대료 (d) 감가상각 (e) 미지급이자 (f) 미수이자 — 6주차 2·3차시 예제 · 표가 넓으면 좌우로 밀어서 보세요.</p>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3">
+        당기순이익 2,550,000원이 손익계산서란 차변과 재무상태표란 대변에 똑같이 들어가 두 영역의 대차가 모두 맞습니다.
+      </div>
+    </div>
+
+    <!-- Slide 6: 정산표 → 재무제표 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-6">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 06 / 10</span>
+        <span>정산표 → 재무제표</span>
+      </div>
+      <div class="my-auto space-y-2.5">
+        <h3 class="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
+          <i class="fa-solid fa-file-invoice text-blue-600"></i> 정산표에서 재무제표로 (단위: 원)
+        </h3>
+        <div class="grid sm:grid-cols-2 gap-3 text-[11px]">
+          <div class="p-3 bg-emerald-50/50 border border-emerald-200 rounded-xl">
+            <div class="font-bold text-emerald-900 mb-1 text-xs">손익계산서 (2026.1.1~12.31)</div>
+            <table class="tb w-full bg-white">
+              <tr><td>용역매출</td><td class="n">8,000,000</td></tr>
+              <tr><td>임대료수익</td><td class="n">200,000</td></tr>
+              <tr><td>이자수익</td><td class="n">200,000</td></tr>
+              <tr class="font-bold bg-slate-50"><td>수익 합계</td><td class="n">8,400,000</td></tr>
+              <tr><td>급여 · 보험료 · 소모품비</td><td class="n">(3,600,000)</td></tr>
+              <tr><td>감가상각비</td><td class="n">(2,000,000)</td></tr>
+              <tr><td>이자비용</td><td class="n">(250,000)</td></tr>
+              <tr class="font-bold text-rose-700 bg-rose-50"><td>당기순이익</td><td class="n">2,550,000</td></tr>
+            </table>
+            <div class="mt-2 font-bold text-slate-800 text-xs">이익잉여금 변동</div>
+            <div class="font-mono bg-white p-1.5 rounded border">2,000,000 + 2,550,000 − 500,000 = <strong>4,050,000</strong></div>
+          </div>
+          <div class="p-3 bg-violet-50/50 border border-violet-200 rounded-xl">
+            <div class="font-bold text-violet-900 mb-1 text-xs">재무상태표 (2026.12.31)</div>
+            <table class="tb w-full bg-white">
+              <tr><td>현금 · 매출채권</td><td class="n">10,400,000</td></tr>
+              <tr><td>정기예금 · 미수이자</td><td class="n">20,200,000</td></tr>
+              <tr><td>소모품 · 선급보험료</td><td class="n">1,100,000</td></tr>
+              <tr><td>차량운반구 10,000,000<br><span class="text-slate-500">감가상각누계액 (2,000,000)</span></td><td class="n">8,000,000</td></tr>
+              <tr class="font-bold bg-slate-50"><td>자산 총계</td><td class="n">39,700,000</td></tr>
+              <tr><td>차입금 · 미지급이자 · 선수임대료</td><td class="n">10,650,000</td></tr>
+              <tr><td>자본금</td><td class="n">25,000,000</td></tr>
+              <tr class="text-violet-800 font-semibold"><td>이익잉여금 (기말)</td><td class="n">4,050,000</td></tr>
+              <tr class="font-bold bg-slate-50"><td>부채와 자본 총계</td><td class="n">39,700,000</td></tr>
+            </table>
+          </div>
+        </div>
+        <p class="text-[11px] text-slate-500 text-center">손익계산서의 당기순이익 → (자본변동표) 이익잉여금 → 재무상태표: 2주차에 배운 <strong>재무제표의 연계</strong>가 숫자로 완성됩니다.</p>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3">
+        정산표의 재무상태표란 합계(42,200,000원)와 실제 재무상태표 총계(39,700,000원)가 다른 이유: 배당금 500,000원과 감가상각누계액 2,000,000원을 차감 표시했기 때문입니다.
+      </div>
+    </div>
+
+    <!-- Slide 7: 현금기준 vs 발생기준 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-7">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 07 / 10</span>
+        <span>현금기준 vs 발생기준</span>
+      </div>
+      <div class="my-auto space-y-2.5">
+        <h3 class="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
+          <i class="fa-solid fa-scale-unbalanced-flip text-amber-600"></i> [사례] 현금기준 이익을 발생기준 이익으로 바꾸기
+        </h3>
+        <div class="p-2.5 bg-slate-50 border rounded-xl text-[11px] leading-relaxed">
+          <strong>[상황]</strong> (주)망포수리는 2026년 7월 1일 영업을 시작했다. 12월 31일까지 현금 기록: 수리대금 수취 4,000,000 · 급여 지급 1,500,000 · 1년분 임차료 선지급 1,200,000(7/1) · 수리장비 구입 2,400,000(7/1, 내용연수 5년, 잔존가치 0, 정액법).
+          <br><strong>[추가 정보]</strong> 수리를 마쳤지만 아직 받지 못한 대금 300,000 · 12월분 미지급 급여 200,000
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-[11px] text-center border-collapse border border-slate-200">
+            <thead class="bg-slate-100"><tr><th class="border p-1.5">항목</th><th class="border p-1.5">현금기준</th><th class="border p-1.5">발생기준</th><th class="border p-1.5 text-left">근거 (결산수정 유형)</th></tr></thead>
+            <tbody>
+              <tr><td class="border p-1.5">수익</td><td class="border p-1.5 font-mono">4,000,000</td><td class="border p-1.5 font-mono">4,300,000</td><td class="border p-1.5 text-left">미수수익 300,000 추가 (수익의 발생)</td></tr>
+              <tr><td class="border p-1.5">급여</td><td class="border p-1.5 font-mono">(1,500,000)</td><td class="border p-1.5 font-mono">(1,700,000)</td><td class="border p-1.5 text-left">미지급급여 200,000 추가 (비용의 발생)</td></tr>
+              <tr><td class="border p-1.5">임차료</td><td class="border p-1.5 font-mono">(1,200,000)</td><td class="border p-1.5 font-mono">(600,000)</td><td class="border p-1.5 text-left">6개월분만 비용, 600,000은 선급임차료 (비용의 이연)</td></tr>
+              <tr><td class="border p-1.5">장비</td><td class="border p-1.5 font-mono">(2,400,000)</td><td class="border p-1.5 font-mono">(240,000)</td><td class="border p-1.5 text-left">2,400,000 ÷ 5년 × 6/12 = 감가상각비 240,000</td></tr>
+              <tr class="font-bold"><td class="border p-1.5">이익</td><td class="border p-1.5 font-mono text-rose-600">(1,100,000)</td><td class="border p-1.5 font-mono text-emerald-700">1,760,000</td><td class="border p-1.5 text-left">차이 2,860,000</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3">
+        현금만 보면 "적자 회사", 발생기준으로 보면 "흑자 회사"입니다. K-IFRS가 발생기준을 요구하는 이유입니다. (교재 Ch.04 연습문제 13번 유형)
+      </div>
+    </div>
+
+    <!-- Slide 8: 회계순환과정 전체 지도 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-8">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 08 / 10</span>
+        <span>회계순환과정 전체 지도</span>
+      </div>
+      <div class="my-auto space-y-3">
+        <h3 class="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
+          <i class="fa-solid fa-arrows-spin text-blue-600"></i> 회계순환과정(Accounting Cycle) 한눈에 보기
+        </h3>
+        <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 text-[11px] text-center"><div class="p-2 bg-slate-50 border border-slate-200 rounded-lg"><div class="text-[10px] text-slate-400">1단계 · 3주차</div><div class="font-bold text-slate-900">거래 식별</div></div><div class="p-2 bg-slate-50 border border-slate-200 rounded-lg"><div class="text-[10px] text-slate-400">2단계 · 4주차</div><div class="font-bold text-slate-900">분개</div></div><div class="p-2 bg-slate-50 border border-slate-200 rounded-lg"><div class="text-[10px] text-slate-400">3단계 · 4주차</div><div class="font-bold text-slate-900">전기(원장)</div></div><div class="p-2 bg-slate-50 border border-slate-200 rounded-lg"><div class="text-[10px] text-slate-400">4단계 · 5주차</div><div class="font-bold text-slate-900">수정전시산표</div></div><div class="p-2 bg-amber-50 border border-amber-200 rounded-lg"><div class="text-[10px] text-slate-400">5단계 · 6주차</div><div class="font-bold text-amber-900">결산수정분개</div></div><div class="p-2 bg-blue-50 border border-blue-200 rounded-lg"><div class="text-[10px] text-slate-400">6단계 · 6주차</div><div class="font-bold text-blue-900">수정후시산표</div></div><div class="p-2 bg-emerald-50 border border-emerald-200 rounded-lg"><div class="text-[10px] text-slate-400">7단계 · 8주차</div><div class="font-bold text-emerald-900">정산표(선택)</div></div><div class="p-2 bg-emerald-50 border border-emerald-200 rounded-lg"><div class="text-[10px] text-slate-400">8단계 · 8주차</div><div class="font-bold text-emerald-900">재무제표 작성</div></div><div class="p-2 bg-violet-50 border border-violet-200 rounded-lg"><div class="text-[10px] text-slate-400">9단계 · 8주차</div><div class="font-bold text-violet-900">마감분개</div></div><div class="p-2 bg-violet-50 border border-violet-200 rounded-lg"><div class="text-[10px] text-slate-400">10단계 · 8주차</div><div class="font-bold text-violet-900">마감후시산표</div></div></div>
+        <div class="grid sm:grid-cols-2 gap-2 text-[11px]">
+          <div class="p-2.5 bg-slate-50 border rounded-lg"><strong>기중 (1~4단계):</strong> 거래가 생길 때마다 반복 — 분개장·총계정원장에 기록</div>
+          <div class="p-2.5 bg-slate-50 border rounded-lg"><strong>기말 결산 (5~10단계):</strong> 1년에 한 번 — 수정·보고·마감 후 다음 기로</div>
+        </div>
+        <div class="p-2.5 bg-blue-50 border border-blue-200 rounded-lg text-xs text-center text-blue-950">
+          🔁 마감후시산표의 잔액이 다음 기 <strong>전기이월</strong>이 되어 1단계부터 다시 순환합니다.
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3">
+        Ch.01~Ch.04 회계순환과정이 이것으로 완성됩니다. 다음 주부터는 교재의 다음 장으로 넘어갑니다.
+      </div>
+    </div>
+
+    <!-- Slide 9: 3차시 핵심 요약 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-9">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 09 / 10</span>
+        <span>핵심 요약 (Takeaways)</span>
+      </div>
+      <div class="my-auto space-y-3.5">
+        <h3 class="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
+          <i class="fa-solid fa-bookmark text-blue-600"></i> 3차시 핵심 정리
+        </h3>
+        <div class="space-y-2 text-xs sm:text-sm">
+          <div class="p-3 bg-slate-50 border rounded-xl flex items-start gap-2.5">
+            <span class="bg-emerald-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs shrink-0 mt-0.5 font-bold">1</span>
+            <div>
+              <strong>정산표:</strong> 수정전시산표 → 수정분개 → 수정후시산표 → 손익계산서 → 재무상태표를 한 장에 펼친 보조표(10위식). 공식 재무제표 아님.
+            </div>
+          </div>
+          <div class="p-3 bg-slate-50 border rounded-xl flex items-start gap-2.5">
+            <span class="bg-emerald-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs shrink-0 mt-0.5 font-bold">2</span>
+            <div>
+              <strong>당기순이익의 연결:</strong> 손익계산서란 대변 − 차변 = 당기순이익 → 손익계산서 차변·재무상태표 대변에 기입해 양쪽 대차를 맞춤.
+            </div>
+          </div>
+          <div class="p-3 bg-slate-50 border rounded-xl flex items-start gap-2.5">
+            <span class="bg-emerald-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs shrink-0 mt-0.5 font-bold">3</span>
+            <div>
+              <strong>발생기준의 의미:</strong> 현금기준 이익에 이연·발생 수정을 반영해야 기업의 실제 성과가 보임. 회계순환과정은 마감후시산표로 끝나 다음 기로 이어짐.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3">
+        수고하셨습니다! 이제 8주차 종합 실습문제(마감분개·마감후시산표)로 실력을 점검해 보세요.
+      </div>
+    </div>
+
+    <!-- Slide 10: 인터랙티브 퀴즈 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-10">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded border border-emerald-200">SLIDE 10 / 10 · 퀴즈</span>
+        <span>3차시 점검</span>
+      </div>
+      <div class="my-auto">
+        <h3 class="text-base sm:text-lg font-bold text-slate-900 mb-2 flex items-center gap-2">
+          <i class="fa-solid fa-circle-question text-emerald-600"></i> [자가진단 퀴즈]
+        </h3>
+        <div class="bg-slate-50 p-4 rounded-xl border mb-3">
+          <p class="text-xs sm:text-sm font-bold text-slate-800 mb-2">
+            Q. 10위식 정산표에서 손익계산서란의 차변 합계가 5,850,000원, 대변 합계가 8,400,000원일 때 당기순이익을 기입하는 위치로 옳은 것은?
+          </p>
+          <div class="space-y-1.5">
+            <button onclick="checkQuiz(1, 'A', this)" class="q-btn-1 w-full text-left p-2.5 bg-white border rounded text-xs hover:bg-slate-100 transition">
+              A) 손익계산서란 대변과 재무상태표란 차변에 각각 2,550,000원
+            </button>
+            <button onclick="checkQuiz(1, 'B', this)" class="q-btn-1 w-full text-left p-2.5 bg-white border rounded text-xs hover:bg-slate-100 transition">
+              B) 손익계산서란 차변과 재무상태표란 대변에 각각 2,550,000원
+            </button>
+            <button onclick="checkQuiz(1, 'C', this)" class="q-btn-1 w-full text-left p-2.5 bg-white border rounded text-xs hover:bg-slate-100 transition">
+              C) 수정후시산표란 차변과 재무상태표란 대변에 각각 2,550,000원
+            </button>
+          </div>
+          <div id="q-feedback-1" class="hidden mt-2 p-2 rounded text-xs"></div>
+        </div>
+        <div class="p-3 bg-amber-50 border border-amber-200 rounded-xl text-center text-xs text-amber-950">
+          🚀 8주차 강의를 모두 마쳤습니다! 아래 링크를 눌러 <strong>[8주차 종합 실습문제]</strong>를 풀고 구글 시트에 제출해 주세요.
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3 flex justify-between">
+        <span>8주차 3차시 완료</span><a href="exercise_08.html" class="text-amber-700 font-bold hover:underline flex items-center gap-1"><span>8주차 실습과제 풀러 가기</span> <i class="fa-solid fa-arrow-right"></i></a>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- 하단 푸터 -->
+  <footer class="text-center py-3 text-slate-400 text-xs border-t bg-white no-print">
+    수원대학교 경영공학대학 회계원리 © 2026
+  </footer>
+
+  <script>
+    let currentPage = 1;
+    const totalPages = 10;
+
+    function goToPage(page) {
+      if (page < 1 || page > totalPages) return;
+      document.querySelectorAll('.slide-page').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.page-btn').forEach(d => d.classList.remove('active'));
+
+      const target = document.getElementById(`page-${page}`);
+      if (target) target.classList.add('active');
+
+      const btns = document.querySelectorAll('.page-btn');
+      if (btns[page - 1]) btns[page - 1].classList.add('active');
+
+      currentPage = page;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function nextPage() { if (currentPage < totalPages) goToPage(currentPage + 1); }
+    function prevPage() { if (currentPage > 1) goToPage(currentPage - 1); }
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === 'PageDown') nextPage();
+      if (e.key === 'ArrowLeft' || e.key === 'PageUp') prevPage();
+    });
+
+    const quizAnswers = {"1": {"ans": "B", "exp": "수익(대변)이 비용(차변)보다 2,550,000원 많으므로, 모자란 쪽인 손익계산서란 차변에 당기순이익을 적어 맞춥니다. 같은 금액을 재무상태표란 대변에 적으면 기초 이익잉여금에 당기순이익이 더해진 효과가 되어 재무상태표란도 맞습니다."}};
+
+    function checkQuiz(qNum, choice, btn) {
+      const btns = document.querySelectorAll(`.q-btn-${qNum}`);
+      const fb = document.getElementById(`q-feedback-${qNum}`);
+      btns.forEach(b => { b.className = `q-btn-${qNum} w-full text-left p-2.5 bg-white border rounded text-xs transition`; });
+      fb.classList.remove('hidden');
+
+      if (choice === quizAnswers[qNum].ans) {
+        btn.classList.add('bg-emerald-100', 'border-emerald-500', 'text-emerald-900', 'font-bold');
+        fb.className = "text-xs mt-2 p-2 rounded bg-emerald-50 text-emerald-900 border border-emerald-200 block";
+        fb.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-600 mr-1"></i> <strong>정답입니다!</strong> ${quizAnswers[qNum].exp}`;
+      } else {
+        btn.classList.add('bg-rose-100', 'border-rose-500', 'text-rose-900');
+        fb.className = "text-xs mt-2 p-2 rounded bg-rose-50 text-rose-900 border border-rose-200 block";
+        fb.innerHTML = `<i class="fa-solid fa-circle-xmark text-rose-600 mr-1"></i> <strong>오답입니다!</strong> ${quizAnswers[qNum].exp}`;
+      }
+    }
+  </script>
+</body>
+</html>

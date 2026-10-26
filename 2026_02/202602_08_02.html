@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>[8주차 2차시] 계정 마감과 마감후시산표 | 수원대학교 회계원리</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Noto Sans KR', sans-serif; }
+    .slide-page { display: none; }
+    .slide-page.active { display: flex; animation: fadeIn 0.25s ease-in-out; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+    .page-btn.active { background-color: #2563eb !important; color: white !important; font-weight: bold; border-color: #1d4ed8 !important; }
+    /* 장부·표 공통 */
+    .tb td, .tb th { border: 1px solid #e2e8f0; padding: 4px 6px; }
+    .tb td.n { text-align: right; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+    .ws td, .ws th { padding: 3px 3px; letter-spacing: -0.03em; }
+    .ws td.n { font-size: 9.5px; }
+    @media print { .ws { font-size: 8px !important; } }
+    .tacc { border-collapse: collapse; width: 100%; font-size: 11px; }
+    .tacc caption { font-weight: 700; padding-bottom: 2px; border-bottom: 2px solid #334155; }
+    .tacc td { padding: 2px 6px; vertical-align: top; }
+    .tacc td.l { border-right: 2px solid #334155; }
+    .tacc td.n { text-align: right; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+    .tacc tr.sum td { border-top: 1px solid #94a3b8; font-weight: 700; }
+
+    @media print {
+      @page { size: A4 landscape; margin: 10mm 12mm; }
+      body { background-color: #ffffff !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; padding: 0 !important; }
+      header, .no-print, #top-nav-controller { display: none !important; }
+      main { max-width: 100% !important; padding: 0 !important; margin: 0 !important; }
+      .slide-page { display: block !important; opacity: 1 !important; page-break-after: always !important; break-after: page !important; min-height: 180mm !important; margin-bottom: 0 !important; border: 1px solid #cbd5e1 !important; border-radius: 12px !important; padding: 24px 28px !important; }
+    }
+  </style>
+</head>
+<body class="bg-slate-100 text-slate-800 antialiased min-h-screen flex flex-col justify-between">
+
+  <!-- 1. 고정 상단 헤더 & 슬라이드 네비게이션 바 -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm no-print">
+    <div class="max-w-5xl mx-auto px-4 flex justify-between items-center h-12">
+      <div class="flex items-center gap-2">
+        <a href="../index.html" class="bg-blue-900 text-white text-[11px] px-2 py-0.5 rounded-full font-bold hover:bg-blue-800">수원대 회계원리</a>
+        <h1 class="font-bold text-slate-800 text-xs sm:text-sm">8주차 2차시: 계정 마감과 마감후시산표</h1>
+      </div>
+      <div class="flex items-center gap-2">
+        <button onclick="window.print()" class="text-[11px] bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold px-2.5 py-1 rounded border border-slate-300 transition flex items-center gap-1">
+          <i class="fa-solid fa-print"></i> PDF/인쇄
+        </button>
+      </div>
+    </div>
+
+    <!-- 상단 1~10 퀵 이동 버튼 바 -->
+    <div id="top-nav-controller" class="border-t border-slate-100 bg-slate-50/95 py-2 px-4 shadow-inner">
+      <div class="max-w-5xl mx-auto flex items-center justify-between gap-2">
+        <button onclick="prevPage()" class="px-3 py-1.5 bg-white hover:bg-slate-100 text-slate-700 text-xs font-bold rounded-lg border border-slate-300 transition flex items-center gap-1 shrink-0">
+          <i class="fa-solid fa-chevron-left text-[10px]"></i> <span class="hidden sm:inline">이전</span>
+        </button>
+
+        <div class="flex items-center gap-1.5 overflow-x-auto py-0.5 px-1 max-w-full">
+          <button onclick="goToPage(1)" class="page-btn active w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">1</button>
+          <button onclick="goToPage(2)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">2</button>
+          <button onclick="goToPage(3)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">3</button>
+          <button onclick="goToPage(4)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">4</button>
+          <button onclick="goToPage(5)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">5</button>
+          <button onclick="goToPage(6)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">6</button>
+          <button onclick="goToPage(7)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">7</button>
+          <button onclick="goToPage(8)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">8</button>
+          <button onclick="goToPage(9)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">9</button>
+          <button onclick="goToPage(10)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">10</button>
+        </div>
+
+        <button onclick="nextPage()" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-lg transition flex items-center gap-1 shrink-0">
+          <span class="hidden sm:inline">다음</span> <i class="fa-solid fa-chevron-right text-[10px]"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- 2. 슬라이드 본문 컨테이너 -->
+  <main class="flex-1 max-w-4xl w-full mx-auto px-4 py-4 flex flex-col justify-center">
+
+    <!-- Slide 1: 표지 -->
+    <div class="slide-page active bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-1">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 01 / 10</span>
+        <span>수원대학교 경영공학대학</span>
+      </div>
+      <div class="text-center my-auto py-6">
+        <div class="inline-block p-4 bg-indigo-50 text-indigo-700 rounded-2xl mb-3 shadow-inner">
+          <i class="fa-solid fa-book-open text-4xl"></i>
+        </div>
+        <span class="text-xs font-bold text-indigo-700 tracking-wider block mb-1">CH.04 회계순환과정의 완료 (2)</span>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mb-3">2차시: 계정 마감과 마감후시산표</h2>
+        <p class="text-slate-600 text-xs sm:text-sm max-w-lg mx-auto leading-relaxed">
+          마감분개를 총계정원장에 전기해 임시계정을 0으로 만들고, 영구계정은 차기이월·전기이월로 넘깁니다.<br>마지막으로 <strong>마감후시산표</strong>로 장부가 다음 기를 맞을 준비가 됐는지 확인합니다.
+        </p>
+      </div>
+      <div class="text-center text-xs text-slate-400 border-t pt-3">
+        상단 퀵 버튼(1~10) 또는 키보드 방향키(←, →)로 이동할 수 있습니다.
+      </div>
+    </div>
+
+    <!-- Slide 2: 학습 목표 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-2">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 02 / 10</span>
+        <span>학습 목표 (50분 설계)</span>
+      </div>
+      <div class="my-auto">
+        <h3 class="text-lg sm:text-xl font-bold text-slate-900 mb-5 flex items-center gap-2">
+          <i class="fa-solid fa-bullseye text-blue-600"></i> 이번 2차시 핵심 학습 목표
+        </h3>
+        <div class="grid sm:grid-cols-3 gap-3.5">
+          <div class="p-4 bg-slate-50 border rounded-xl hover:border-blue-400 transition">
+            <span class="w-6 h-6 rounded bg-indigo-600 text-white font-bold flex items-center justify-center text-xs mb-2">1</span>
+            <h4 class="font-bold text-slate-800 text-xs sm:text-sm mb-1">마감분개의 전기</h4>
+            <p class="text-xs text-slate-600 leading-relaxed">마감분개를 집합손익·이익잉여금 T계정에 전기하고 잔액이 0이 되는 과정을 확인한다.</p>
+          </div>
+          <div class="p-4 bg-slate-50 border rounded-xl hover:border-blue-400 transition">
+            <span class="w-6 h-6 rounded bg-indigo-600 text-white font-bold flex items-center justify-center text-xs mb-2">2</span>
+            <h4 class="font-bold text-slate-800 text-xs sm:text-sm mb-1">영구계정의 이월</h4>
+            <p class="text-xs text-slate-600 leading-relaxed">자산·부채·자본 계정을 차기이월로 마감하고 다음 기 전기이월로 다시 여는 방법을 익힌다.</p>
+          </div>
+          <div class="p-4 bg-slate-50 border rounded-xl hover:border-blue-400 transition">
+            <span class="w-6 h-6 rounded bg-indigo-600 text-white font-bold flex items-center justify-center text-xs mb-2">3</span>
+            <h4 class="font-bold text-slate-800 text-xs sm:text-sm mb-1">마감후시산표와 오류 수정</h4>
+            <p class="text-xs text-slate-600 leading-relaxed">마감후시산표를 작성하고, 잘못된 마감분개를 찾아 바르게 고친다.</p>
+          </div>
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3 flex justify-between">
+        <span>계정 마감 & 마감후시산표</span><span>교재 Ch.04</span>
+      </div>
+    </div>
+
+    <!-- Slide 3: 마감분개의 전기 (1) -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-3">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 03 / 10</span>
+        <span>마감분개의 전기 (1)</span>
+      </div>
+      <div class="my-auto space-y-3">
+        <h3 class="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
+          <i class="fa-solid fa-diagram-project text-indigo-600"></i> 집합손익과 이익잉여금 계정으로 전기하기
+        </h3>
+        <p class="text-xs text-slate-600">1차시 (주)광교서비스의 마감분개 ①~④를 전기하면 다음과 같습니다. (단위: 원)</p>
+        <div class="grid sm:grid-cols-2 gap-4">
+          <div class="p-3 bg-white border rounded-xl">
+            <table class="tacc">
+              <caption>집 합 손 익</caption>
+              <tr><td class="l">12/31 급여 등 비용 ②</td><td class="n l">5,850,000</td><td>12/31 용역매출 등 수익 ①</td><td class="n">8,400,000</td></tr>
+              <tr><td class="l">12/31 이익잉여금 ③</td><td class="n l">2,550,000</td><td></td><td></td></tr>
+              <tr class="sum"><td class="l"></td><td class="n l">8,400,000</td><td></td><td class="n">8,400,000</td></tr>
+            </table>
+            <p class="text-[11px] text-emerald-700 font-semibold mt-1.5">→ 차변·대변 합계 일치, 잔액 0 (마감 완료)</p>
+          </div>
+          <div class="p-3 bg-white border rounded-xl">
+            <table class="tacc">
+              <caption>이 익 잉 여 금</caption>
+              <tr><td class="l">12/31 배당금 ④</td><td class="n l">500,000</td><td>1/1 전기이월</td><td class="n">2,000,000</td></tr>
+              <tr><td class="l text-blue-700">12/31 차기이월</td><td class="n l text-blue-700">4,050,000</td><td>12/31 집합손익 ③</td><td class="n">2,550,000</td></tr>
+              <tr class="sum"><td class="l"></td><td class="n l">4,550,000</td><td></td><td class="n">4,550,000</td></tr>
+              <tr><td class="l"></td><td class="l"></td><td class="text-blue-700">1/1 전기이월</td><td class="n text-blue-700">4,050,000</td></tr>
+            </table>
+            <p class="text-[11px] text-blue-700 font-semibold mt-1.5">→ 영구계정이므로 잔액 4,050,000원을 다음 기로 이월</p>
+          </div>
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3">
+        집합손익은 0으로 사라지고, 이익잉여금은 올해의 성과를 담은 채 2027년으로 넘어갑니다.
+      </div>
+    </div>
+
+    <!-- Slide 4: 마감분개의 전기 (2) -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-4">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 04 / 10</span>
+        <span>마감분개의 전기 (2)</span>
+      </div>
+      <div class="my-auto space-y-3">
+        <h3 class="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
+          <i class="fa-solid fa-eraser text-amber-600"></i> 수익·비용 계정의 마감: 잔액을 0으로
+        </h3>
+        <p class="text-xs text-slate-600">마감분개를 전기하면 각 수익·비용 계정의 차변과 대변 합계가 같아지고, 두 줄(이중선)을 그어 마감합니다.</p>
+        <div class="grid sm:grid-cols-3 gap-3">
+          <div class="p-3 bg-white border rounded-xl">
+            <table class="tacc">
+              <caption>보 험 료</caption>
+              <tr><td class="l">12/31 선급보험료</td><td class="n l">300,000</td><td>12/31 집합손익</td><td class="n">300,000</td></tr>
+              <tr class="sum"><td class="l"></td><td class="n l">300,000</td><td></td><td class="n">300,000</td></tr>
+            </table>
+            <p class="text-[10px] text-slate-500 mt-1">차변: 6주차 수정분개 / 대변: 마감분개 ②</p>
+          </div>
+          <div class="p-3 bg-white border rounded-xl">
+            <table class="tacc">
+              <caption>용 역 매 출</caption>
+              <tr><td class="l">12/31 집합손익</td><td class="n l">8,000,000</td><td>기중 합계</td><td class="n">8,000,000</td></tr>
+              <tr class="sum"><td class="l"></td><td class="n l">8,000,000</td><td></td><td class="n">8,000,000</td></tr>
+            </table>
+            <p class="text-[10px] text-slate-500 mt-1">대변: 기중 매출 기록 / 차변: 마감분개 ①</p>
+          </div>
+          <div class="p-3 bg-white border rounded-xl">
+            <table class="tacc">
+              <caption>배 당 금</caption>
+              <tr><td class="l">기중 지급</td><td class="n l">500,000</td><td>12/31 이익잉여금</td><td class="n">500,000</td></tr>
+              <tr class="sum"><td class="l"></td><td class="n l">500,000</td><td></td><td class="n">500,000</td></tr>
+            </table>
+            <p class="text-[10px] text-slate-500 mt-1">대변 상대계정이 집합손익이 아님에 주의 (마감분개 ④)</p>
+          </div>
+        </div>
+        <div class="p-2.5 bg-amber-50 border border-amber-200 rounded-lg text-xs text-amber-950">
+          <strong>확인 포인트:</strong> 임시계정에는 '차기이월'이 없습니다. 내년 1월 1일 보험료·매출·배당금 계정은 모두 <strong>0원에서 새로 시작</strong>합니다.
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3">
+        수익 계정은 차변에, 비용 계정은 대변에 "집합손익"이라고 적힙니다.
+      </div>
+    </div>
+
+    <!-- Slide 5: 영구계정의 마감 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-5">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 05 / 10</span>
+        <span>영구계정의 마감</span>
+      </div>
+      <div class="my-auto space-y-3">
+        <h3 class="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
+          <i class="fa-solid fa-right-left text-blue-600"></i> 자산·부채·자본 계정의 마감: 차기이월과 전기이월
+        </h3>
+        <p class="text-xs text-slate-600 leading-relaxed">
+          영구계정은 마감분개를 하지 않습니다. 잔액이 적은 쪽에 <strong class="text-blue-700">"차기이월"</strong>로 잔액을 적어 합계를 맞춘 뒤 마감하고,
+          다음 기 첫날 반대쪽에 <strong class="text-blue-700">"전기이월"</strong>로 다시 적어 장부를 엽니다.
+        </p>
+        <div class="grid sm:grid-cols-2 gap-4">
+          <div class="p-3 bg-white border rounded-xl">
+            <table class="tacc">
+              <caption>선 급 보 험 료 (자산)</caption>
+              <tr><td class="l">10/1 현금</td><td class="n l">1,200,000</td><td>12/31 보험료</td><td class="n">300,000</td></tr>
+              <tr><td class="l"></td><td class="l"></td><td class="text-blue-700">12/31 차기이월</td><td class="n text-blue-700">900,000</td></tr>
+              <tr class="sum"><td class="l"></td><td class="n l">1,200,000</td><td></td><td class="n">1,200,000</td></tr>
+              <tr><td class="l text-blue-700">1/1 전기이월</td><td class="n l text-blue-700">900,000</td><td></td><td></td></tr>
+            </table>
+          </div>
+          <div class="p-3 bg-white border rounded-xl">
+            <table class="tacc">
+              <caption>선 수 임 대 료 (부채)</caption>
+              <tr><td class="l">12/31 임대료수익</td><td class="n l">200,000</td><td>11/1 현금</td><td class="n">600,000</td></tr>
+              <tr><td class="l text-blue-700">12/31 차기이월</td><td class="n l text-blue-700">400,000</td><td></td><td></td></tr>
+              <tr class="sum"><td class="l"></td><td class="n l">600,000</td><td></td><td class="n">600,000</td></tr>
+              <tr><td class="l"></td><td class="l"></td><td class="text-blue-700">1/1 전기이월</td><td class="n text-blue-700">400,000</td></tr>
+            </table>
+          </div>
+        </div>
+        <p class="text-[11px] text-slate-500">
+          * 자산은 차변잔액이므로 <u>대변</u>에 차기이월, 부채·자본은 대변잔액이므로 <u>차변</u>에 차기이월을 적습니다. 차기이월은 분개가 아니라 원장 위에서만 하는 기입입니다.
+        </p>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3">
+        6주차 2차시의 선급보험료(900,000원)와 선수임대료(400,000원)가 그대로 2027년 장부의 출발점이 됩니다.
+      </div>
+    </div>
+
+    <!-- Slide 6: 마감후시산표 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-6">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 06 / 10</span>
+        <span>마감후시산표</span>
+      </div>
+      <div class="my-auto space-y-2.5">
+        <h3 class="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
+          <i class="fa-solid fa-scale-balanced text-indigo-600"></i> 마감후시산표 (Post-closing Trial Balance)
+        </h3>
+        <p class="text-xs text-slate-600">(주)광교서비스 · 2026년 12월 31일 마감 후 · 단위: 원 — <strong>영구계정만</strong> 남습니다.</p>
+        <div class="grid sm:grid-cols-2 gap-3 text-[11px]">
+          <table class="tb w-full"><thead class="bg-slate-100"><tr><th>계정과목</th><th>차변</th><th>대변</th></tr></thead><tbody><tr><td>현금</td><td class="n">7,400,000</td><td class="n"></td></tr><tr><td>매출채권</td><td class="n">3,000,000</td><td class="n"></td></tr><tr><td>정기예금</td><td class="n">20,000,000</td><td class="n"></td></tr><tr><td>미수이자</td><td class="n">200,000</td><td class="n"></td></tr><tr><td>소모품</td><td class="n">200,000</td><td class="n"></td></tr><tr><td>선급보험료</td><td class="n">900,000</td><td class="n"></td></tr><tr><td>차량운반구</td><td class="n">10,000,000</td><td class="n"></td></tr></tbody></table>
+          <table class="tb w-full"><thead class="bg-slate-100"><tr><th>계정과목</th><th>차변</th><th>대변</th></tr></thead><tbody><tr><td>감가상각누계액</td><td class="n"></td><td class="n">2,000,000</td></tr><tr><td>차입금</td><td class="n"></td><td class="n">10,000,000</td></tr><tr><td>미지급이자</td><td class="n"></td><td class="n">250,000</td></tr><tr><td>선수임대료</td><td class="n"></td><td class="n">400,000</td></tr><tr><td>자본금</td><td class="n"></td><td class="n">25,000,000</td></tr><tr class="bg-violet-50 font-bold"><td>이익잉여금</td><td class="n"></td><td class="n">4,050,000</td></tr>
+            <tr class="bg-slate-800 text-white font-bold"><td>합계</td><td class="n">41,700,000</td><td class="n">41,700,000</td></tr></tbody></table>
+        </div>
+        <div class="grid sm:grid-cols-3 gap-2 text-[11px]">
+          <div class="p-2 bg-rose-50 border border-rose-200 rounded-lg"><strong>없어진 것:</strong> 수익 3개, 비용 5개, 배당금, 집합손익</div>
+          <div class="p-2 bg-violet-50 border border-violet-200 rounded-lg"><strong>바뀐 것:</strong> 이익잉여금 2,000,000 → 4,050,000</div>
+          <div class="p-2 bg-blue-50 border border-blue-200 rounded-lg"><strong>의미:</strong> 2027년 1월 1일 장부의 시작 잔액 = 재무상태표</div>
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3">
+        감가상각누계액은 자산 차감계정이므로 마감후시산표에서도 대변에 남습니다.
+      </div>
+    </div>
+
+    <!-- Slide 7: 마감 방법 비교 (참고) -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-7">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 07 / 10</span>
+        <span>마감 방법 비교 (참고)</span>
+      </div>
+      <div class="my-auto space-y-3">
+        <h3 class="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
+          <i class="fa-solid fa-code-compare text-slate-600"></i> [참고] 영미식 마감과 대륙식 마감
+        </h3>
+        <div class="overflow-x-auto">
+          <table class="w-full text-xs text-center border-collapse border border-slate-200">
+            <thead class="bg-slate-100 text-slate-800">
+              <tr><th class="border p-2">구분</th><th class="border p-2">영미식 (이 강의의 방법)</th><th class="border p-2">대륙식</th></tr>
+            </thead>
+            <tbody class="text-[11px]">
+              <tr><td class="border p-2 font-bold">임시계정</td><td class="border p-2" colspan="2">두 방법 모두 마감분개로 집합손익(손익)에 대체 → 잔액 0</td></tr>
+              <tr><td class="border p-2 font-bold">영구계정</td><td class="border p-2">원장에 차기이월·전기이월만 기입<br>(분개 없음)</td><td class="border p-2">'잔액' 계정을 만들어 마감분개로 대체<br>(개시분개로 다시 엶)</td></tr>
+              <tr><td class="border p-2 font-bold">검증 표</td><td class="border p-2 font-semibold text-indigo-700">마감후시산표</td><td class="border p-2 font-semibold text-slate-700">이월시산표</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="p-3 bg-indigo-50 border border-indigo-200 rounded-xl text-xs text-slate-700 leading-relaxed">
+          🎯 두 표에 담긴 숫자(영구계정 기말잔액)는 같습니다. 시험에서는 <strong>마감후시산표 = 이월시산표</strong>로 보아도 되고, 핵심은
+          <strong>"수익·비용·배당금·집합손익은 0, 자산·부채·자본만 남는다"</strong>는 점입니다.
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3">
+        실무에서는 회계 프로그램이 연도 마감 기능으로 이 과정을 자동 처리하지만, 원리를 알아야 결과를 검증할 수 있습니다.
+      </div>
+    </div>
+
+    <!-- Slide 8: [사례] 마감분개 오류 찾기 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-8">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 08 / 10</span>
+        <span>[사례] 마감분개 오류 찾기</span>
+      </div>
+      <div class="my-auto space-y-2.5">
+        <h3 class="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
+          <i class="fa-solid fa-magnifying-glass text-rose-600"></i> [사례] 신입사원의 마감분개, 무엇이 틀렸을까?
+        </h3>
+        <p class="text-[11px] text-slate-600">(주)영통상사의 수정후 잔액: 용역매출 95,000 · 이자수익 1,000 · 선수수익 4,000 · 급여 60,000 · 임차료 9,000 · 감가상각비 3,000 · 배당금 10,000 (단위: 천원)</p>
+        <div class="grid sm:grid-cols-2 gap-3 text-[11px]">
+          <div class="p-2.5 bg-rose-50 border border-rose-200 rounded-xl space-y-1 font-mono">
+            <div class="font-sans font-bold text-rose-900">✗ 신입사원이 한 분개</div>
+            <div>[1] (차) 용역매출 95,000 · 이자수익 1,000 · <u>선수수익 4,000</u> / (대) 집합손익 100,000</div>
+            <div>[2] (차) 집합손익 82,000 / (대) 급여 60,000 · <u>배당금 10,000</u> · 임차료 9,000 · 감가상각비 3,000</div>
+            <div>[3] (차) 집합손익 18,000 / (대) <u>자본금</u> 18,000</div>
+          </div>
+          <div class="p-2.5 bg-emerald-50 border border-emerald-200 rounded-xl space-y-1 font-mono">
+            <div class="font-sans font-bold text-emerald-900">✓ 바른 분개</div>
+            <div>[1] (차) 용역매출 95,000 · 이자수익 1,000 / (대) 집합손익 96,000</div>
+            <div>[2] (차) 집합손익 72,000 / (대) 급여 60,000 · 임차료 9,000 · 감가상각비 3,000</div>
+            <div>[3] (차) 집합손익 24,000 / (대) 이익잉여금 24,000</div>
+            <div>[4] (차) 이익잉여금 10,000 / (대) 배당금 10,000</div>
+          </div>
+        </div>
+        <div class="grid sm:grid-cols-3 gap-2 text-[11px]">
+          <div class="p-2 bg-white border rounded-lg"><strong class="text-rose-700">오류 1</strong> 선수수익은 부채(영구계정) → 마감 대상 아님</div>
+          <div class="p-2 bg-white border rounded-lg"><strong class="text-rose-700">오류 2</strong> 배당금은 비용 아님 → 이익잉여금에서 직접 차감</div>
+          <div class="p-2 bg-white border rounded-lg"><strong class="text-rose-700">오류 3</strong> 순이익은 이익잉여금으로, 금액 18,000 → 24,000</div>
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3">
+        교재 Ch.04 연습문제 12번(마감분개)과 같은 유형입니다. 교재 문제도 같은 순서로 점검해 보세요.
+      </div>
+    </div>
+
+    <!-- Slide 9: 2차시 핵심 요약 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-9">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 09 / 10</span>
+        <span>핵심 요약 (Takeaways)</span>
+      </div>
+      <div class="my-auto space-y-3.5">
+        <h3 class="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
+          <i class="fa-solid fa-bookmark text-blue-600"></i> 2차시 핵심 정리
+        </h3>
+        <div class="space-y-2 text-xs sm:text-sm">
+          <div class="p-3 bg-slate-50 border rounded-xl flex items-start gap-2.5">
+            <span class="bg-indigo-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs shrink-0 mt-0.5 font-bold">1</span>
+            <div>
+              <strong>임시계정의 마감:</strong> 마감분개를 전기하면 수익·비용·배당금·집합손익의 차변·대변 합계가 같아져 잔액이 0이 됨. 차기이월 없음.
+            </div>
+          </div>
+          <div class="p-3 bg-slate-50 border rounded-xl flex items-start gap-2.5">
+            <span class="bg-indigo-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs shrink-0 mt-0.5 font-bold">2</span>
+            <div>
+              <strong>영구계정의 마감:</strong> 분개 없이 원장에서 잔액을 "차기이월"로 마감하고, 다음 기 첫날 "전기이월"로 다시 기입함.
+            </div>
+          </div>
+          <div class="p-3 bg-slate-50 border rounded-xl flex items-start gap-2.5">
+            <span class="bg-indigo-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs shrink-0 mt-0.5 font-bold">3</span>
+            <div>
+              <strong>마감후시산표:</strong> 영구계정만으로 작성하며, 대차 합계 일치로 마감이 정확했는지 검증함. 이익잉여금은 기말잔액으로 표시.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3">
+        다음 3차시: 정산표(10위식)와 재무제표 작성, 회계순환과정 전체 정리
+      </div>
+    </div>
+
+    <!-- Slide 10: 인터랙티브 퀴즈 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-10">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded border border-emerald-200">SLIDE 10 / 10 · 퀴즈</span>
+        <span>2차시 점검</span>
+      </div>
+      <div class="my-auto">
+        <h3 class="text-base sm:text-lg font-bold text-slate-900 mb-2 flex items-center gap-2">
+          <i class="fa-solid fa-circle-question text-emerald-600"></i> [자가진단 퀴즈]
+        </h3>
+        <div class="bg-slate-50 p-4 rounded-xl border mb-3">
+          <p class="text-xs sm:text-sm font-bold text-slate-800 mb-2">
+            Q. 다음 중 마감후시산표에 나타날 수 <u>없는</u> 계정은?
+          </p>
+          <div class="space-y-1.5">
+            <button onclick="checkQuiz(1, 'A', this)" class="q-btn-1 w-full text-left p-2.5 bg-white border rounded text-xs hover:bg-slate-100 transition">
+              A) 감가상각누계액
+            </button>
+            <button onclick="checkQuiz(1, 'B', this)" class="q-btn-1 w-full text-left p-2.5 bg-white border rounded text-xs hover:bg-slate-100 transition">
+              B) 선수임대료
+            </button>
+            <button onclick="checkQuiz(1, 'C', this)" class="q-btn-1 w-full text-left p-2.5 bg-white border rounded text-xs hover:bg-slate-100 transition">
+              C) 이자비용
+            </button>
+          </div>
+          <div id="q-feedback-1" class="hidden mt-2 p-2 rounded text-xs"></div>
+        </div>
+        <div class="p-3 bg-amber-50 border border-amber-200 rounded-xl text-center text-xs text-amber-950">
+          🎉 2차시 수고하셨습니다! 잠시 휴식 후 <strong>[3차시: 정산표와 재무제표 작성]</strong>으로 이어집니다.
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3 flex justify-between">
+        <span>8주차 2차시 완료</span><a href="202602_08_03.html" class="text-blue-600 font-bold hover:underline flex items-center gap-1"><span>3차시 이동</span> <i class="fa-solid fa-arrow-right"></i></a>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- 하단 푸터 -->
+  <footer class="text-center py-3 text-slate-400 text-xs border-t bg-white no-print">
+    수원대학교 경영공학대학 회계원리 © 2026
+  </footer>
+
+  <script>
+    let currentPage = 1;
+    const totalPages = 10;
+
+    function goToPage(page) {
+      if (page < 1 || page > totalPages) return;
+      document.querySelectorAll('.slide-page').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.page-btn').forEach(d => d.classList.remove('active'));
+
+      const target = document.getElementById(`page-${page}`);
+      if (target) target.classList.add('active');
+
+      const btns = document.querySelectorAll('.page-btn');
+      if (btns[page - 1]) btns[page - 1].classList.add('active');
+
+      currentPage = page;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function nextPage() { if (currentPage < totalPages) goToPage(currentPage + 1); }
+    function prevPage() { if (currentPage > 1) goToPage(currentPage - 1); }
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === 'PageDown') nextPage();
+      if (e.key === 'ArrowLeft' || e.key === 'PageUp') prevPage();
+    });
+
+    const quizAnswers = {"1": {"ans": "C", "exp": "이자비용은 비용(임시계정)이므로 마감분개로 잔액이 0이 되어 마감후시산표에 나오지 않습니다. 감가상각누계액(자산 차감계정)과 선수임대료(부채)는 영구계정이라 그대로 남습니다."}};
+
+    function checkQuiz(qNum, choice, btn) {
+      const btns = document.querySelectorAll(`.q-btn-${qNum}`);
+      const fb = document.getElementById(`q-feedback-${qNum}`);
+      btns.forEach(b => { b.className = `q-btn-${qNum} w-full text-left p-2.5 bg-white border rounded text-xs transition`; });
+      fb.classList.remove('hidden');
+
+      if (choice === quizAnswers[qNum].ans) {
+        btn.classList.add('bg-emerald-100', 'border-emerald-500', 'text-emerald-900', 'font-bold');
+        fb.className = "text-xs mt-2 p-2 rounded bg-emerald-50 text-emerald-900 border border-emerald-200 block";
+        fb.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-600 mr-1"></i> <strong>정답입니다!</strong> ${quizAnswers[qNum].exp}`;
+      } else {
+        btn.classList.add('bg-rose-100', 'border-rose-500', 'text-rose-900');
+        fb.className = "text-xs mt-2 p-2 rounded bg-rose-50 text-rose-900 border border-rose-200 block";
+        fb.innerHTML = `<i class="fa-solid fa-circle-xmark text-rose-600 mr-1"></i> <strong>오답입니다!</strong> ${quizAnswers[qNum].exp}`;
+      }
+    }
+  </script>
+</body>
+</html>
