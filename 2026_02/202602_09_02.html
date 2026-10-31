@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>[9주차 2차시] 매입·매출 거래의 기록 | 수원대학교 회계원리</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Noto Sans KR', sans-serif; }
+    .slide-page { display: none; }
+    .slide-page.active { display: flex; animation: fadeIn 0.25s ease-in-out; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+    .page-btn.active { background-color: #2563eb !important; color: white !important; font-weight: bold; border-color: #1d4ed8 !important; }
+    /* 장부·표 공통 */
+    .tb td, .tb th { border: 1px solid #e2e8f0; padding: 4px 6px; }
+    .tb td.n { text-align: right; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+    .ws td, .ws th { padding: 3px 3px; letter-spacing: -0.03em; }
+    .ws td.n { font-size: 9.5px; }
+    @media print { .ws { font-size: 8px !important; } }
+    .tacc { border-collapse: collapse; width: 100%; font-size: 11px; }
+    .tacc caption { font-weight: 700; padding-bottom: 2px; border-bottom: 2px solid #334155; }
+    .tacc td { padding: 2px 6px; vertical-align: top; }
+    .tacc td.l { border-right: 2px solid #334155; }
+    .tacc td.n { text-align: right; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+    .tacc tr.sum td { border-top: 1px solid #94a3b8; font-weight: 700; }
+    .je { border-collapse: collapse; width: 100%; font-size: 11px; }
+    .je td { padding: 2px 6px; }
+    .je td.n { text-align: right; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; white-space: nowrap; }
+    .je td.cr { padding-left: 22px; }
+    .je tr.sep td { border-top: 1px dashed #cbd5e1; }
+
+    @media print {
+      @page { size: A4 landscape; margin: 10mm 12mm; }
+      body { background-color: #ffffff !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; padding: 0 !important; }
+      header, .no-print, #top-nav-controller { display: none !important; }
+      main { max-width: 100% !important; padding: 0 !important; margin: 0 !important; }
+      .slide-page { display: block !important; opacity: 1 !important; page-break-after: always !important; break-after: page !important; min-height: 180mm !important; margin-bottom: 0 !important; border: 1px solid #cbd5e1 !important; border-radius: 12px !important; padding: 24px 28px !important; }
+    }
+  </style>
+</head>
+<body class="bg-slate-100 text-slate-800 antialiased min-h-screen flex flex-col justify-between">
+
+  <!-- 1. 고정 상단 헤더 & 슬라이드 네비게이션 바 -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm no-print">
+    <div class="max-w-5xl mx-auto px-4 flex justify-between items-center h-12">
+      <div class="flex items-center gap-2">
+        <a href="../index.html" class="bg-blue-900 text-white text-[11px] px-2 py-0.5 rounded-full font-bold hover:bg-blue-800">수원대 회계원리</a>
+        <h1 class="font-bold text-slate-800 text-xs sm:text-sm">9주차 2차시: 매입·매출 거래의 기록</h1>
+      </div>
+      <div class="flex items-center gap-2">
+        <button onclick="window.print()" class="text-[11px] bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold px-2.5 py-1 rounded border border-slate-300 transition flex items-center gap-1">
+          <i class="fa-solid fa-print"></i> PDF/인쇄
+        </button>
+      </div>
+    </div>
+
+    <!-- 상단 1~10 퀵 이동 버튼 바 -->
+    <div id="top-nav-controller" class="border-t border-slate-100 bg-slate-50/95 py-2 px-4 shadow-inner">
+      <div class="max-w-5xl mx-auto flex items-center justify-between gap-2">
+        <button onclick="prevPage()" class="px-3 py-1.5 bg-white hover:bg-slate-100 text-slate-700 text-xs font-bold rounded-lg border border-slate-300 transition flex items-center gap-1 shrink-0">
+          <i class="fa-solid fa-chevron-left text-[10px]"></i> <span class="hidden sm:inline">이전</span>
+        </button>
+
+        <div class="flex items-center gap-1.5 overflow-x-auto py-0.5 px-1 max-w-full">
+          <button onclick="goToPage(1)" class="page-btn active w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">1</button>
+          <button onclick="goToPage(2)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">2</button>
+          <button onclick="goToPage(3)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">3</button>
+          <button onclick="goToPage(4)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">4</button>
+          <button onclick="goToPage(5)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">5</button>
+          <button onclick="goToPage(6)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">6</button>
+          <button onclick="goToPage(7)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">7</button>
+          <button onclick="goToPage(8)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">8</button>
+          <button onclick="goToPage(9)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">9</button>
+          <button onclick="goToPage(10)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">10</button>
+        </div>
+
+        <button onclick="nextPage()" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-lg transition flex items-center gap-1 shrink-0">
+          <span class="hidden sm:inline">다음</span> <i class="fa-solid fa-chevron-right text-[10px]"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- 2. 슬라이드 본문 컨테이너 -->
+  <main class="flex-1 max-w-4xl w-full mx-auto px-4 py-4 flex flex-col justify-center">
+
+    <!-- Slide 1: 표지 -->
+    <div class="slide-page active bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-1">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 01 / 10</span>
+        <span>수원대학교 경영공학대학</span>
+      </div>
+      <div class="text-center my-auto py-6">
+        <div class="inline-block p-4 bg-sky-50 text-sky-700 rounded-2xl mb-3 shadow-inner">
+          <i class="fa-solid fa-truck-ramp-box text-4xl"></i>
+        </div>
+        <span class="text-xs font-bold text-sky-700 tracking-wider block mb-1">CH.05 상품매매회사의 회계순환과정 (1)</span>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mb-3">2차시: 매입·매출 거래의 기록 (계속기록법)</h2>
+        <p class="text-slate-600 text-xs sm:text-sm max-w-lg mx-auto leading-relaxed">
+          (주)광교유통이 (주)영통마트에 무선이어폰을 외상으로 팝니다.<br>같은 거래를 <strong>판매자</strong>와 <strong>구매자</strong>가 각각 어떻게 기록하는지, 상품과 비품은 어떻게 구분하는지, 운임은 누가 어떻게 처리하는지 익힙니다.
+        </p>
+      </div>
+      <div class="text-center text-xs text-slate-400 border-t pt-3">
+        상단 퀵 버튼(1~10) 또는 키보드 방향키(←, →)로 이동할 수 있습니다.
+      </div>
+    </div>
+
+    <!-- Slide 2: 학습 목표 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-2">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 02 / 10</span>
+        <span>학습 목표 (50분 설계)</span>
+      </div>
+      <div class="my-auto">
+        <h3 class="text-lg sm:text-xl font-bold text-slate-900 mb-5 flex items-center gap-2">
+          <i class="fa-solid fa-bullseye text-blue-600"></i> 이번 2차시 핵심 학습 목표
+        </h3>
+        <div class="grid sm:grid-cols-3 gap-3.5">
+          <div class="p-4 bg-slate-50 border rounded-xl hover:border-blue-400 transition">
+            <span class="w-6 h-6 rounded bg-sky-600 text-white font-bold flex items-center justify-center text-xs mb-2">1</span>
+            <h4 class="font-bold text-slate-800 text-xs sm:text-sm mb-1">매출 거래 = 분개 2개</h4>
+            <p class="text-xs text-slate-600 leading-relaxed">계속기록법에서 상품을 팔면 매출(수익)과 매출원가(비용)를 함께 기록한다.</p>
+          </div>
+          <div class="p-4 bg-slate-50 border rounded-xl hover:border-blue-400 transition">
+            <span class="w-6 h-6 rounded bg-sky-600 text-white font-bold flex items-center justify-center text-xs mb-2">2</span>
+            <h4 class="font-bold text-slate-800 text-xs sm:text-sm mb-1">판매자와 구매자, 상품과 비품</h4>
+            <p class="text-xs text-slate-600 leading-relaxed">같은 거래를 양쪽 입장에서 분개하고, 매출채권·매입채무와 미수금·미지급금을 구분한다.</p>
+          </div>
+          <div class="p-4 bg-slate-50 border rounded-xl hover:border-blue-400 transition">
+            <span class="w-6 h-6 rounded bg-sky-600 text-white font-bold flex items-center justify-center text-xs mb-2">3</span>
+            <h4 class="font-bold text-slate-800 text-xs sm:text-sm mb-1">운임의 처리</h4>
+            <p class="text-xs text-slate-600 leading-relaxed">FOB와 CIF·DAP 조건에 따라 운임이 재고자산 원가인지 판매비인지 판단한다.</p>
+          </div>
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3 flex justify-between">
+        <span>매입·매출 거래의 기록</span><span>교재 Ch.05</span>
+      </div>
+    </div>
+
+    <!-- Slide 3: 매출 = 분개 2개 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-3">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 03 / 10</span>
+        <span>매출 = 분개 2개</span>
+      </div>
+      <div class="my-auto space-y-3">
+        <h3 class="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
+          <i class="fa-solid fa-clone text-sky-600"></i> 상품을 팔면 두 가지 일이 동시에 일어난다
+        </h3>
+        <div class="p-3 bg-sky-50 border-l-4 border-sky-600 rounded-r-xl text-xs leading-relaxed">
+          <strong>11월 3일</strong> (주)광교유통은 (주)영통마트에 무선이어폰 <strong>50개</strong>를 개당 <strong>64,000원</strong>에 외상으로 판매했다.
+          개당 원가는 <strong>40,000원</strong>이다. (대금 조건 2/10, n/30 · 운임 조건 FOB)
+        </div>
+        <div class="grid sm:grid-cols-2 gap-3">
+          <div class="p-3 bg-white border rounded-xl space-y-1.5">
+            <div class="text-xs font-bold text-slate-800"><span class="text-sky-700">①</span> 판매가격으로 수익을 인식 — "얼마에 팔았나"</div>
+            <table class="je"><tr><td>(차) 매출채권</td><td class="n">3,200,000</td><td class="cr">(대) 매출</td><td class="n">3,200,000</td></tr></table>
+            <p class="text-[10px] text-slate-500">50개 × 64,000원 = 3,200,000원</p>
+          </div>
+          <div class="p-3 bg-white border border-sky-300 rounded-xl space-y-1.5">
+            <div class="text-xs font-bold text-slate-800"><span class="text-sky-700">②</span> 원가로 비용을 인식 — "무엇을 내보냈나"</div>
+            <table class="je"><tr><td>(차) 매출원가</td><td class="n">2,000,000</td><td class="cr">(대) 재고자산</td><td class="n">2,000,000</td></tr></table>
+            <p class="text-[10px] text-slate-500">50개 × 40,000원 = 2,000,000원</p>
+          </div>
+        </div>
+        <div class="grid grid-cols-3 gap-2 text-center text-[11px]">
+          <div class="p-2 bg-slate-50 border rounded-lg">매출 <strong class="font-mono">3,200,000</strong></div>
+          <div class="p-2 bg-slate-50 border rounded-lg">매출원가 <strong class="font-mono">2,000,000</strong></div>
+          <div class="p-2 bg-sky-50 border border-sky-300 rounded-lg font-bold text-sky-900">매출총이익 <span class="font-mono">1,200,000</span></div>
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3">
+        ②번 분개를 빠뜨리면 재고자산은 과대, 매출원가는 과소, 이익은 과대가 됩니다. 계속기록법 문제에서 가장 흔한 실수입니다.
+      </div>
+    </div>
+
+    <!-- Slide 4: 판매자와 구매자의 분개 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-4">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 04 / 10</span>
+        <span>판매자와 구매자의 분개</span>
+      </div>
+      <div class="my-auto space-y-3">
+        <h3 class="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
+          <i class="fa-solid fa-handshake text-sky-600"></i> 같은 거래, 두 장부 — 11월 3일
+        </h3>
+        <div class="grid sm:grid-cols-2 gap-3">
+          <div class="p-3 bg-sky-50/60 border border-sky-300 rounded-xl space-y-1.5">
+            <div class="text-xs font-bold text-sky-900"><i class="fa-solid fa-warehouse mr-1"></i>(주)광교유통 — 판매회사</div>
+            <table class="je"><tr><td>(차) 매출채권</td><td class="n">3,200,000</td><td class="cr">(대) 매출</td><td class="n">3,200,000</td></tr><tr class="sep"><td>(차) 매출원가</td><td class="n">2,000,000</td><td class="cr">(대) 재고자산</td><td class="n">2,000,000</td></tr></table>
+          </div>
+          <div class="p-3 bg-emerald-50/60 border border-emerald-300 rounded-xl space-y-1.5">
+            <div class="text-xs font-bold text-emerald-900"><i class="fa-solid fa-cart-shopping mr-1"></i>(주)영통마트 — 구매회사</div>
+            <table class="je"><tr><td>(차) 재고자산</td><td class="n">3,200,000</td><td class="cr">(대) 매입채무</td><td class="n">3,200,000</td></tr></table>
+            <p class="text-[10px] text-slate-500 pt-1">구매자는 분개 1개. 재고 원가는 <strong>자기가 치른 값</strong> 3,200,000원입니다.</p>
+          </div>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-[11px] text-center border-collapse border border-slate-200">
+            <thead class="bg-slate-100"><tr><th class="border p-1.5">질문</th><th class="border p-1.5">광교유통 (판매자)</th><th class="border p-1.5">영통마트 (구매자)</th></tr></thead>
+            <tbody>
+              <tr><td class="border p-1.5 font-bold">받을 돈 / 줄 돈</td><td class="border p-1.5">매출채권 (자산)</td><td class="border p-1.5">매입채무 (부채)</td></tr>
+              <tr><td class="border p-1.5 font-bold">이 이어폰의 원가</td><td class="border p-1.5">40,000원 (제조사에서 산 값)</td><td class="border p-1.5">64,000원 (광교유통에서 산 값)</td></tr>
+              <tr><td class="border p-1.5 font-bold">손익 영향</td><td class="border p-1.5">매출총이익 1,200,000원</td><td class="border p-1.5">없음 (팔 때 생김)</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3">
+        판매자의 원가 40,000원은 구매자와 상관없습니다. 구매자에게는 자신이 지급한 64,000원이 다시 팔 때의 원가가 됩니다.
+      </div>
+    </div>
+
+    <!-- Slide 5: 상품이냐 비품이냐 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-5">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 05 / 10</span>
+        <span>상품이냐 비품이냐</span>
+      </div>
+      <div class="my-auto space-y-3">
+        <h3 class="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
+          <i class="fa-solid fa-sitemap text-sky-600"></i> 무엇을 사고팔았는지에 따라 계정이 달라진다
+        </h3>
+        <div class="overflow-x-auto">
+          <table class="w-full text-[11px] text-center border-collapse border border-slate-200">
+            <thead class="bg-slate-100">
+              <tr><th class="border p-2" rowspan="2">대상</th><th class="border p-2" colspan="2">팔 때 (받을 돈)</th><th class="border p-2" colspan="2">살 때 (줄 돈)</th></tr>
+              <tr><th class="border p-1.5">현금</th><th class="border p-1.5">외상</th><th class="border p-1.5">현금</th><th class="border p-1.5">외상</th></tr>
+            </thead>
+            <tbody>
+              <tr class="bg-sky-50"><td class="border p-2 font-bold">상품 (주된 영업활동)</td><td class="border p-2">현금 / 매출</td><td class="border p-2 font-bold text-sky-800">매출채권</td><td class="border p-2">재고자산 / 현금</td><td class="border p-2 font-bold text-sky-800">매입채무</td></tr>
+              <tr><td class="border p-2 font-bold">비품·차량 등 (영업 외)</td><td class="border p-2">현금 / 비품, 처분손익</td><td class="border p-2 font-bold text-rose-700">미수금</td><td class="border p-2">비품 / 현금</td><td class="border p-2 font-bold text-rose-700">미지급금</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="grid sm:grid-cols-2 gap-3 text-xs">
+          <div class="p-3 bg-sky-50 border border-sky-200 rounded-xl leading-relaxed">
+            <strong>매출(sales)</strong>은 판매하려고 사 온 상품이 팔렸을 때만 씁니다. 쓰던 비품을 팔아도 매출이 아닙니다. 처분금액과 장부금액의 차이만 <strong>처분이익(손실)</strong>으로 기록합니다.
+          </div>
+          <div class="p-3 bg-slate-50 border rounded-xl leading-relaxed">
+            <strong>매출채권·매입채무</strong>는 상품 거래에서만 생깁니다. 상품이 아닌 자산을 외상으로 팔거나 사면 <strong>미수금·미지급금</strong>을 씁니다. (재무상태표에서 "매출채권 및 기타채권"으로 묶어 보여 주기도 합니다.)
+          </div>
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3">
+        판단 기준은 "그 회사의 주된 영업활동인가"입니다. 같은 물건이라도 회사마다 상품일 수도, 비품일 수도 있습니다.
+      </div>
+    </div>
+
+    <!-- Slide 6: [사례] 진열대를 팔다 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-6">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 06 / 10</span>
+        <span>[사례] 진열대를 팔다</span>
+      </div>
+      <div class="my-auto space-y-3">
+        <h3 class="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
+          <i class="fa-solid fa-couch text-sky-600"></i> [사례] 광교유통이 쓰던 진열대를 영통마트에 팔다
+        </h3>
+        <div class="p-3 bg-sky-50 border-l-4 border-sky-600 rounded-r-xl text-xs leading-relaxed">
+          <strong>11월 20일</strong> (주)광교유통은 쓰던 진열대(취득원가 1,500,000원, 감가상각누계액 700,000원)를 (주)영통마트에 <strong>1,000,000원에 외상으로</strong> 팔았다. 영통마트는 이 진열대를 매장에서 쓸 예정이다.
+        </div>
+        <div class="grid sm:grid-cols-2 gap-3">
+          <div class="p-3 bg-white border rounded-xl space-y-1.5">
+            <div class="text-xs font-bold text-sky-900">(주)광교유통 — 비품 처분</div>
+            <table class="je"><tr><td>(차) 미수금</td><td class="n">1,000,000</td><td class="cr">(대) 비품</td><td class="n">1,500,000</td></tr><tr><td>(차) 감가상각누계액</td><td class="n">700,000</td><td class="cr">(대) 유형자산처분이익</td><td class="n">200,000</td></tr></table>
+            <p class="text-[10px] text-slate-500">장부금액 800,000 (1,500,000 − 700,000) · 처분이익 = 1,000,000 − 800,000 = 200,000 → <strong>기타수익</strong></p>
+          </div>
+          <div class="p-3 bg-white border rounded-xl space-y-1.5">
+            <div class="text-xs font-bold text-emerald-900">(주)영통마트 — 비품 취득</div>
+            <table class="je"><tr><td>(차) 비품</td><td class="n">1,000,000</td><td class="cr">(대) 미지급금</td><td class="n">1,000,000</td></tr></table>
+            <p class="text-[10px] text-slate-500">되팔 물건이 아니므로 재고자산이 아님 → 앞으로 감가상각</p>
+          </div>
+        </div>
+        <div class="grid sm:grid-cols-3 gap-2 text-[11px]">
+          <div class="p-2 bg-rose-50 border border-rose-200 rounded-lg">✗ (대) 매출 1,000,000</div>
+          <div class="p-2 bg-rose-50 border border-rose-200 rounded-lg">✗ (차) 매출채권 1,000,000</div>
+          <div class="p-2 bg-rose-50 border border-rose-200 rounded-lg">✗ (대) 매입채무 1,000,000</div>
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3">
+        감가상각누계액 제거는 6주차(감가상각)와 연결됩니다. 처분할 때는 취득원가와 누계액을 모두 장부에서 지웁니다.
+      </div>
+    </div>
+
+    <!-- Slide 7: 운임은 누가, 어떻게? -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-7">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 07 / 10</span>
+        <span>운임은 누가, 어떻게?</span>
+      </div>
+      <div class="my-auto space-y-3">
+        <h3 class="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
+          <i class="fa-solid fa-truck-fast text-sky-600"></i> 운임 부담 조건: FOB vs CIF·DAP
+        </h3>
+        <div class="overflow-x-auto">
+          <table class="w-full text-[11px] text-center border-collapse border border-slate-200">
+            <thead class="bg-slate-100"><tr><th class="border p-1.5">조건</th><th class="border p-1.5">운임 부담자</th><th class="border p-1.5">회계처리</th></tr></thead>
+            <tbody>
+              <tr><td class="border p-1.5 font-bold">FOB (Free On Board)</td><td class="border p-1.5">구매자</td><td class="border p-1.5"><strong class="text-emerald-700">구매자의 재고자산 원가에 가산</strong> (매입운임)</td></tr>
+              <tr><td class="border p-1.5 font-bold">CIF · DAP</td><td class="border p-1.5">판매자</td><td class="border p-1.5"><strong class="text-sky-700">판매자의 운송비</strong> (판매비와관리비, 매출운임)</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="grid sm:grid-cols-2 gap-3">
+          <div class="p-3 bg-emerald-50/60 border border-emerald-300 rounded-xl space-y-1.5">
+            <div class="text-xs font-bold text-emerald-900">FOB: 영통마트가 운임 60,000원 현금 지급</div>
+            <table class="je"><tr><td>(차) 재고자산</td><td class="n">60,000</td><td class="cr">(대) 현금</td><td class="n">60,000</td></tr></table>
+            <p class="text-[10px] text-slate-500">상품을 팔 수 있는 상태로 가져오는 데 든 돈 → 취득원가</p>
+          </div>
+          <div class="p-3 bg-sky-50/60 border border-sky-300 rounded-xl space-y-1.5">
+            <div class="text-xs font-bold text-sky-900">(가정) DAP였다면: 광교유통이 60,000원 지급</div>
+            <table class="je"><tr><td>(차) 운송비</td><td class="n">60,000</td><td class="cr">(대) 현금</td><td class="n">60,000</td></tr></table>
+            <p class="text-[10px] text-slate-500">팔기 위해 쓴 돈 → 판매비와관리비 (재고·매출원가와 무관)</p>
+          </div>
+        </div>
+        <p class="text-[11px] text-slate-500">* 교재처럼 FOB는 구매자 부담, CIF·DAP는 판매자 부담으로 단순화합니다. 실제 무역조건(인코텀즈)은 운임·보험·위험 이전 시점을 더 세분합니다.</p>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3">
+        이번 11월 3일 거래는 FOB 조건이므로 운임 60,000원은 영통마트가 부담합니다. 3차시 순매입액 계산에 다시 나옵니다.
+      </div>
+    </div>
+
+    <!-- Slide 8: 시험 빈출 실수 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-8">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 08 / 10</span>
+        <span>시험 빈출 실수</span>
+      </div>
+      <div class="my-auto space-y-3">
+        <h3 class="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
+          <i class="fa-solid fa-triangle-exclamation text-rose-600"></i> 이렇게 쓰면 틀립니다
+        </h3>
+        <div class="grid sm:grid-cols-2 gap-2.5 text-[11px]">
+          <div class="p-2.5 bg-white border rounded-lg"><strong class="text-rose-700">실수 1</strong> 판매 시 매출원가 분개 누락 → 재고 과대·이익 과대 <span class="text-slate-500">(계속기록법)</span></div>
+          <div class="p-2.5 bg-white border rounded-lg"><strong class="text-rose-700">실수 2</strong> 매출원가를 판매가로 기록 (차) 매출원가 3,200,000 ✗ → <strong>원가 2,000,000</strong></div>
+          <div class="p-2.5 bg-white border rounded-lg"><strong class="text-rose-700">실수 3</strong> 구매자가 FOB 운임을 운송비(비용)로 처리 ✗ → <strong>재고자산</strong></div>
+          <div class="p-2.5 bg-white border rounded-lg"><strong class="text-rose-700">실수 4</strong> 판매자가 DAP 운임을 재고자산이나 매출원가에 포함 ✗ → <strong>운송비</strong></div>
+          <div class="p-2.5 bg-white border rounded-lg"><strong class="text-rose-700">실수 5</strong> 비품 외상 구입을 매입채무로 ✗ → <strong>미지급금</strong></div>
+          <div class="p-2.5 bg-white border rounded-lg"><strong class="text-rose-700">실수 6</strong> 계속기록법 문제에서 '매입' 계정 사용 ✗ → <strong>재고자산</strong> ('매입'은 실지재고조사법)</div>
+        </div>
+        <div class="p-3 bg-sky-50 border border-sky-200 rounded-xl text-xs text-slate-700 leading-relaxed">
+          🎯 <strong>3단계 점검법:</strong> ① 상품인가(매출채권·매입채무), 아닌가(미수금·미지급금)? ② 판매자라면 매출원가 분개를 했나? ③ 운임은 누구 몫이고, 원가인가 비용인가?
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3">
+        교재 Ch.05 연습문제의 매입·매출 분개 문제를 풀 때 이 3단계를 그대로 적용해 보세요.
+      </div>
+    </div>
+
+    <!-- Slide 9: 2차시 핵심 요약 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-9">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 09 / 10</span>
+        <span>핵심 요약 (Takeaways)</span>
+      </div>
+      <div class="my-auto space-y-3.5">
+        <h3 class="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
+          <i class="fa-solid fa-bookmark text-blue-600"></i> 2차시 핵심 정리
+        </h3>
+        <div class="space-y-2 text-xs sm:text-sm">
+          <div class="p-3 bg-slate-50 border rounded-xl flex items-start gap-2.5">
+            <span class="bg-sky-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs shrink-0 mt-0.5 font-bold">1</span>
+            <div>
+              <strong>매출 = 분개 2개:</strong> 계속기록법에서 상품을 팔면 (차) 매출채권 / (대) 매출(판매가)과 (차) 매출원가 / (대) 재고자산(원가)을 함께 기록함.
+            </div>
+          </div>
+          <div class="p-3 bg-slate-50 border rounded-xl flex items-start gap-2.5">
+            <span class="bg-sky-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs shrink-0 mt-0.5 font-bold">2</span>
+            <div>
+              <strong>계정 선택:</strong> 상품 거래는 매출채권·매입채무, 비품 등 영업 외 자산 거래는 미수금·미지급금. 비품 처분은 매출이 아니라 처분손익.
+            </div>
+          </div>
+          <div class="p-3 bg-slate-50 border rounded-xl flex items-start gap-2.5">
+            <span class="bg-sky-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs shrink-0 mt-0.5 font-bold">3</span>
+            <div>
+              <strong>운임:</strong> FOB는 구매자 부담 → 구매자 재고자산 원가에 가산. CIF·DAP는 판매자 부담 → 판매자 운송비(판매비와관리비).
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3">
+        다음 3차시: 반품·에누리·할인과 순매출액·순매입액 계산
+      </div>
+    </div>
+
+    <!-- Slide 10: 인터랙티브 퀴즈 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-10">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded border border-emerald-200">SLIDE 10 / 10 · 퀴즈</span>
+        <span>2차시 점검</span>
+      </div>
+      <div class="my-auto">
+        <h3 class="text-base sm:text-lg font-bold text-slate-900 mb-2 flex items-center gap-2">
+          <i class="fa-solid fa-circle-question text-emerald-600"></i> [자가진단 퀴즈]
+        </h3>
+        <div class="bg-slate-50 p-4 rounded-xl border mb-3">
+          <p class="text-xs sm:text-sm font-bold text-slate-800 mb-2">
+            Q. FOB 조건으로 상품을 사면서 구매자가 지급한 운임 60,000원의 처리로 옳은 것은?
+          </p>
+          <div class="space-y-1.5">
+            <button onclick="checkQuiz(1, 'A', this)" class="q-btn-1 w-full text-left p-2.5 bg-white border rounded text-xs hover:bg-slate-100 transition">
+              A) 구매자의 운송비(판매비와관리비)로 처리한다.
+            </button>
+            <button onclick="checkQuiz(1, 'B', this)" class="q-btn-1 w-full text-left p-2.5 bg-white border rounded text-xs hover:bg-slate-100 transition">
+              B) 구매자의 재고자산 취득원가에 가산한다.
+            </button>
+            <button onclick="checkQuiz(1, 'C', this)" class="q-btn-1 w-full text-left p-2.5 bg-white border rounded text-xs hover:bg-slate-100 transition">
+              C) 판매자의 매출에서 차감한다.
+            </button>
+          </div>
+          <div id="q-feedback-1" class="hidden mt-2 p-2 rounded text-xs"></div>
+        </div>
+        <div class="p-3 bg-amber-50 border border-amber-200 rounded-xl text-center text-xs text-amber-950">
+          🎉 2차시 수고하셨습니다! 잠시 휴식 후 <strong>[3차시: 환입·에누리·할인과 순매출액]</strong>으로 이어집니다.
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3 flex justify-between">
+        <span>9주차 2차시 완료</span><a href="202602_09_03.html" class="text-blue-600 font-bold hover:underline flex items-center gap-1"><span>3차시 이동</span> <i class="fa-solid fa-arrow-right"></i></a>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- 하단 푸터 -->
+  <footer class="text-center py-3 text-slate-400 text-xs border-t bg-white no-print">
+    수원대학교 경영공학대학 회계원리 © 2026
+  </footer>
+
+  <script>
+    let currentPage = 1;
+    const totalPages = 10;
+
+    function goToPage(page) {
+      if (page < 1 || page > totalPages) return;
+      document.querySelectorAll('.slide-page').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.page-btn').forEach(d => d.classList.remove('active'));
+
+      const target = document.getElementById(`page-${page}`);
+      if (target) target.classList.add('active');
+
+      const btns = document.querySelectorAll('.page-btn');
+      if (btns[page - 1]) btns[page - 1].classList.add('active');
+
+      currentPage = page;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function nextPage() { if (currentPage < totalPages) goToPage(currentPage + 1); }
+    function prevPage() { if (currentPage > 1) goToPage(currentPage - 1); }
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === 'PageDown') nextPage();
+      if (e.key === 'ArrowLeft' || e.key === 'PageUp') prevPage();
+    });
+
+    const quizAnswers = {"1": {"ans": "B", "exp": "FOB 조건에서는 구매자가 운임을 부담하며, 상품을 판매 가능한 상태로 가져오는 데 든 원가이므로 재고자산 취득원가(매입운임)에 더합니다. 운송비(판매비)로 처리하는 것은 판매자가 운임을 부담하는 CIF·DAP 조건일 때입니다."}};
+
+    function checkQuiz(qNum, choice, btn) {
+      const btns = document.querySelectorAll(`.q-btn-${qNum}`);
+      const fb = document.getElementById(`q-feedback-${qNum}`);
+      btns.forEach(b => { b.className = `q-btn-${qNum} w-full text-left p-2.5 bg-white border rounded text-xs transition`; });
+      fb.classList.remove('hidden');
+
+      if (choice === quizAnswers[qNum].ans) {
+        btn.classList.add('bg-emerald-100', 'border-emerald-500', 'text-emerald-900', 'font-bold');
+        fb.className = "text-xs mt-2 p-2 rounded bg-emerald-50 text-emerald-900 border border-emerald-200 block";
+        fb.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-600 mr-1"></i> <strong>정답입니다!</strong> ${quizAnswers[qNum].exp}`;
+      } else {
+        btn.classList.add('bg-rose-100', 'border-rose-500', 'text-rose-900');
+        fb.className = "text-xs mt-2 p-2 rounded bg-rose-50 text-rose-900 border border-rose-200 block";
+        fb.innerHTML = `<i class="fa-solid fa-circle-xmark text-rose-600 mr-1"></i> <strong>오답입니다!</strong> ${quizAnswers[qNum].exp}`;
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>[9주차 실습과제] 상품매매 거래와 순매출액 | 수원대학교 회계원리</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Noto Sans KR', sans-serif; }
+    .tb td, .tb th { border: 1px solid #e2e8f0; padding: 4px 8px; }
+    .tb td.n { text-align: right; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+  </style>
+</head>
+<body class="bg-slate-100 text-slate-800 antialiased min-h-screen flex flex-col justify-between">
+
+  <!-- 상단 네비게이션 헤더 -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm">
+    <div class="max-w-4xl mx-auto px-4 flex justify-between items-center h-12">
+      <div class="flex items-center gap-2">
+        <a href="../index.html" class="bg-blue-900 text-white text-[11px] px-2 py-0.5 rounded-full font-bold hover:bg-blue-800">수원대 회계원리</a>
+        <h1 class="font-bold text-slate-800 text-xs sm:text-sm">9주차 실습과제 및 구글시트 제출</h1>
+      </div>
+      <div class="flex items-center gap-1 text-xs">
+        <a href="202602_09_01.html" class="px-2 py-1 bg-slate-100 hover:bg-slate-200 rounded text-slate-700">1차시</a>
+        <a href="202602_09_02.html" class="px-2 py-1 bg-slate-100 hover:bg-slate-200 rounded text-slate-700">2차시</a>
+        <a href="202602_09_03.html" class="px-2 py-1 bg-slate-100 hover:bg-slate-200 rounded text-slate-700">3차시</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- 메인 폼 컨테이너 -->
+  <main class="flex-1 max-w-3xl w-full mx-auto px-4 py-6 space-y-6">
+
+    <!-- 안내 배너 -->
+    <div class="bg-gradient-to-r from-blue-950 via-indigo-900 to-slate-900 text-white p-6 rounded-2xl shadow-sm">
+      <span class="text-xs bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 px-2.5 py-1 rounded-full font-semibold mb-2 inline-block">
+        <i class="fa-solid fa-cloud-arrow-up mr-1"></i> 구글 시트 실시간 자동 채점 연동
+      </span>
+      <h2 class="text-xl sm:text-2xl font-black mb-1">9주차 상품매매 거래 실습 평가</h2>
+      <p class="text-xs sm:text-sm text-slate-300">
+        학번과 이름을 입력하고 문제를 푼 후 맨 아래 <strong>[구글 시트에 답안 제출하기]</strong> 버튼을 누르면 교수님 시트로 실시간 전송 및 채점됩니다. (객관식 5점 + 계산 3점 = 8점)
+      </p>
+    </div>
+
+    <!-- 1. 학생 기본 정보 입력란 -->
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-3">
+      <h3 class="text-base font-bold text-slate-900 border-b pb-2 flex items-center gap-2">
+        <i class="fa-solid fa-user-graduate text-blue-600"></i> 제출 학생 정보 (필수)
+      </h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">학번 (Student ID)</label>
+          <input type="text" id="studentId" inputmode="numeric" placeholder="예: 20261234" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">성명 (Name)</label>
+          <input type="text" id="studentName" placeholder="예: 홍길동" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent">
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. Part 1: 개념 확인 객관식 5제 -->
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+      <h3 class="text-base font-bold text-slate-900 border-b pb-2 flex items-center gap-2">
+        <i class="fa-solid fa-list-check text-blue-600"></i> [Part 1] 상품매매·재고기록법 핵심 개념 평가 (5문항)
+      </h3>
+      <div id="mcBox" class="space-y-4"></div>
+    </div>
+
+    <!-- 3. Part 2: 마감 실무 -->
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+      <h3 class="text-base font-bold text-slate-900 border-b pb-2 flex items-center gap-2">
+        <i class="fa-solid fa-calculator text-blue-600"></i> [Part 2] 판매자·구매자 거래 계산 (3문항)
+      </h3>
+
+      <div class="p-4 bg-blue-50 border border-blue-200 rounded-xl text-xs space-y-2">
+        <p class="font-bold text-blue-950 text-sm">【사례】 (주)권선상사(판매회사)와 (주)세류마트(구매회사)의 2026년 10월 거래</p>
+        <div class="overflow-x-auto">
+          <table class="tb w-full bg-white text-[11px]">
+            <thead class="bg-slate-100 text-center"><tr><th class="w-16">날짜</th><th>거래 내용</th></tr></thead>
+            <tbody>
+              <tr><td class="text-center">10/2</td><td>권선상사는 세류마트에 상품 100개를 개당 30,000원에 외상으로 판매했다. 개당 원가는 18,000원이고, 대금 조건은 <strong>2/10, n/30</strong>, 운임 조건은 <strong>FOB</strong>이다.</td></tr>
+              <tr><td class="text-center">10/2</td><td>세류마트는 운송회사에 운임 45,000원을 현금으로 지급했다.</td></tr>
+              <tr><td class="text-center">10/5</td><td>세류마트는 불량품 10개를 권선상사에 반품했고, 권선상사는 이를 승인했다.</td></tr>
+              <tr><td class="text-center">10/7</td><td>남은 상품 중 일부에 흠집이 있어 권선상사는 60,000원을 깎아 주었다(에누리).</td></tr>
+              <tr><td class="text-center">10/11</td><td>세류마트는 남은 외상대금을 모두 현금으로 지급했다.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="text-slate-600">* 두 회사 모두 <strong>계속기록법</strong>을 쓴다. 할인은 반품·에누리를 뺀 잔액에 적용한다.</p>
+      </div>
+
+      <div class="p-4 bg-slate-50 border rounded-xl space-y-3 text-xs">
+        <div>
+          <label class="block font-bold text-slate-800 mb-1">(1) 권선상사의 이 거래에서 생긴 순매출액은?</label>
+          <div class="flex items-center gap-2"><input type="number" id="ans1" placeholder="숫자만 입력" class="w-full sm:w-64 px-4 py-2.5 rounded-xl border border-slate-300 font-mono text-sm focus:outline-none focus:ring-2 focus:ring-blue-600 font-bold text-blue-900"><span class="font-bold text-slate-600">원</span></div>
+        </div>
+        <div>
+          <label class="block font-bold text-slate-800 mb-1">(2) 권선상사의 이 거래에서 생긴 매출총이익은?</label>
+          <div class="flex items-center gap-2"><input type="number" id="ans2" placeholder="숫자만 입력" class="w-full sm:w-64 px-4 py-2.5 rounded-xl border border-slate-300 font-mono text-sm focus:outline-none focus:ring-2 focus:ring-blue-600 font-bold text-blue-900"><span class="font-bold text-slate-600">원</span></div>
+        </div>
+        <div>
+          <label class="block font-bold text-slate-800 mb-1">(3) 세류마트가 장부에 남긴 이 상품(90개)의 재고자산 취득원가는?</label>
+          <div class="flex items-center gap-2"><input type="number" id="ans3" placeholder="숫자만 입력" class="w-full sm:w-64 px-4 py-2.5 rounded-xl border border-slate-300 font-mono text-sm focus:outline-none focus:ring-2 focus:ring-blue-600 font-bold text-blue-900"><span class="font-bold text-slate-600">원</span></div>
+        </div>
+        <p class="text-[11px] text-slate-400">* 계산 팁: 10/11은 10/2로부터 10일 안입니다. 반품과 에누리 중 원가를 되돌리는 것은 반품뿐입니다.</p>
+      </div>
+    </div>
+
+    <!-- 4. 제출하기 버튼 & 결과 피드백 -->
+    <div class="space-y-3">
+      <button id="submitBtn" onclick="submitToGoogleSheet()" class="w-full py-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold rounded-xl shadow-lg transition flex items-center justify-center gap-2 text-sm sm:text-base">
+        <i class="fa-solid fa-paper-plane"></i> 구글 시트에 실습 답안 제출하기
+      </button>
+      <div id="submitStatus" class="hidden p-4 rounded-xl text-center text-xs sm:text-sm font-semibold"></div>
+      <div id="reviewBox" class="hidden bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-2 text-xs"></div>
+    </div>
+
+  </main>
+
+  <!-- 하단 푸터 -->
+  <footer class="text-center py-4 text-slate-400 text-xs border-t bg-white">
+    수원대학교 경영공학대학 회계원리 © 2026
+  </footer>
+
+  <!-- 구글 시트 웹 앱 통신 스크립트 -->
+  <script>
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxkVGaxS_AzDYms9MhtaWK1LMcgTTeMWaiZ4w1U-iE2weua61l0YO2zXkaIKmj8pR08/exec";
+
+    const MC = [
+      { q: "재고자산 기록 방법에 대한 설명으로 <strong>옳은</strong> 것은?",
+        o: ["실지재고조사법에서는 상품을 판매할 때마다 매출원가를 기록한다.", "계속기록법에서는 회계기간 중에도 장부상 재고자산 잔액을 알 수 있다.", "실지재고조사법에서는 도난·파손으로 인한 손실이 매출원가와 따로 구분된다."], a: "B",
+        e: "계속기록법은 매입·판매 때마다 재고자산 증감을 기록하므로 기중에도 장부 재고를 알 수 있습니다. 실지재고조사법은 판매 때 매출원가를 기록하지 않고 기말에 역산하므로, 도난·파손 손실이 매출원가에 섞입니다." },
+      { q: "기초재고 2,000,000원, 당기매입 9,000,000원, 기말재고 1,500,000원일 때 <strong>매출원가</strong>는?",
+        o: ["9,500,000원", "10,500,000원", "12,500,000원"], a: "A",
+        e: "판매가능액 11,000,000원(2,000,000 + 9,000,000) − 기말재고 1,500,000원 = 9,500,000원입니다." },
+      { q: "FOB 조건으로 상품을 매입하면서 <strong>구매자</strong>가 운임을 지급했다. 구매자의 회계처리로 옳은 것은?",
+        o: ["운송비(판매비와관리비)로 처리한다.", "매출원가로 처리한다.", "재고자산의 취득원가에 가산한다."], a: "C",
+        e: "FOB 조건의 운임은 구매자 부담이며, 상품을 판매 가능한 상태로 가져오는 데 든 원가이므로 재고자산 취득원가에 더합니다. 운송비(판매비)는 판매자가 운임을 부담하는 CIF·DAP 조건일 때입니다." },
+      { q: "계속기록법을 쓰는 판매회사가 상품을 외상으로 판매했을 때의 회계처리로 옳은 것은?",
+        o: ["(차) 매출채권 / (대) 매출 과 (차) 매출원가 / (대) 재고자산 을 함께 기록", "(차) 매출채권 / (대) 매출 만 기록", "(차) 미수금 / (대) 매출 과 (차) 매출원가 / (대) 재고자산 을 함께 기록"], a: "A",
+        e: "계속기록법에서는 판매가격으로 매출을, 원가로 매출원가를 함께 기록합니다(분개 2개). 상품 판매의 외상대금은 미수금이 아니라 매출채권입니다." },
+      { q: "매출할인에 대한 설명으로 <strong>옳은</strong> 것은?",
+        o: ["외상대금을 할인기간이 지난 뒤에 받을 때 발생한다.", "판매비와관리비로 분류한다.", "총매출액에서 차감하여 순매출액을 구한다."], a: "C",
+        e: "매출할인은 할인기간 안에 대금을 받으면서 깎아 준 금액으로, 매출에누리와 환입처럼 총매출액에서 차감합니다. 판매비가 아닙니다." }
+    ];
+    const KEY = { n1: 2587200, n2: 967200, n3: 2632200 };
+    const NUM_EXP = [
+      "총매출 3,000,000 − 환입 300,000(10개 × 30,000) − 에누리 60,000 − 매출할인 52,800 = <strong>2,587,200원</strong>. 할인은 남은 잔액 2,640,000원의 2%입니다(총매출 기준 2%면 60,000원으로 틀림).",
+      "순매출액 2,587,200 − 매출원가 1,620,000(판매 1,800,000 − 반품 원가 180,000) = <strong>967,200원</strong>. 에누리는 상품이 돌아오지 않으므로 원가를 되돌리지 않습니다.",
+      "총매입 3,000,000 − 매입환출 300,000 − 매입에누리 60,000 − 매입할인 52,800 = 순매입액 2,587,200 + 매입운임 45,000 = <strong>2,632,200원</strong>."
+    ];
+    const ABC = ["A", "B", "C"], CIRCLE = ["①", "②", "③"];
+
+    // 객관식 화면 구성
+    (function renderMC() {
+      const box = document.getElementById("mcBox");
+      box.innerHTML = MC.map((m, i) => `
+        <div class="p-4 bg-slate-50 border rounded-xl space-y-2 text-xs sm:text-sm">
+          <div class="font-bold text-slate-800">Q${i + 1}. ${m.q}</div>
+          <div class="space-y-1.5 text-xs">
+            ${m.o.map((t, j) => `
+            <label class="flex items-center gap-2 p-2 bg-white rounded-lg border hover:bg-slate-100 cursor-pointer">
+              <input type="radio" name="q${i + 1}" value="${ABC[j]}" class="text-blue-600"> ${CIRCLE[j]} ${t}
+            </label>`).join("")}
+          </div>
+        </div>`).join("");
+    })();
+
+    function readNum(id) {
+      const raw = document.getElementById(id).value.trim().replace(/,/g, "");
+      return raw === "" ? null : Number(raw);
+    }
+
+    function submitToGoogleSheet() {
+      const studentId = document.getElementById("studentId").value.trim();
+      const studentName = document.getElementById("studentName").value.trim();
+      if (!studentId || !studentName) {
+        alert("학번과 성명을 모두 입력해 주세요!");
+        document.getElementById("studentId").focus();
+        return;
+      }
+
+      let score1 = 0;
+      const answers1 = {};
+      MC.forEach((m, i) => {
+        const sel = document.querySelector(`input[name="q${i + 1}"]:checked`);
+        const v = sel ? sel.value : "-";
+        answers1[`q${i + 1}`] = v;
+        if (v === m.a) score1++;
+      });
+
+      const ins = [readNum("ans1"), readNum("ans2"), readNum("ans3")];
+      const keys = [KEY.n1, KEY.n2, KEY.n3];
+      const ok = ins.map((v, i) => v === keys[i]);
+      const score2 = ok.filter(Boolean).length;
+      const total = score1 + score2;
+      const show = v => (v === null || isNaN(v)) ? "미입력" : v.toLocaleString() + "원";
+
+      const payload = {
+        week: "09주차",
+        studentId: studentId,
+        studentName: studentName,
+        score1: `${score1}/5점`,
+        answers1: answers1,
+        netSales: show(ins[0]), netSalesOk: ok[0] ? "O" : "X",
+        grossProfit: show(ins[1]), grossProfitOk: ok[1] ? "O" : "X",
+        invCost: show(ins[2]), invCostOk: ok[2] ? "O" : "X",
+        score2: `${score2}/3점`,
+        total: `${total}/8점`,
+        finalGrade: total === 8 ? "만점 (우수)" : "정상제출"
+      };
+
+      const btn = document.getElementById("submitBtn");
+      const statusDiv = document.getElementById("submitStatus");
+      btn.disabled = true;
+      btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i> 구글 시트로 전송 중입니다...`;
+
+      fetch(SCRIPT_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      })
+      .then(() => {
+        statusDiv.classList.remove("hidden");
+        statusDiv.className = "p-4 rounded-xl text-center text-xs sm:text-sm font-semibold bg-emerald-50 text-emerald-900 border border-emerald-300 block";
+        statusDiv.innerHTML = `
+          <div class="text-base font-bold mb-1">🎉 9주차 실습 제출이 정상 완료되었습니다!</div>
+          <p class="text-xs text-emerald-700">교수님의 구글 스프레드시트에 실시간으로 기록되었습니다. (채점 결과: 객관식 ${score1}/5점, 계산 ${score2}/3점, 총점 ${total}/8점)</p>
+        `;
+        btn.innerHTML = `<i class="fa-solid fa-check mr-2"></i> 제출 완료됨`;
+        btn.className = "w-full py-4 bg-emerald-600 text-white font-bold rounded-xl shadow cursor-not-allowed";
+        showReview(answers1, ins, ok);
+      })
+      .catch((error) => {
+        statusDiv.classList.remove("hidden");
+        statusDiv.className = "p-4 rounded-xl text-center text-xs sm:text-sm font-semibold bg-rose-50 text-rose-900 border border-rose-300 block";
+        statusDiv.innerHTML = `⚠️ 전송 중 오류가 발생했습니다: ${error}. 네트워크 연결을 확인하고 다시 시도해 주세요.`;
+        btn.disabled = false;
+        btn.innerHTML = `<i class="fa-solid fa-paper-plane mr-2"></i> 다시 제출 시도`;
+      });
+    }
+
+    // 제출 후 정답·해설 공개
+    function showReview(answers1, ins, ok) {
+      const box = document.getElementById("reviewBox");
+      const mark = b => b ? '<span class="text-emerald-600 font-bold">O</span>' : '<span class="text-rose-600 font-bold">X</span>';
+      let html = '<h3 class="text-sm font-bold text-slate-900 border-b pb-2"><i class="fa-solid fa-lightbulb text-amber-500 mr-1"></i> 정답 및 해설</h3>';
+      MC.forEach((m, i) => {
+        const mine = answers1[`q${i + 1}`];
+        const idx = ABC.indexOf(m.a);
+        html += `<div class="p-2.5 bg-slate-50 border rounded-lg">${mark(mine === m.a)} <strong>Q${i + 1}</strong> 정답 ${CIRCLE[idx]} · ${m.e}</div>`;
+      });
+      ["(1) 권선상사 순매출액", "(2) 권선상사 매출총이익", "(3) 세류마트 재고자산 취득원가"].forEach((t, i) => {
+        html += `<div class="p-2.5 bg-slate-50 border rounded-lg">${mark(ok[i])} <strong>${t}</strong> · ${NUM_EXP[i]}</div>`;
+      });
+      box.innerHTML = html;
+      box.classList.remove("hidden");
+    }
+  </script>
+</body>
+</html>

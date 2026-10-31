@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>[9주차 3차시] 환입·에누리·할인과 순매출액 | 수원대학교 회계원리</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Noto Sans KR', sans-serif; }
+    .slide-page { display: none; }
+    .slide-page.active { display: flex; animation: fadeIn 0.25s ease-in-out; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+    .page-btn.active { background-color: #2563eb !important; color: white !important; font-weight: bold; border-color: #1d4ed8 !important; }
+    /* 장부·표 공통 */
+    .tb td, .tb th { border: 1px solid #e2e8f0; padding: 4px 6px; }
+    .tb td.n { text-align: right; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+    .ws td, .ws th { padding: 3px 3px; letter-spacing: -0.03em; }
+    .ws td.n { font-size: 9.5px; }
+    @media print { .ws { font-size: 8px !important; } }
+    .tacc { border-collapse: collapse; width: 100%; font-size: 11px; }
+    .tacc caption { font-weight: 700; padding-bottom: 2px; border-bottom: 2px solid #334155; }
+    .tacc td { padding: 2px 6px; vertical-align: top; }
+    .tacc td.l { border-right: 2px solid #334155; }
+    .tacc td.n { text-align: right; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+    .tacc tr.sum td { border-top: 1px solid #94a3b8; font-weight: 700; }
+    .je { border-collapse: collapse; width: 100%; font-size: 11px; }
+    .je td { padding: 2px 6px; }
+    .je td.n { text-align: right; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; white-space: nowrap; }
+    .je td.cr { padding-left: 22px; }
+    .je tr.sep td { border-top: 1px dashed #cbd5e1; }
+
+    @media print {
+      @page { size: A4 landscape; margin: 10mm 12mm; }
+      body { background-color: #ffffff !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; padding: 0 !important; }
+      header, .no-print, #top-nav-controller { display: none !important; }
+      main { max-width: 100% !important; padding: 0 !important; margin: 0 !important; }
+      .slide-page { display: block !important; opacity: 1 !important; page-break-after: always !important; break-after: page !important; min-height: 180mm !important; margin-bottom: 0 !important; border: 1px solid #cbd5e1 !important; border-radius: 12px !important; padding: 24px 28px !important; }
+    }
+  </style>
+</head>
+<body class="bg-slate-100 text-slate-800 antialiased min-h-screen flex flex-col justify-between">
+
+  <!-- 1. 고정 상단 헤더 & 슬라이드 네비게이션 바 -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm no-print">
+    <div class="max-w-5xl mx-auto px-4 flex justify-between items-center h-12">
+      <div class="flex items-center gap-2">
+        <a href="../index.html" class="bg-blue-900 text-white text-[11px] px-2 py-0.5 rounded-full font-bold hover:bg-blue-800">수원대 회계원리</a>
+        <h1 class="font-bold text-slate-800 text-xs sm:text-sm">9주차 3차시: 환입·에누리·할인과 순매출액</h1>
+      </div>
+      <div class="flex items-center gap-2">
+        <button onclick="window.print()" class="text-[11px] bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold px-2.5 py-1 rounded border border-slate-300 transition flex items-center gap-1">
+          <i class="fa-solid fa-print"></i> PDF/인쇄
+        </button>
+      </div>
+    </div>
+
+    <!-- 상단 1~10 퀵 이동 버튼 바 -->
+    <div id="top-nav-controller" class="border-t border-slate-100 bg-slate-50/95 py-2 px-4 shadow-inner">
+      <div class="max-w-5xl mx-auto flex items-center justify-between gap-2">
+        <button onclick="prevPage()" class="px-3 py-1.5 bg-white hover:bg-slate-100 text-slate-700 text-xs font-bold rounded-lg border border-slate-300 transition flex items-center gap-1 shrink-0">
+          <i class="fa-solid fa-chevron-left text-[10px]"></i> <span class="hidden sm:inline">이전</span>
+        </button>
+
+        <div class="flex items-center gap-1.5 overflow-x-auto py-0.5 px-1 max-w-full">
+          <button onclick="goToPage(1)" class="page-btn active w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">1</button>
+          <button onclick="goToPage(2)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">2</button>
+          <button onclick="goToPage(3)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">3</button>
+          <button onclick="goToPage(4)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">4</button>
+          <button onclick="goToPage(5)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">5</button>
+          <button onclick="goToPage(6)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">6</button>
+          <button onclick="goToPage(7)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">7</button>
+          <button onclick="goToPage(8)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">8</button>
+          <button onclick="goToPage(9)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">9</button>
+          <button onclick="goToPage(10)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">10</button>
+        </div>
+
+        <button onclick="nextPage()" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-lg transition flex items-center gap-1 shrink-0">
+          <span class="hidden sm:inline">다음</span> <i class="fa-solid fa-chevron-right text-[10px]"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- 2. 슬라이드 본문 컨테이너 -->
+  <main class="flex-1 max-w-4xl w-full mx-auto px-4 py-4 flex flex-col justify-center">
+
+    <!-- Slide 1: 표지 -->
+    <div class="slide-page active bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-1">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 01 / 10</span>
+        <span>수원대학교 경영공학대학</span>
+      </div>
+      <div class="text-center my-auto py-6">
+        <div class="inline-block p-4 bg-rose-50 text-rose-700 rounded-2xl mb-3 shadow-inner">
+          <i class="fa-solid fa-rotate-left text-4xl"></i>
+        </div>
+        <span class="text-xs font-bold text-rose-700 tracking-wider block mb-1">CH.05 상품매매회사의 회계순환과정 (1)</span>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mb-3">3차시: 환입·에누리·할인과 순매출액</h2>
+        <p class="text-slate-600 text-xs sm:text-sm max-w-lg mx-auto leading-relaxed">
+          11월 3일에 판 무선이어폰 중 일부가 불량으로 돌아오고, 흠집 난 상품은 값을 깎아 주고, 대금을 일찍 받으며 할인해 줍니다.<br>이 세 가지를 분개하고 <strong>순매출액·순매입액·재고자산 취득원가</strong>를 계산합니다.
+        </p>
+      </div>
+      <div class="text-center text-xs text-slate-400 border-t pt-3">
+        상단 퀵 버튼(1~10) 또는 키보드 방향키(←, →)로 이동할 수 있습니다.
+      </div>
+    </div>
+
+    <!-- Slide 2: 학습 목표 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-2">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 02 / 10</span>
+        <span>학습 목표 (50분 설계)</span>
+      </div>
+      <div class="my-auto">
+        <h3 class="text-lg sm:text-xl font-bold text-slate-900 mb-5 flex items-center gap-2">
+          <i class="fa-solid fa-bullseye text-blue-600"></i> 이번 3차시 핵심 학습 목표
+        </h3>
+        <div class="grid sm:grid-cols-3 gap-3.5">
+          <div class="p-4 bg-slate-50 border rounded-xl hover:border-blue-400 transition">
+            <span class="w-6 h-6 rounded bg-rose-600 text-white font-bold flex items-center justify-center text-xs mb-2">1</span>
+            <h4 class="font-bold text-slate-800 text-xs sm:text-sm mb-1">환입·환출과 에누리</h4>
+            <p class="text-xs text-slate-600 leading-relaxed">반품과 가격 인하를 판매자·구매자 입장에서 분개하고, 반품일 때만 원가 분개가 따로 필요한 이유를 이해한다.</p>
+          </div>
+          <div class="p-4 bg-slate-50 border rounded-xl hover:border-blue-400 transition">
+            <span class="w-6 h-6 rounded bg-rose-600 text-white font-bold flex items-center justify-center text-xs mb-2">2</span>
+            <h4 class="font-bold text-slate-800 text-xs sm:text-sm mb-1">매출할인·매입할인</h4>
+            <p class="text-xs text-slate-600 leading-relaxed">2/10, n/30 조건을 해석하고 할인기간 안팎의 결제 분개를 비교한다.</p>
+          </div>
+          <div class="p-4 bg-slate-50 border rounded-xl hover:border-blue-400 transition">
+            <span class="w-6 h-6 rounded bg-rose-600 text-white font-bold flex items-center justify-center text-xs mb-2">3</span>
+            <h4 class="font-bold text-slate-800 text-xs sm:text-sm mb-1">순매출액·취득원가 계산</h4>
+            <p class="text-xs text-slate-600 leading-relaxed">총매출액에서 차감 항목을 빼 순매출액을, 순매입액에 매입운임을 더해 재고자산 취득원가를 구한다.</p>
+          </div>
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3 flex justify-between">
+        <span>환입·에누리·할인</span><span>교재 Ch.05</span>
+      </div>
+    </div>
+
+    <!-- Slide 3: 환입·에누리·할인의 개념 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-3">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 03 / 10</span>
+        <span>환입·에누리·할인의 개념</span>
+      </div>
+      <div class="my-auto space-y-3">
+        <h3 class="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
+          <i class="fa-solid fa-tags text-rose-600"></i> 처음 판 금액이 줄어드는 세 가지 경우
+        </h3>
+        <div class="overflow-x-auto">
+          <table class="w-full text-[11px] text-center border-collapse border border-slate-200">
+            <thead class="bg-slate-100"><tr><th class="border p-2">상황</th><th class="border p-2 bg-rose-50 text-rose-900">판매자 용어</th><th class="border p-2 bg-emerald-50 text-emerald-900">구매자 용어</th><th class="border p-2">상품이 돌아오나?</th></tr></thead>
+            <tbody>
+              <tr><td class="border p-2 text-left"><strong>반품</strong> — 불량·파손 상품을 되돌려 보냄</td><td class="border p-2 font-bold">매출환입</td><td class="border p-2 font-bold">매입환출</td><td class="border p-2 text-rose-700 font-bold">돌아온다</td></tr>
+              <tr><td class="border p-2 text-left"><strong>가격 인하</strong> — 흠이 있지만 그대로 쓰는 대신 값을 깎음</td><td class="border p-2 font-bold">매출에누리</td><td class="border p-2 font-bold">매입에누리</td><td class="border p-2">안 돌아온다</td></tr>
+              <tr><td class="border p-2 text-left"><strong>조기 결제</strong> — 외상대금을 할인기간 안에 갚아 일부를 깎음</td><td class="border p-2 font-bold">매출할인</td><td class="border p-2 font-bold">매입할인</td><td class="border p-2">안 돌아온다</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="grid sm:grid-cols-2 gap-3 text-xs">
+          <div class="p-3 bg-rose-50 border-l-4 border-rose-500 rounded-r-lg leading-relaxed">
+            <strong>판매자:</strong> 세 항목 모두 <strong>매출의 차감</strong>입니다. 매출 계정을 바로 줄이지 않고 "매출에누리와 환입", "매출할인" 계정(차변잔액)에 모아 두었다가 순매출액을 구합니다.
+          </div>
+          <div class="p-3 bg-emerald-50 border-l-4 border-emerald-500 rounded-r-lg leading-relaxed">
+            <strong>구매자(계속기록법):</strong> 세 항목 모두 <strong>재고자산의 차감</strong>입니다. 산 값이 줄었으니 재고자산 원가를 직접 줄입니다.
+          </div>
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3">
+        교재는 반품과 에누리를 한 계정("매출에누리와 환입", "매입에누리와 환출")으로 묶어 기록합니다.
+      </div>
+    </div>
+
+    <!-- Slide 4: 반품: 매출환입과 매입환출 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-4">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 04 / 10</span>
+        <span>반품: 매출환입과 매입환출</span>
+      </div>
+      <div class="my-auto space-y-3">
+        <h3 class="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
+          <i class="fa-solid fa-box-open text-rose-600"></i> 11월 6일 — 불량품 5개 반품
+        </h3>
+        <div class="p-3 bg-rose-50 border-l-4 border-rose-500 rounded-r-xl text-xs leading-relaxed">
+          영통마트가 검수해 보니 무선이어폰 5개가 불량이었다. 이를 광교유통에 돌려보냈고 광교유통은 반품을 승인했다. (판매가 64,000원 · 원가 40,000원)
+        </div>
+        <div class="grid sm:grid-cols-2 gap-3">
+          <div class="p-3 bg-white border border-rose-300 rounded-xl space-y-1.5">
+            <div class="text-xs font-bold text-rose-900">(주)광교유통 — 판매자</div>
+            <table class="je"><tr><td>(차) 매출에누리와 환입</td><td class="n">320,000</td><td class="cr">(대) 매출채권</td><td class="n">320,000</td></tr><tr><td colspan="4" class="text-[10px] text-slate-500">① 판매가 5개 × 64,000 — 매출 차감</td></tr><tr class="sep"><td>(차) 재고자산</td><td class="n">200,000</td><td class="cr">(대) 매출원가</td><td class="n">200,000</td></tr><tr><td colspan="4" class="text-[10px] text-slate-500">② 원가 5개 × 40,000 — 돌아온 상품을 창고로</td></tr></table>
+          </div>
+          <div class="p-3 bg-white border border-emerald-300 rounded-xl space-y-1.5">
+            <div class="text-xs font-bold text-emerald-900">(주)영통마트 — 구매자</div>
+            <table class="je"><tr><td>(차) 매입채무</td><td class="n">320,000</td><td class="cr">(대) 재고자산</td><td class="n">320,000</td></tr><tr><td colspan="4" class="text-[10px] text-slate-500">구매자에게 5개의 원가는 산 값 64,000원</td></tr></table>
+          </div>
+        </div>
+        <div class="p-2.5 bg-amber-50 border border-amber-200 rounded-lg text-xs text-amber-950">
+          <strong>왜 판매자는 분개가 2개인가?</strong> 팔 때 분개 2개(매출·매출원가)를 했으니, 되돌릴 때도 2개를 되돌립니다. 상품이 실제로 창고에 돌아왔기 때문에 ②가 필요합니다.
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3">
+        매출에누리와 환입은 매출의 차감계정(contra-revenue)입니다. 손익계산서에는 총매출액에서 뺀 순액으로 표시합니다.
+      </div>
+    </div>
+
+    <!-- Slide 5: 가격 인하: 에누리 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-5">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 05 / 10</span>
+        <span>가격 인하: 에누리</span>
+      </div>
+      <div class="my-auto space-y-3">
+        <h3 class="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
+          <i class="fa-solid fa-percent text-rose-600"></i> 11월 8일 — 흠집 난 5개, 개당 8,000원 깎아 주기
+        </h3>
+        <div class="p-3 bg-rose-50 border-l-4 border-rose-500 rounded-r-xl text-xs leading-relaxed">
+          남은 45개 중 5개에 겉면 흠집이 있었다. 영통마트는 반품 대신 그대로 팔기로 하고, 광교유통은 개당 8,000원(총 <strong>40,000원</strong>)을 깎아 주었다.
+        </div>
+        <div class="grid sm:grid-cols-2 gap-3">
+          <div class="p-3 bg-white border border-rose-300 rounded-xl space-y-1.5">
+            <div class="text-xs font-bold text-rose-900">(주)광교유통</div>
+            <table class="je"><tr><td>(차) 매출에누리와 환입</td><td class="n">40,000</td><td class="cr">(대) 매출채권</td><td class="n">40,000</td></tr></table>
+            <p class="text-[10px] text-rose-700 font-semibold">원가 분개 없음 — 상품이 돌아오지 않았으므로</p>
+          </div>
+          <div class="p-3 bg-white border border-emerald-300 rounded-xl space-y-1.5">
+            <div class="text-xs font-bold text-emerald-900">(주)영통마트</div>
+            <table class="je"><tr><td>(차) 매입채무</td><td class="n">40,000</td><td class="cr">(대) 재고자산</td><td class="n">40,000</td></tr></table>
+            <p class="text-[10px] text-slate-500">같은 상품을 더 싸게 산 셈 → 재고 원가 감소</p>
+          </div>
+        </div>
+        <div class="p-3 bg-white border rounded-xl">
+          <table class="tacc">
+            <caption>광교유통의 매출채권 (= 영통마트의 매입채무) 추적</caption>
+            <tr><td class="l">11/3 외상 판매</td><td class="n l">3,200,000</td><td>11/6 반품</td><td class="n">320,000</td></tr>
+            <tr><td class="l"></td><td class="l"></td><td>11/8 에누리</td><td class="n">40,000</td></tr>
+            <tr class="sum"><td class="l">잔액 (받을 돈)</td><td class="n l text-rose-700">2,840,000</td><td></td><td></td></tr>
+          </table>
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3">
+        반품(환입)과 에누리는 판매자에게 같은 계정이지만, 원가 분개 유무가 다릅니다. 이 차이가 시험에 자주 나옵니다.
+      </div>
+    </div>
+
+    <!-- Slide 6: 조기 결제: 매출할인·매입할인 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-6">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 06 / 10</span>
+        <span>조기 결제: 매출할인·매입할인</span>
+      </div>
+      <div class="my-auto space-y-3">
+        <h3 class="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
+          <i class="fa-solid fa-calendar-check text-rose-600"></i> 2/10, n/30 — "10일 안에 갚으면 2% 할인, 늦어도 30일 안에"
+        </h3>
+        <div class="grid grid-cols-3 gap-1.5 text-center text-[11px]">
+          <div class="p-2 bg-slate-50 border rounded-lg"><div class="font-bold">11/3</div><div class="text-slate-500">외상 판매일</div></div>
+          <div class="p-2 bg-rose-50 border border-rose-300 rounded-lg"><div class="font-bold text-rose-800">~ 11/13</div><div class="text-slate-500">할인기간 (10일)</div></div>
+          <div class="p-2 bg-slate-50 border rounded-lg"><div class="font-bold">~ 12/3</div><div class="text-slate-500">신용기간 만기 (30일)</div></div>
+        </div>
+        <div class="grid sm:grid-cols-2 gap-3">
+          <div class="p-3 bg-rose-50/60 border border-rose-300 rounded-xl space-y-1.5 text-xs">
+            <div class="font-bold text-rose-900">ⓐ 11/12 결제 (할인기간 안) — 할인 56,800원</div>
+            <div class="text-[10px] text-slate-500">할인액 = 잔액 2,840,000 × 2% (반품·에누리 뒤 잔액 기준)</div>
+            <div class="text-[11px] font-bold text-slate-700 pt-1">광교유통</div>
+            <table class="je"><tr><td>(차) 현금</td><td class="n">2,783,200</td><td class="cr">(대) 매출채권</td><td class="n">2,840,000</td></tr><tr><td>(차) 매출할인</td><td class="n">56,800</td><td class="cr"></td><td class="n"></td></tr></table>
+            <div class="text-[11px] font-bold text-slate-700 pt-1">영통마트</div>
+            <table class="je"><tr><td>(차) 매입채무</td><td class="n">2,840,000</td><td class="cr">(대) 재고자산</td><td class="n">56,800</td></tr><tr><td></td><td class="n"></td><td class="cr">(대) 현금</td><td class="n">2,783,200</td></tr></table>
+          </div>
+          <div class="p-3 bg-slate-50 border rounded-xl space-y-1.5 text-xs">
+            <div class="font-bold text-slate-800">ⓑ (가정) 12/1 결제 (할인기간 뒤) — 할인 없음</div>
+            <div class="text-[10px] text-slate-500">신용기간 안이므로 연체는 아니지만 할인은 못 받음</div>
+            <div class="text-[11px] font-bold text-slate-700 pt-1">광교유통</div>
+            <table class="je"><tr><td>(차) 현금</td><td class="n">2,840,000</td><td class="cr">(대) 매출채권</td><td class="n">2,840,000</td></tr></table>
+            <div class="text-[11px] font-bold text-slate-700 pt-1">영통마트</div>
+            <table class="je"><tr><td>(차) 매입채무</td><td class="n">2,840,000</td><td class="cr">(대) 현금</td><td class="n">2,840,000</td></tr></table>
+          </div>
+        </div>
+        <p class="text-[11px] text-slate-500">* 영통마트 입장에서 20일 일찍 갚아 56,800원을 아끼는 것은 연 36%가 넘는 수익률과 같습니다. 그래서 자금 여유가 있으면 할인을 받는 것이 유리합니다.</p>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3">
+        이후 강의와 실습은 ⓐ(할인기간 안 결제)를 기준으로 계산합니다.
+      </div>
+    </div>
+
+    <!-- Slide 7: 순매출액과 재고자산 취득원가 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-7">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 07 / 10</span>
+        <span>순매출액과 재고자산 취득원가</span>
+      </div>
+      <div class="my-auto space-y-3">
+        <h3 class="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
+          <i class="fa-solid fa-calculator text-rose-600"></i> 11월 3일 거래의 최종 결과 (단위: 원)
+        </h3>
+        <div class="grid sm:grid-cols-2 gap-3">
+          <div class="p-3 bg-white border border-rose-300 rounded-xl">
+            <div class="text-xs font-bold text-rose-900 mb-1.5">(주)광교유통 — 판매자</div>
+            <table class="tb w-full text-[11px]">
+              <tr><td>총매출액</td><td class="n">3,200,000</td></tr>
+              <tr><td>(−) 매출에누리와 환입</td><td class="n">360,000</td></tr>
+              <tr><td>(−) 매출할인</td><td class="n">56,800</td></tr>
+              <tr class="bg-rose-50 font-bold"><td>순매출액</td><td class="n">2,783,200</td></tr>
+              <tr><td>(−) 매출원가 (2,000,000 − 200,000)</td><td class="n">1,800,000</td></tr>
+              <tr class="bg-slate-800 text-white font-bold"><td>매출총이익</td><td class="n">983,200</td></tr>
+            </table>
+          </div>
+          <div class="p-3 bg-white border border-emerald-300 rounded-xl">
+            <div class="text-xs font-bold text-emerald-900 mb-1.5">(주)영통마트 — 구매자</div>
+            <table class="tb w-full text-[11px]">
+              <tr><td>재고자산 총매입액</td><td class="n">3,200,000</td></tr>
+              <tr><td>(−) 매입에누리와 환출</td><td class="n">360,000</td></tr>
+              <tr><td>(−) 매입할인</td><td class="n">56,800</td></tr>
+              <tr class="bg-emerald-50 font-bold"><td>재고자산 순매입액</td><td class="n">2,783,200</td></tr>
+              <tr><td>(+) 매입운임 (FOB)</td><td class="n">60,000</td></tr>
+              <tr class="bg-slate-800 text-white font-bold"><td>재고자산 취득원가</td><td class="n">2,843,200</td></tr>
+            </table>
+          </div>
+        </div>
+        <div class="p-3 bg-slate-50 border rounded-xl text-xs text-slate-700 leading-relaxed">
+          ✔ 판매자의 순매출액과 구매자의 순매입액은 <strong>같은 금액(2,783,200원)</strong>입니다. 실제로 오간 현금과도 같습니다.
+          구매자는 여기에 자기가 낸 운임을 더해 영통마트 창고에 남은 이어폰 45개의 원가 <strong>2,843,200원</strong>을 얻습니다.
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3">
+        교재 [표 5-4] 순매출액과 순매입액의 계산과 같은 구조입니다. 매출원가에서 반품 원가 200,000원을 빼는 것을 잊지 마세요.
+      </div>
+    </div>
+
+    <!-- Slide 8: 부수 항목 총정리 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-8">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 08 / 10</span>
+        <span>부수 항목 총정리</span>
+      </div>
+      <div class="my-auto space-y-3">
+        <h3 class="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
+          <i class="fa-solid fa-table-list text-rose-600"></i> 상품매매의 부수 항목 한눈에 보기
+        </h3>
+        <div class="overflow-x-auto">
+          <table class="w-full text-[11px] border-collapse border border-slate-200">
+            <thead class="bg-slate-100 text-center"><tr><th class="border p-1.5">항목</th><th class="border p-1.5">발생 원인</th><th class="border p-1.5">판매자</th><th class="border p-1.5">구매자</th></tr></thead>
+            <tbody>
+              <tr><td class="border p-1.5 font-bold">운임 (FOB)</td><td class="border p-1.5">구매자가 운송비 부담</td><td class="border p-1.5 text-center">—</td><td class="border p-1.5">재고자산에 <strong>가산</strong></td></tr>
+              <tr><td class="border p-1.5 font-bold">운임 (CIF·DAP)</td><td class="border p-1.5">판매자가 운송비 부담</td><td class="border p-1.5">운송비 (판매비)</td><td class="border p-1.5 text-center">—</td></tr>
+              <tr><td class="border p-1.5 font-bold">환입·환출</td><td class="border p-1.5">판매 후 반품</td><td class="border p-1.5">매출 차감 + <strong>원가 환원</strong></td><td class="border p-1.5">재고자산 차감</td></tr>
+              <tr><td class="border p-1.5 font-bold">에누리</td><td class="border p-1.5">흠·결함으로 값을 깎음</td><td class="border p-1.5">매출 차감</td><td class="border p-1.5">재고자산 차감</td></tr>
+              <tr><td class="border p-1.5 font-bold">할인</td><td class="border p-1.5">할인기간 내 대금 결제</td><td class="border p-1.5">매출 차감</td><td class="border p-1.5">재고자산 차감</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="grid sm:grid-cols-2 gap-2 text-[11px]">
+          <div class="p-2 bg-white border rounded-lg"><strong class="text-rose-700">실수 1</strong> 매출할인을 판매비와관리비로 처리 ✗ → <strong>매출 차감</strong></div>
+          <div class="p-2 bg-white border rounded-lg"><strong class="text-rose-700">실수 2</strong> 에누리에도 원가 환원 분개 ✗ → 반품일 때만</div>
+          <div class="p-2 bg-white border rounded-lg"><strong class="text-rose-700">실수 3</strong> 할인액을 반품 전 총액 기준으로 계산 ✗ → <strong>남은 잔액 × 할인율</strong></div>
+          <div class="p-2 bg-white border rounded-lg"><strong class="text-rose-700">실수 4</strong> 순매출액 계산 때 매출운임까지 차감 ✗ → 운송비는 판매비</div>
+        </div>
+        <p class="text-[10px] text-slate-500">* K-IFRS 제1115호에서도 에누리·할인처럼 대가가 줄어드는 부분은 수익에서 차감합니다(변동대가). 자세한 내용은 Ch.06 수익인식에서 다룹니다.</p>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3">
+        교재 [표 5-5] 상품매매거래시의 부수적인 항목 요약을 판매자·구매자 열로 나누어 다시 정리했습니다.
+      </div>
+    </div>
+
+    <!-- Slide 9: 3차시 핵심 요약 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-9">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 09 / 10</span>
+        <span>핵심 요약 (Takeaways)</span>
+      </div>
+      <div class="my-auto space-y-3.5">
+        <h3 class="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
+          <i class="fa-solid fa-bookmark text-blue-600"></i> 3차시 핵심 정리
+        </h3>
+        <div class="space-y-2 text-xs sm:text-sm">
+          <div class="p-3 bg-slate-50 border rounded-xl flex items-start gap-2.5">
+            <span class="bg-rose-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs shrink-0 mt-0.5 font-bold">1</span>
+            <div>
+              <strong>환입과 에누리:</strong> 판매자는 "매출에누리와 환입"(매출 차감), 구매자는 재고자산 차감. 반품(환입)일 때만 판매자가 (차) 재고자산 / (대) 매출원가로 원가를 되돌림.
+            </div>
+          </div>
+          <div class="p-3 bg-slate-50 border rounded-xl flex items-start gap-2.5">
+            <span class="bg-rose-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs shrink-0 mt-0.5 font-bold">2</span>
+            <div>
+              <strong>할인:</strong> 2/10, n/30이면 10일 안 결제 시 남은 잔액의 2% 할인. 판매자 매출할인(매출 차감), 구매자 재고자산 차감.
+            </div>
+          </div>
+          <div class="p-3 bg-slate-50 border rounded-xl flex items-start gap-2.5">
+            <span class="bg-rose-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs shrink-0 mt-0.5 font-bold">3</span>
+            <div>
+              <strong>순액 계산:</strong> 순매출액 = 총매출 − 에누리와 환입 − 매출할인. 재고자산 취득원가 = 총매입 − 에누리와 환출 − 매입할인 + 매입운임.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3">
+        다음 10주차: 상품매매회사의 결산(수정분개·마감)과 실지재고조사법의 매출원가 산정, 매출총이익률
+      </div>
+    </div>
+
+    <!-- Slide 10: 인터랙티브 퀴즈 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-10">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded border border-emerald-200">SLIDE 10 / 10 · 퀴즈</span>
+        <span>3차시 점검</span>
+      </div>
+      <div class="my-auto">
+        <h3 class="text-base sm:text-lg font-bold text-slate-900 mb-2 flex items-center gap-2">
+          <i class="fa-solid fa-circle-question text-emerald-600"></i> [자가진단 퀴즈]
+        </h3>
+        <div class="bg-slate-50 p-4 rounded-xl border mb-3">
+          <p class="text-xs sm:text-sm font-bold text-slate-800 mb-2">
+            Q. 총매출액 5,000,000원, 매출환입 200,000원, 매출에누리 100,000원, 매출할인 94,000원, 매출운임(판매자 부담) 50,000원일 때 순매출액은?
+          </p>
+          <div class="space-y-1.5">
+            <button onclick="checkQuiz(1, 'A', this)" class="q-btn-1 w-full text-left p-2.5 bg-white border rounded text-xs hover:bg-slate-100 transition">
+              A) 4,556,000원
+            </button>
+            <button onclick="checkQuiz(1, 'B', this)" class="q-btn-1 w-full text-left p-2.5 bg-white border rounded text-xs hover:bg-slate-100 transition">
+              B) 4,606,000원
+            </button>
+            <button onclick="checkQuiz(1, 'C', this)" class="q-btn-1 w-full text-left p-2.5 bg-white border rounded text-xs hover:bg-slate-100 transition">
+              C) 4,700,000원
+            </button>
+          </div>
+          <div id="q-feedback-1" class="hidden mt-2 p-2 rounded text-xs"></div>
+        </div>
+        <div class="p-3 bg-amber-50 border border-amber-200 rounded-xl text-center text-xs text-amber-950">
+          🎉 9주차 강의를 모두 마쳤습니다! <strong>[9주차 실습과제]</strong>를 풀고 구글 시트로 제출하세요.
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3 flex justify-between">
+        <span>9주차 3차시 완료</span><a href="exercise_09.html" class="text-blue-600 font-bold hover:underline flex items-center gap-1"><span>실습과제 이동</span> <i class="fa-solid fa-arrow-right"></i></a>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- 하단 푸터 -->
+  <footer class="text-center py-3 text-slate-400 text-xs border-t bg-white no-print">
+    수원대학교 경영공학대학 회계원리 © 2026
+  </footer>
+
+  <script>
+    let currentPage = 1;
+    const totalPages = 10;
+
+    function goToPage(page) {
+      if (page < 1 || page > totalPages) return;
+      document.querySelectorAll('.slide-page').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.page-btn').forEach(d => d.classList.remove('active'));
+
+      const target = document.getElementById(`page-${page}`);
+      if (target) target.classList.add('active');
+
+      const btns = document.querySelectorAll('.page-btn');
+      if (btns[page - 1]) btns[page - 1].classList.add('active');
+
+      currentPage = page;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function nextPage() { if (currentPage < totalPages) goToPage(currentPage + 1); }
+    function prevPage() { if (currentPage > 1) goToPage(currentPage - 1); }
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === 'PageDown') nextPage();
+      if (e.key === 'ArrowLeft' || e.key === 'PageUp') prevPage();
+    });
+
+    const quizAnswers = {"1": {"ans": "B", "exp": "5,000,000 − 200,000(환입) − 100,000(에누리) − 94,000(할인) = 4,606,000원. 매출운임은 판매비와관리비이므로 매출에서 빼지 않습니다(빼면 A). 매출할인을 빠뜨리면 C가 됩니다."}};
+
+    function checkQuiz(qNum, choice, btn) {
+      const btns = document.querySelectorAll(`.q-btn-${qNum}`);
+      const fb = document.getElementById(`q-feedback-${qNum}`);
+      btns.forEach(b => { b.className = `q-btn-${qNum} w-full text-left p-2.5 bg-white border rounded text-xs transition`; });
+      fb.classList.remove('hidden');
+
+      if (choice === quizAnswers[qNum].ans) {
+        btn.classList.add('bg-emerald-100', 'border-emerald-500', 'text-emerald-900', 'font-bold');
+        fb.className = "text-xs mt-2 p-2 rounded bg-emerald-50 text-emerald-900 border border-emerald-200 block";
+        fb.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-600 mr-1"></i> <strong>정답입니다!</strong> ${quizAnswers[qNum].exp}`;
+      } else {
+        btn.classList.add('bg-rose-100', 'border-rose-500', 'text-rose-900');
+        fb.className = "text-xs mt-2 p-2 rounded bg-rose-50 text-rose-900 border border-rose-200 block";
+        fb.innerHTML = `<i class="fa-solid fa-circle-xmark text-rose-600 mr-1"></i> <strong>오답입니다!</strong> ${quizAnswers[qNum].exp}`;
+      }
+    }
+  </script>
+</body>
+</html>
