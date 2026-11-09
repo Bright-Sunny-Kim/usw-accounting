@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>[10주차 3차시] 매출총이익률과 Ch.05 종합 | 수원대학교 회계원리</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Noto Sans KR', sans-serif; }
+    .slide-page { display: none; }
+    .slide-page.active { display: flex; animation: fadeIn 0.25s ease-in-out; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+    .page-btn.active { background-color: #2563eb !important; color: white !important; font-weight: bold; border-color: #1d4ed8 !important; }
+    /* 장부·표 공통 */
+    .tb td, .tb th { border: 1px solid #e2e8f0; padding: 4px 6px; }
+    .tb td.n { text-align: right; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+    .ws td, .ws th { padding: 3px 3px; letter-spacing: -0.03em; }
+    .ws td.n { font-size: 9.5px; }
+    @media print { .ws { font-size: 8px !important; } }
+    .tacc { border-collapse: collapse; width: 100%; font-size: 11px; }
+    .tacc caption { font-weight: 700; padding-bottom: 2px; border-bottom: 2px solid #334155; }
+    .tacc td { padding: 2px 6px; vertical-align: top; }
+    .tacc td.l { border-right: 2px solid #334155; }
+    .tacc td.n { text-align: right; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+    .tacc tr.sum td { border-top: 1px solid #94a3b8; font-weight: 700; }
+    .je { border-collapse: collapse; width: 100%; font-size: 11px; }
+    .je td { padding: 2px 6px; }
+    .je td.n { text-align: right; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; white-space: nowrap; }
+    .je td.cr { padding-left: 22px; }
+    .je tr.sep td { border-top: 1px dashed #cbd5e1; }
+
+    @media print {
+      @page { size: A4 landscape; margin: 10mm 12mm; }
+      body { background-color: #ffffff !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; padding: 0 !important; }
+      header, .no-print, #top-nav-controller { display: none !important; }
+      main { max-width: 100% !important; padding: 0 !important; margin: 0 !important; }
+      .slide-page { display: block !important; opacity: 1 !important; page-break-after: always !important; break-after: page !important; min-height: 180mm !important; margin-bottom: 0 !important; border: 1px solid #cbd5e1 !important; border-radius: 12px !important; padding: 24px 28px !important; }
+    }
+  </style>
+</head>
+<body class="bg-slate-100 text-slate-800 antialiased min-h-screen flex flex-col justify-between">
+
+  <!-- 1. 고정 상단 헤더 & 슬라이드 네비게이션 바 -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm no-print">
+    <div class="max-w-5xl mx-auto px-4 flex justify-between items-center h-12">
+      <div class="flex items-center gap-2">
+        <a href="../index.html" class="bg-blue-900 text-white text-[11px] px-2 py-0.5 rounded-full font-bold hover:bg-blue-800">수원대 회계원리</a>
+        <h1 class="font-bold text-slate-800 text-xs sm:text-sm">10주차 3차시: 매출총이익률과 Ch.05 종합</h1>
+      </div>
+      <div class="flex items-center gap-2">
+        <button onclick="window.print()" class="text-[11px] bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold px-2.5 py-1 rounded border border-slate-300 transition flex items-center gap-1">
+          <i class="fa-solid fa-print"></i> PDF/인쇄
+        </button>
+      </div>
+    </div>
+
+    <!-- 상단 1~10 퀵 이동 버튼 바 -->
+    <div id="top-nav-controller" class="border-t border-slate-100 bg-slate-50/95 py-2 px-4 shadow-inner">
+      <div class="max-w-5xl mx-auto flex items-center justify-between gap-2">
+        <button onclick="prevPage()" class="px-3 py-1.5 bg-white hover:bg-slate-100 text-slate-700 text-xs font-bold rounded-lg border border-slate-300 transition flex items-center gap-1 shrink-0">
+          <i class="fa-solid fa-chevron-left text-[10px]"></i> <span class="hidden sm:inline">이전</span>
+        </button>
+
+        <div class="flex items-center gap-1.5 overflow-x-auto py-0.5 px-1 max-w-full">
+          <button onclick="goToPage(1)" class="page-btn active w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">1</button>
+          <button onclick="goToPage(2)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">2</button>
+          <button onclick="goToPage(3)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">3</button>
+          <button onclick="goToPage(4)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">4</button>
+          <button onclick="goToPage(5)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">5</button>
+          <button onclick="goToPage(6)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">6</button>
+          <button onclick="goToPage(7)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">7</button>
+          <button onclick="goToPage(8)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">8</button>
+          <button onclick="goToPage(9)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">9</button>
+          <button onclick="goToPage(10)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">10</button>
+        </div>
+
+        <button onclick="nextPage()" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-lg transition flex items-center gap-1 shrink-0">
+          <span class="hidden sm:inline">다음</span> <i class="fa-solid fa-chevron-right text-[10px]"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- 2. 슬라이드 본문 컨테이너 -->
+  <main class="flex-1 max-w-4xl w-full mx-auto px-4 py-4 flex flex-col justify-center">
+
+    <!-- Slide 1: 표지 -->
+    <div class="slide-page active bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-1">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 01 / 10</span>
+        <span>수원대학교 경영공학대학</span>
+      </div>
+      <div class="text-center my-auto py-6">
+        <div class="inline-block p-4 bg-emerald-50 text-emerald-700 rounded-2xl mb-3 shadow-inner">
+          <i class="fa-solid fa-chart-line text-4xl"></i>
+        </div>
+        <span class="text-xs font-bold text-emerald-700 tracking-wider block mb-1">CH.05 상품매매회사의 회계순환과정 (2)</span>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mb-3">3차시: 매출총이익률과 Ch.05 종합</h2>
+        <p class="text-slate-600 text-xs sm:text-sm max-w-lg mx-auto leading-relaxed">
+          광교유통의 손익계산서에서 <strong>매출총이익률</strong>을 계산하고, 무엇이 이 비율을 움직이는지 살펴봅니다.<br>실제 유통기업 이마트와 신세계를 비교한 뒤, 9~10주차 Ch.05 전체를 한 장의 지도로 정리합니다.
+        </p>
+      </div>
+      <div class="text-center text-xs text-slate-400 border-t pt-3">
+        상단 퀵 버튼(1~10) 또는 키보드 방향키(←, →)로 이동할 수 있습니다.
+      </div>
+    </div>
+
+    <!-- Slide 2: 학습 목표 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-2">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 02 / 10</span>
+        <span>학습 목표 (50분 설계)</span>
+      </div>
+      <div class="my-auto">
+        <h3 class="text-lg sm:text-xl font-bold text-slate-900 mb-5 flex items-center gap-2">
+          <i class="fa-solid fa-bullseye text-blue-600"></i> 이번 3차시 핵심 학습 목표
+        </h3>
+        <div class="grid sm:grid-cols-3 gap-3.5">
+          <div class="p-4 bg-slate-50 border rounded-xl hover:border-blue-400 transition">
+            <span class="w-6 h-6 rounded bg-emerald-600 text-white font-bold flex items-center justify-center text-xs mb-2">1</span>
+            <h4 class="font-bold text-slate-800 text-xs sm:text-sm mb-1">매출총이익률 계산·해석</h4>
+            <p class="text-xs text-slate-600 leading-relaxed">매출총이익률과 매출원가율을 계산하고, 판매가격·매입원가·할인·감모가 비율에 미치는 영향을 설명한다.</p>
+          </div>
+          <div class="p-4 bg-slate-50 border rounded-xl hover:border-blue-400 transition">
+            <span class="w-6 h-6 rounded bg-emerald-600 text-white font-bold flex items-center justify-center text-xs mb-2">2</span>
+            <h4 class="font-bold text-slate-800 text-xs sm:text-sm mb-1">실제 기업 비교</h4>
+            <p class="text-xs text-slate-600 leading-relaxed">이마트와 신세계의 매출총이익률 차이를 사업 구조와 수익 인식 방식으로 해석한다.</p>
+          </div>
+          <div class="p-4 bg-slate-50 border rounded-xl hover:border-blue-400 transition">
+            <span class="w-6 h-6 rounded bg-emerald-600 text-white font-bold flex items-center justify-center text-xs mb-2">3</span>
+            <h4 class="font-bold text-slate-800 text-xs sm:text-sm mb-1">Ch.05 종합</h4>
+            <p class="text-xs text-slate-600 leading-relaxed">상품 매입부터 결산·마감·분석까지 상품매매회사의 회계순환과정 전체를 정리한다.</p>
+          </div>
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3 flex justify-between">
+        <span>매출총이익률과 종합</span><span>교재 Ch.05</span>
+      </div>
+    </div>
+
+    <!-- Slide 3: 매출총이익률 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-3">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 03 / 10</span>
+        <span>매출총이익률</span>
+      </div>
+      <div class="my-auto space-y-3">
+        <h3 class="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
+          <i class="fa-solid fa-percent text-emerald-600"></i> 매출총이익률 (Gross Profit Margin)
+        </h3>
+        <div class="grid sm:grid-cols-2 gap-3">
+          <div class="p-4 bg-emerald-50 border border-emerald-300 rounded-xl text-center space-y-1">
+            <div class="text-xs text-emerald-800 font-bold">공식</div>
+            <div class="text-sm font-bold">매출총이익률 = 매출총이익 ÷ 매출액(순매출액)</div>
+            <div class="text-xs text-slate-600">매출원가율 = 매출원가 ÷ 매출액 = 1 − 매출총이익률</div>
+          </div>
+          <div class="p-4 bg-white border rounded-xl text-xs space-y-1 font-mono">
+            <div class="font-sans font-bold text-slate-800">(주)광교유통 2026년</div>
+            <div>14,800,000 ÷ 40,000,000 = <strong class="text-emerald-700">37.0%</strong></div>
+            <div>25,200,000 ÷ 40,000,000 = 63.0% (매출원가율)</div>
+          </div>
+        </div>
+        <div class="grid grid-cols-3 gap-2 text-center text-[11px]">
+          <div class="p-2.5 bg-slate-50 border rounded-lg"><div class="text-slate-500">1,000원어치를 팔면</div><div class="font-bold">매출 1,000원</div></div>
+          <div class="p-2.5 bg-slate-50 border rounded-lg"><div class="text-slate-500">상품 원가로</div><div class="font-bold">630원</div></div>
+          <div class="p-2.5 bg-emerald-50 border border-emerald-300 rounded-lg"><div class="text-emerald-700">판관비·이익에 쓸 돈</div><div class="font-bold text-emerald-900">370원</div></div>
+        </div>
+        <p class="text-[11px] text-slate-500">* 분모는 반드시 <strong>순매출액</strong>입니다. 총매출액 41,000,000으로 나누면 (41,000,000 − 25,200,000) ÷ 41,000,000 = 38.5%로 과대 계산됩니다.</p>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3">
+        교재 Ch.05 "회계정보의 활용"의 지표입니다. 마진이 판매가격에 얼마나 붙어 있는지를 보여 줍니다.
+      </div>
+    </div>
+
+    <!-- Slide 4: 매출총이익률을 움직이는 요인 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-4">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 04 / 10</span>
+        <span>매출총이익률을 움직이는 요인</span>
+      </div>
+      <div class="my-auto space-y-3">
+        <h3 class="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
+          <i class="fa-solid fa-sliders text-emerald-600"></i> 9~10주차에 배운 거래가 비율을 어떻게 바꾸나
+        </h3>
+        <div class="overflow-x-auto">
+          <table class="w-full text-[11px] border-collapse border border-slate-200">
+            <thead class="bg-slate-100 text-center"><tr><th class="border p-1.5">사건</th><th class="border p-1.5">영향을 받는 곳</th><th class="border p-1.5">매출총이익률</th></tr></thead>
+            <tbody>
+              <tr><td class="border p-1.5">판매가격 인상</td><td class="border p-1.5">매출액 ↑</td><td class="border p-1.5 text-center text-emerald-700 font-bold">↑</td></tr>
+              <tr><td class="border p-1.5">통합 매입·대량 구매로 매입단가 인하</td><td class="border p-1.5">매출원가 ↓</td><td class="border p-1.5 text-center text-emerald-700 font-bold">↑</td></tr>
+              <tr><td class="border p-1.5">매출에누리·환입·매출할인 증가</td><td class="border p-1.5">순매출액 ↓ (원가는 그대로)</td><td class="border p-1.5 text-center text-rose-700 font-bold">↓</td></tr>
+              <tr><td class="border p-1.5">재고 감모·파손 증가</td><td class="border p-1.5">매출원가 ↑ (광교유통 37.5% → 37.0%)</td><td class="border p-1.5 text-center text-rose-700 font-bold">↓</td></tr>
+              <tr><td class="border p-1.5">FOB 매입운임 증가</td><td class="border p-1.5">재고 원가 ↑ → 팔리면 매출원가 ↑</td><td class="border p-1.5 text-center text-rose-700 font-bold">↓</td></tr>
+              <tr><td class="border p-1.5">DAP 판매운임(운송비) 증가</td><td class="border p-1.5">판매비와관리비 ↑</td><td class="border p-1.5 text-center font-bold">변화 없음</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="p-3 bg-emerald-50 border border-emerald-200 rounded-xl text-xs text-slate-700 leading-relaxed">
+          🎯 마지막 줄이 함정입니다. 판매운임은 <strong>매출총이익 아래</strong>(판매비와관리비)에서 빠지므로 매출총이익률은 그대로이고 <strong>영업이익률</strong>만 낮아집니다.
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3">
+        시험에서는 "다음 중 매출총이익률에 영향을 주지 않는 것은?" 형태로 자주 나옵니다.
+      </div>
+    </div>
+
+    <!-- Slide 5: [실제 기업] 이마트 vs 신세계 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-5">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 05 / 10</span>
+        <span>[실제 기업] 이마트 vs 신세계</span>
+      </div>
+      <div class="my-auto space-y-3">
+        <h3 class="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
+          <i class="fa-solid fa-building text-emerald-600"></i> 같은 유통업, 매출총이익률은 두 배 차이
+        </h3>
+        <div class="overflow-x-auto">
+          <table class="w-full text-[11px] border-collapse border border-slate-200">
+            <thead class="bg-slate-100 text-center"><tr><th class="border p-1.5">회사 (연결)</th><th class="border p-1.5">연도</th><th class="border p-1.5">매출액 (억원)</th><th class="border p-1.5">매출총이익 (억원)</th><th class="border p-1.5">매출총이익률</th></tr></thead>
+            <tbody><tr><td class="border p-1.5 font-bold">이마트</td><td class="border p-1.5 text-center">2024</td><td class="border p-1.5 text-right font-mono">290,209</td><td class="border p-1.5 text-right font-mono">90,411</td><td class="border p-1.5 text-center font-bold text-sky-700">31.2%</td></tr><tr><td class="border p-1.5 font-bold">이마트</td><td class="border p-1.5 text-center">2025</td><td class="border p-1.5 text-right font-mono">289,704</td><td class="border p-1.5 text-right font-mono">90,930</td><td class="border p-1.5 text-center font-bold text-sky-700">31.4%</td></tr><tr><td class="border p-1.5 font-bold">신세계</td><td class="border p-1.5 text-center">2024</td><td class="border p-1.5 text-right font-mono">65,704</td><td class="border p-1.5 text-right font-mono">40,524</td><td class="border p-1.5 text-center font-bold text-rose-700">61.7%</td></tr><tr><td class="border p-1.5 font-bold">신세계</td><td class="border p-1.5 text-center">2025</td><td class="border p-1.5 text-right font-mono">69,295</td><td class="border p-1.5 text-right font-mono">41,935</td><td class="border p-1.5 text-center font-bold text-rose-700">60.5%</td></tr></tbody>
+          </table>
+        </div>
+        <div class="grid sm:grid-cols-2 gap-3 text-xs">
+          <div class="p-3 bg-sky-50 border border-sky-200 rounded-xl leading-relaxed">
+            <strong>이마트 (할인점·트레이더스)</strong> — 생필품을 직접 사서(직매입) 싸게 많이 팝니다. 매출원가가 커서 비율이 30%대. 2025년에는 통합 매입으로 원가를 낮춰 소폭 올랐습니다.
+          </div>
+          <div class="p-3 bg-rose-50 border border-rose-200 rounded-xl leading-relaxed">
+            <strong>신세계 (백화점·면세점)</strong> — 백화점은 입점 브랜드 상품을 팔고 <strong>수수료만 수익으로 인식</strong>하는 거래(특약매입)가 많아 매출원가가 작고 비율이 60% 안팎입니다.
+          </div>
+        </div>
+        <p class="text-[10px] text-slate-500">* 자료: 이마트 2025년 사업보고서(연결 손익계산서), 신세계 2025년 연결 실적 공시 및 증권사 요약 재무제표의 매출원가. 억원 미만 반올림. 교재의 2024년 수치(이마트 31.15%, 신세계 61.68%)와 같은 방법으로 계산했습니다.</p>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3">
+        14주차 DART 실습에서 두 회사의 사업보고서를 직접 열어 매출원가와 판매비와관리비를 확인해 봅니다.
+      </div>
+    </div>
+
+    <!-- Slide 6: [참고] 매출총이익률로 재고 추정하기 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-6">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 06 / 10</span>
+        <span>[참고] 매출총이익률로 재고 추정하기</span>
+      </div>
+      <div class="my-auto space-y-3">
+        <h3 class="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
+          <i class="fa-solid fa-fire-extinguisher text-emerald-600"></i> [참고] 창고에 불이 났다면 — 매출총이익률법
+        </h3>
+        <p class="text-xs text-slate-600 leading-relaxed">실지재고조사법을 쓰는 회사가 실사 전에 화재로 재고를 잃으면, 과거의 안정적인 매출총이익률로 기말재고를 <strong>추정</strong>할 수 있습니다. (보험금 청구·분기 결산에서 사용)</p>
+        <div class="grid sm:grid-cols-2 gap-3">
+          <div class="p-3 bg-white border rounded-xl">
+            <table class="tb w-full text-[11px]">
+              <tr><td>기초재고</td><td class="n">2,000,000</td></tr>
+              <tr><td>(+) 당기 순매입</td><td class="n">8,000,000</td></tr>
+              <tr class="font-bold"><td>판매가능액</td><td class="n">10,000,000</td></tr>
+              <tr><td>(−) 추정 매출원가 = 순매출 9,000,000 × (1 − 40%)</td><td class="n">5,400,000</td></tr>
+              <tr class="bg-emerald-50 font-bold"><td>추정 기말재고 (화재 손실액)</td><td class="n">4,600,000</td></tr>
+            </table>
+          </div>
+          <div class="p-3 bg-emerald-50 border border-emerald-200 rounded-xl text-xs leading-relaxed space-y-1.5">
+            <div><strong>핵심 아이디어:</strong> 매출액은 기록이 남아 있으므로, 매출원가율(1 − 매출총이익률)을 곱하면 매출원가를 추정할 수 있습니다.</div>
+            <div><strong>한계:</strong> 과거 비율이 올해도 같다는 가정에 의존하므로 재무제표의 정식 측정 방법은 아닙니다.</div>
+          </div>
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3">
+        교재 본문 범위 밖의 응용입니다. 시험에는 출제하지 않으며, 매출총이익률이 실무에서 어떻게 쓰이는지 보여 주는 예입니다.
+      </div>
+    </div>
+
+    <!-- Slide 7: Ch.05 전체 지도 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-7">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 07 / 10</span>
+        <span>Ch.05 전체 지도</span>
+      </div>
+      <div class="my-auto space-y-3">
+        <h3 class="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
+          <i class="fa-solid fa-map text-emerald-600"></i> 상품매매회사의 회계순환과정 — 9~10주차 한눈에
+        </h3>
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 text-[11px]">
+          <div class="p-2.5 bg-teal-50 border border-teal-300 rounded-lg"><div class="text-teal-700 font-bold">9주차 1차시</div><div class="font-bold">손익구조·재고기록법</div><div class="text-slate-600">매출원가 = 기초 + 매입 − 기말 · 계속기록법 vs 실지법</div></div>
+          <div class="p-2.5 bg-sky-50 border border-sky-300 rounded-lg"><div class="text-sky-700 font-bold">9주차 2차시</div><div class="font-bold">매입·매출 기록</div><div class="text-slate-600">매출 = 분개 2개 · 상품 vs 비품 · FOB/DAP 운임</div></div>
+          <div class="p-2.5 bg-rose-50 border border-rose-300 rounded-lg"><div class="text-rose-700 font-bold">9주차 3차시</div><div class="font-bold">환입·에누리·할인</div><div class="text-slate-600">순매출액 · 순매입액 + 매입운임 = 취득원가</div></div>
+          <div class="p-2.5 bg-cyan-50 border border-cyan-300 rounded-lg"><div class="text-cyan-700 font-bold">10주차 1차시</div><div class="font-bold">결산·재무제표</div><div class="text-slate-600">매출 차감 정리 · 감모 반영 · 다단계 손익계산서</div></div>
+          <div class="p-2.5 bg-violet-50 border border-violet-300 rounded-lg"><div class="text-violet-700 font-bold">10주차 2차시</div><div class="font-bold">마감·실지법</div><div class="text-slate-600">매출원가 마감 · 기초 제거/기말 계상/매입 대체</div></div>
+          <div class="p-2.5 bg-emerald-50 border border-emerald-300 rounded-lg"><div class="text-emerald-700 font-bold">10주차 3차시</div><div class="font-bold">분석</div><div class="text-slate-600">매출총이익률 · 실제 기업 비교</div></div>
+        </div>
+        <div class="p-3 bg-slate-800 text-white rounded-xl text-xs font-mono text-center leading-relaxed">
+          매입(재고자산↑) → 판매(매출 / 매출원가) → 환입·에누리·할인 → 결산 수정 → 수정후시산표 → 재무제표 → 마감 → 다음 해 기초재고
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3">
+        이 흐름은 4~8주차 서비스업 회계순환과정과 같습니다. 상품(재고자산)이라는 계정 하나가 더해졌을 뿐입니다.
+      </div>
+    </div>
+
+    <!-- Slide 8: 기말고사 대비 핵심 공식 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-8">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 08 / 10</span>
+        <span>기말고사 대비 핵심 공식</span>
+      </div>
+      <div class="my-auto space-y-3">
+        <h3 class="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
+          <i class="fa-solid fa-id-card text-emerald-600"></i> Ch.05 공식 카드 6장
+        </h3>
+        <div class="grid sm:grid-cols-2 gap-2 text-[11px]">
+          <div class="p-2.5 bg-white border rounded-lg"><strong class="text-emerald-700">①</strong> 매출원가 = 기초재고 + 당기순매입 − 기말재고</div>
+          <div class="p-2.5 bg-white border rounded-lg"><strong class="text-emerald-700">②</strong> 순매출액 = 총매출 − 매출에누리와 환입 − 매출할인 <span class="text-slate-500">(매출운임은 빼지 않음)</span></div>
+          <div class="p-2.5 bg-white border rounded-lg"><strong class="text-emerald-700">③</strong> 취득원가 = 총매입 − 매입에누리와 환출 − 매입할인 + 매입운임</div>
+          <div class="p-2.5 bg-white border rounded-lg"><strong class="text-emerald-700">④</strong> 할인액 = (반품·에누리 후 잔액) × 할인율, 할인기간 안 결제일 때만</div>
+          <div class="p-2.5 bg-white border rounded-lg"><strong class="text-emerald-700">⑤</strong> 계속기록법 판매 = (매출채권/매출) + (매출원가/재고자산), 반품이면 둘 다 되돌림</div>
+          <div class="p-2.5 bg-white border rounded-lg"><strong class="text-emerald-700">⑥</strong> 매출총이익률 = (순매출 − 매출원가) ÷ 순매출</div>
+        </div>
+        <div class="p-3 bg-emerald-50 border border-emerald-200 rounded-xl text-xs text-slate-700 leading-relaxed">
+          📌 기말고사(15주차)는 Ch.05·14·15와 전범위입니다. Ch.05는 <strong>분개(판매자·구매자)</strong>와 <strong>계산(순매출·취득원가·매출원가·매출총이익률)</strong>이 핵심입니다.
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3">
+        다음 11주차부터 Ch.14 현금흐름표로 넘어갑니다. 매출채권·재고자산·매입채무의 증감이 현금흐름표에서 다시 등장합니다.
+      </div>
+    </div>
+
+    <!-- Slide 9: 3차시 핵심 요약 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-9">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 09 / 10</span>
+        <span>핵심 요약 (Takeaways)</span>
+      </div>
+      <div class="my-auto space-y-3.5">
+        <h3 class="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
+          <i class="fa-solid fa-bookmark text-blue-600"></i> 3차시 핵심 정리
+        </h3>
+        <div class="space-y-2 text-xs sm:text-sm">
+          <div class="p-3 bg-slate-50 border rounded-xl flex items-start gap-2.5">
+            <span class="bg-emerald-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs shrink-0 mt-0.5 font-bold">1</span>
+            <div>
+              <strong>매출총이익률:</strong> 매출총이익 ÷ 순매출액. 광교유통 37.0%(매출원가율 63.0%). 판매가격·매입원가·환입·할인·감모·매입운임이 영향, 판매운임은 영향 없음.
+            </div>
+          </div>
+          <div class="p-3 bg-slate-50 border rounded-xl flex items-start gap-2.5">
+            <span class="bg-emerald-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs shrink-0 mt-0.5 font-bold">2</span>
+            <div>
+              <strong>실제 기업:</strong> 이마트 2025년 약 31%, 신세계 약 60%. 직매입 중심 할인점과 수수료(순액) 매출이 많은 백화점의 사업 구조 차이가 비율에 드러남.
+            </div>
+          </div>
+          <div class="p-3 bg-slate-50 border rounded-xl flex items-start gap-2.5">
+            <span class="bg-emerald-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs shrink-0 mt-0.5 font-bold">3</span>
+            <div>
+              <strong>Ch.05 종합:</strong> 매입 → 판매 → 부수 항목 → 결산 → 마감 → 분석. 서비스업 순환과정에 재고자산·매출원가가 더해진 구조.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3">
+        다음 11주차: Ch.14 현금흐름표 (1) — 영업·투자·재무활동
+      </div>
+    </div>
+
+    <!-- Slide 10: 인터랙티브 퀴즈 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-10">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded border border-emerald-200">SLIDE 10 / 10 · 퀴즈</span>
+        <span>3차시 점검</span>
+      </div>
+      <div class="my-auto">
+        <h3 class="text-base sm:text-lg font-bold text-slate-900 mb-2 flex items-center gap-2">
+          <i class="fa-solid fa-circle-question text-emerald-600"></i> [자가진단 퀴즈]
+        </h3>
+        <div class="bg-slate-50 p-4 rounded-xl border mb-3">
+          <p class="text-xs sm:text-sm font-bold text-slate-800 mb-2">
+            Q. 총매출액 52,000,000원, 매출에누리와 환입 1,500,000원, 매출할인 500,000원, 매출원가 35,000,000원일 때 매출총이익률은?
+          </p>
+          <div class="space-y-1.5">
+            <button onclick="checkQuiz(1, 'A', this)" class="q-btn-1 w-full text-left p-2.5 bg-white border rounded text-xs hover:bg-slate-100 transition">
+              A) 30.0%
+            </button>
+            <button onclick="checkQuiz(1, 'B', this)" class="q-btn-1 w-full text-left p-2.5 bg-white border rounded text-xs hover:bg-slate-100 transition">
+              B) 32.7%
+            </button>
+            <button onclick="checkQuiz(1, 'C', this)" class="q-btn-1 w-full text-left p-2.5 bg-white border rounded text-xs hover:bg-slate-100 transition">
+              C) 70.0%
+            </button>
+          </div>
+          <div id="q-feedback-1" class="hidden mt-2 p-2 rounded text-xs"></div>
+        </div>
+        <div class="p-3 bg-amber-50 border border-amber-200 rounded-xl text-center text-xs text-amber-950">
+          🎉 10주차 강의를 모두 마쳤습니다! <strong>[10주차 실습과제]</strong>를 풀고 구글 시트로 제출하세요.
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3 flex justify-between">
+        <span>10주차 3차시 완료</span><a href="exercise_10.html" class="text-blue-600 font-bold hover:underline flex items-center gap-1"><span>실습과제 이동</span> <i class="fa-solid fa-arrow-right"></i></a>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- 하단 푸터 -->
+  <footer class="text-center py-3 text-slate-400 text-xs border-t bg-white no-print">
+    수원대학교 경영공학대학 회계원리 © 2026
+  </footer>
+
+  <script>
+    let currentPage = 1;
+    const totalPages = 10;
+
+    function goToPage(page) {
+      if (page < 1 || page > totalPages) return;
+      document.querySelectorAll('.slide-page').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.page-btn').forEach(d => d.classList.remove('active'));
+
+      const target = document.getElementById(`page-${page}`);
+      if (target) target.classList.add('active');
+
+      const btns = document.querySelectorAll('.page-btn');
+      if (btns[page - 1]) btns[page - 1].classList.add('active');
+
+      currentPage = page;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function nextPage() { if (currentPage < totalPages) goToPage(currentPage + 1); }
+    function prevPage() { if (currentPage > 1) goToPage(currentPage - 1); }
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === 'PageDown') nextPage();
+      if (e.key === 'ArrowLeft' || e.key === 'PageUp') prevPage();
+    });
+
+    const quizAnswers = {"1": {"ans": "A", "exp": "순매출액 50,000,000(52,000,000 − 1,500,000 − 500,000) − 매출원가 35,000,000 = 매출총이익 15,000,000 → 15,000,000 ÷ 50,000,000 = 30.0%. 총매출액으로 계산하면 B(32.7%), C(70.0%)는 매출원가율입니다."}};
+
+    function checkQuiz(qNum, choice, btn) {
+      const btns = document.querySelectorAll(`.q-btn-${qNum}`);
+      const fb = document.getElementById(`q-feedback-${qNum}`);
+      btns.forEach(b => { b.className = `q-btn-${qNum} w-full text-left p-2.5 bg-white border rounded text-xs transition`; });
+      fb.classList.remove('hidden');
+
+      if (choice === quizAnswers[qNum].ans) {
+        btn.classList.add('bg-emerald-100', 'border-emerald-500', 'text-emerald-900', 'font-bold');
+        fb.className = "text-xs mt-2 p-2 rounded bg-emerald-50 text-emerald-900 border border-emerald-200 block";
+        fb.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-600 mr-1"></i> <strong>정답입니다!</strong> ${quizAnswers[qNum].exp}`;
+      } else {
+        btn.classList.add('bg-rose-100', 'border-rose-500', 'text-rose-900');
+        fb.className = "text-xs mt-2 p-2 rounded bg-rose-50 text-rose-900 border border-rose-200 block";
+        fb.innerHTML = `<i class="fa-solid fa-circle-xmark text-rose-600 mr-1"></i> <strong>오답입니다!</strong> ${quizAnswers[qNum].exp}`;
+      }
+    }
+  </script>
+</body>
+</html>
