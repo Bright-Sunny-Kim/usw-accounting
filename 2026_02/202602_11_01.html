@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>[11주차 1차시] 이익과 현금은 왜 다른가 | 수원대학교 회계원리</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Noto Sans KR', sans-serif; }
+    .slide-page { display: none; }
+    .slide-page.active { display: flex; animation: fadeIn 0.25s ease-in-out; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+    .page-btn.active { background-color: #2563eb !important; color: white !important; font-weight: bold; border-color: #1d4ed8 !important; }
+    /* 장부·표 공통 */
+    .tb td, .tb th { border: 1px solid #e2e8f0; padding: 4px 6px; }
+    .tb td.n { text-align: right; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+    .ws td, .ws th { padding: 3px 3px; letter-spacing: -0.03em; }
+    .ws td.n { font-size: 9.5px; }
+    @media print { .ws { font-size: 8px !important; } }
+    .tacc { border-collapse: collapse; width: 100%; font-size: 11px; }
+    .tacc caption { font-weight: 700; padding-bottom: 2px; border-bottom: 2px solid #334155; }
+    .tacc td { padding: 2px 6px; vertical-align: top; }
+    .tacc td.l { border-right: 2px solid #334155; }
+    .tacc td.n { text-align: right; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+    .tacc tr.sum td { border-top: 1px solid #94a3b8; font-weight: 700; }
+    .je { border-collapse: collapse; width: 100%; font-size: 11px; }
+    .je td { padding: 2px 6px; }
+    .je td.n { text-align: right; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; white-space: nowrap; }
+    .je td.cr { padding-left: 22px; }
+    .je tr.sep td { border-top: 1px dashed #cbd5e1; }
+
+    @media print {
+      @page { size: A4 landscape; margin: 10mm 12mm; }
+      body { background-color: #ffffff !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; padding: 0 !important; }
+      header, .no-print, #top-nav-controller { display: none !important; }
+      main { max-width: 100% !important; padding: 0 !important; margin: 0 !important; }
+      .slide-page { display: block !important; opacity: 1 !important; page-break-after: always !important; break-after: page !important; min-height: 180mm !important; margin-bottom: 0 !important; border: 1px solid #cbd5e1 !important; border-radius: 12px !important; padding: 24px 28px !important; }
+    }
+  </style>
+</head>
+<body class="bg-slate-100 text-slate-800 antialiased min-h-screen flex flex-col justify-between">
+
+  <!-- 1. 고정 상단 헤더 & 슬라이드 네비게이션 바 -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm no-print">
+    <div class="max-w-5xl mx-auto px-4 flex justify-between items-center h-12">
+      <div class="flex items-center gap-2">
+        <a href="../index.html" class="bg-blue-900 text-white text-[11px] px-2 py-0.5 rounded-full font-bold hover:bg-blue-800">수원대 회계원리</a>
+        <h1 class="font-bold text-slate-800 text-xs sm:text-sm">11주차 1차시: 이익과 현금은 왜 다른가</h1>
+      </div>
+      <div class="flex items-center gap-2">
+        <button onclick="window.print()" class="text-[11px] bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold px-2.5 py-1 rounded border border-slate-300 transition flex items-center gap-1">
+          <i class="fa-solid fa-print"></i> PDF/인쇄
+        </button>
+      </div>
+    </div>
+
+    <!-- 상단 1~10 퀵 이동 버튼 바 -->
+    <div id="top-nav-controller" class="border-t border-slate-100 bg-slate-50/95 py-2 px-4 shadow-inner">
+      <div class="max-w-5xl mx-auto flex items-center justify-between gap-2">
+        <button onclick="prevPage()" class="px-3 py-1.5 bg-white hover:bg-slate-100 text-slate-700 text-xs font-bold rounded-lg border border-slate-300 transition flex items-center gap-1 shrink-0">
+          <i class="fa-solid fa-chevron-left text-[10px]"></i> <span class="hidden sm:inline">이전</span>
+        </button>
+
+        <div class="flex items-center gap-1.5 overflow-x-auto py-0.5 px-1 max-w-full">
+          <button onclick="goToPage(1)" class="page-btn active w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">1</button>
+          <button onclick="goToPage(2)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">2</button>
+          <button onclick="goToPage(3)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">3</button>
+          <button onclick="goToPage(4)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">4</button>
+          <button onclick="goToPage(5)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">5</button>
+          <button onclick="goToPage(6)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">6</button>
+          <button onclick="goToPage(7)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">7</button>
+          <button onclick="goToPage(8)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">8</button>
+          <button onclick="goToPage(9)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">9</button>
+          <button onclick="goToPage(10)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">10</button>
+        </div>
+
+        <button onclick="nextPage()" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-lg transition flex items-center gap-1 shrink-0">
+          <span class="hidden sm:inline">다음</span> <i class="fa-solid fa-chevron-right text-[10px]"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- 2. 슬라이드 본문 컨테이너 -->
+  <main class="flex-1 max-w-4xl w-full mx-auto px-4 py-4 flex flex-col justify-center">
+
+    <!-- Slide 1: 표지 -->
+    <div class="slide-page active bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-1">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 01 / 10</span>
+        <span>수원대학교 경영공학대학</span>
+      </div>
+      <div class="text-center my-auto py-6">
+        <div class="inline-block p-4 bg-teal-50 text-teal-700 rounded-2xl mb-3 shadow-inner">
+          <i class="fa-solid fa-money-bill-transfer text-4xl"></i>
+        </div>
+        <span class="text-xs font-bold text-teal-700 tracking-wider block mb-1">CH.14 현금흐름표 (1)</span>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mb-3">1차시: 이익과 현금은 왜 다른가</h2>
+        <p class="text-slate-600 text-xs sm:text-sm max-w-lg mx-auto leading-relaxed">
+          10주차에 (주)광교유통은 2026년 <strong>당기순이익 3,600,000원</strong>을 벌었습니다. 그런데 금고의 현금은 오히려 <strong>600,000원 줄었습니다.</strong><br>이 차이를 설명하는 재무제표가 <strong>현금흐름표</strong>입니다. 오늘은 현금흐름표가 왜 필요한지, 어떤 현금을 다루는지, 어떤 모양인지 살펴봅니다.
+        </p>
+      </div>
+      <div class="text-center text-xs text-slate-400 border-t pt-3">
+        상단 퀵 버튼(1~10) 또는 키보드 방향키(←, →)로 이동할 수 있습니다.
+      </div>
+    </div>
+
+    <!-- Slide 2: 학습 목표 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-2">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 02 / 10</span>
+        <span>학습 목표 (50분 설계)</span>
+      </div>
+      <div class="my-auto">
+        <h3 class="text-lg sm:text-xl font-bold text-slate-900 mb-5 flex items-center gap-2">
+          <i class="fa-solid fa-bullseye text-blue-600"></i> 이번 1차시 핵심 학습 목표
+        </h3>
+        <div class="grid sm:grid-cols-3 gap-3.5">
+          <div class="p-4 bg-slate-50 border rounded-xl hover:border-blue-400 transition">
+            <span class="w-6 h-6 rounded bg-teal-600 text-white font-bold flex items-center justify-center text-xs mb-2">1</span>
+            <h4 class="font-bold text-slate-800 text-xs sm:text-sm mb-1">이익과 현금의 차이</h4>
+            <p class="text-xs text-slate-600 leading-relaxed">발생기준 이익과 실제 현금 증감이 달라지는 이유를 광교유통 사례에서 찾아 설명한다.</p>
+          </div>
+          <div class="p-4 bg-slate-50 border rounded-xl hover:border-blue-400 transition">
+            <span class="w-6 h-6 rounded bg-teal-600 text-white font-bold flex items-center justify-center text-xs mb-2">2</span>
+            <h4 class="font-bold text-slate-800 text-xs sm:text-sm mb-1">현금및현금성자산의 범위</h4>
+            <p class="text-xs text-slate-600 leading-relaxed">현금흐름표가 다루는 "현금"에 무엇이 들어가고 무엇이 빠지는지 구분한다(취득일부터 만기 3개월 기준).</p>
+          </div>
+          <div class="p-4 bg-slate-50 border rounded-xl hover:border-blue-400 transition">
+            <span class="w-6 h-6 rounded bg-teal-600 text-white font-bold flex items-center justify-center text-xs mb-2">3</span>
+            <h4 class="font-bold text-slate-800 text-xs sm:text-sm mb-1">현금흐름표의 구조</h4>
+            <p class="text-xs text-slate-600 leading-relaxed">영업·투자·재무활동 세 칸과 기초·기말 현금의 연결을 이해하고, 다른 재무제표와의 관계를 설명한다.</p>
+          </div>
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3 flex justify-between">
+        <span>현금흐름표의 의의</span><span>교재 Ch.14</span>
+      </div>
+    </div>
+
+    <!-- Slide 3: [사례] 이익은 났는데 현금은 줄었다 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-3">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 03 / 10</span>
+        <span>[사례] 이익은 났는데 현금은 줄었다</span>
+      </div>
+      <div class="my-auto space-y-2.5">
+        <h3 class="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
+          <i class="fa-solid fa-circle-question text-teal-600"></i> (주)광교유통 비교 재무상태표 (단위: 원)
+        </h3>
+        <div class="grid sm:grid-cols-2 gap-3 text-[11px]">
+          <table class="tb w-full"><thead class="bg-slate-100"><tr><th>자산</th><th>2025.12.31</th><th>2026.12.31</th><th>증감</th></tr></thead><tbody><tr class="bg-amber-50 font-bold"><td>현금및현금성자산</td><td class="n">6,600,000</td><td class="n">6,000,000</td><td class="n"><span class="text-rose-700">−600,000</span></td></tr><tr><td>매출채권</td><td class="n">4,500,000</td><td class="n">5,500,000</td><td class="n"><span class="text-emerald-700">+1,000,000</span></td></tr><tr><td>미수금</td><td class="n">—</td><td class="n">1,000,000</td><td class="n"><span class="text-emerald-700">+1,000,000</span></td></tr><tr><td>재고자산</td><td class="n">4,000,000</td><td class="n">4,800,000</td><td class="n"><span class="text-emerald-700">+800,000</span></td></tr><tr><td>선급보험료</td><td class="n">—</td><td class="n">400,000</td><td class="n"><span class="text-emerald-700">+400,000</span></td></tr><tr><td>비품</td><td class="n">6,500,000</td><td class="n">8,000,000</td><td class="n"><span class="text-emerald-700">+1,500,000</span></td></tr><tr><td>감가상각누계액</td><td class="n">(2,300,000)</td><td class="n">(2,300,000)</td><td class="n"><span class="text-slate-400">0</span></td></tr>
+            <tr class="bg-slate-800 text-white font-bold"><td>자산총계</td><td class="n">19,300,000</td><td class="n">23,400,000</td><td class="n">+4,100,000</td></tr></tbody></table>
+          <table class="tb w-full"><thead class="bg-slate-100"><tr><th>부채·자본</th><th>2025.12.31</th><th>2026.12.31</th><th>증감</th></tr></thead><tbody><tr><td>매입채무</td><td class="n">3,000,000</td><td class="n">4,000,000</td><td class="n"><span class="text-emerald-700">+1,000,000</span></td></tr><tr><td>미지급급여</td><td class="n">—</td><td class="n">500,000</td><td class="n"><span class="text-emerald-700">+500,000</span></td></tr><tr><td>차입금</td><td class="n">7,000,000</td><td class="n">5,000,000</td><td class="n"><span class="text-rose-700">−2,000,000</span></td></tr><tr><td>자본금</td><td class="n">8,000,000</td><td class="n">10,000,000</td><td class="n"><span class="text-emerald-700">+2,000,000</span></td></tr><tr class="bg-amber-50 font-bold"><td>이익잉여금</td><td class="n">1,300,000</td><td class="n">3,900,000</td><td class="n"><span class="text-emerald-700">+2,600,000</span></td></tr>
+            <tr class="bg-slate-800 text-white font-bold"><td>부채·자본총계</td><td class="n">19,300,000</td><td class="n">23,400,000</td><td class="n">+4,100,000</td></tr></tbody></table>
+        </div>
+        <div class="grid sm:grid-cols-2 gap-2 text-xs">
+          <div class="p-2.5 bg-emerald-50 border border-emerald-300 rounded-lg"><strong>손익계산서:</strong> 당기순이익 <strong class="text-emerald-700">+3,600,000</strong> (10주차) → 이익잉여금 1,300,000 + 3,600,000 − 배당 1,000,000 = 3,900,000</div>
+          <div class="p-2.5 bg-rose-50 border border-rose-300 rounded-lg"><strong>현금:</strong> 6,600,000 → 6,000,000 = <strong class="text-rose-700">−600,000</strong>. 3,600,000을 벌었는데 왜 현금이 줄었을까?</div>
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3">
+        2025년 말 재무상태표는 이번 주를 위해 추가한 자료입니다. 2026년 말 수치는 10주차 1차시 재무상태표와 같습니다.
+      </div>
+    </div>
+
+    <!-- Slide 4: 이익과 현금이 달라지는 이유 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-4">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 04 / 10</span>
+        <span>이익과 현금이 달라지는 이유</span>
+      </div>
+      <div class="my-auto space-y-3">
+        <h3 class="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
+          <i class="fa-solid fa-magnifying-glass-dollar text-teal-600"></i> 3,600,000원과 −600,000원 사이에 있는 것들
+        </h3>
+        <div class="grid sm:grid-cols-2 gap-3 text-[11px]">
+          <div class="p-3 bg-white border rounded-xl space-y-1.5">
+            <p class="font-bold text-slate-800 text-xs">① 이익에는 들어갔지만 현금은 아직</p>
+            <div class="p-1.5 bg-slate-50 rounded">외상매출이 늘었다 — 매출채권 <strong>+1,000,000</strong> (매출은 했지만 못 받음)</div>
+            <div class="p-1.5 bg-slate-50 rounded">감가상각비 <strong>700,000</strong> — 비용이지만 현금이 나가지 않음</div>
+            <div class="p-1.5 bg-slate-50 rounded">미지급급여 <strong>+500,000</strong> — 비용이지만 아직 안 줌</div>
+            <div class="p-1.5 bg-slate-50 rounded">진열대 처분이익 <strong>200,000</strong> — 대금 1,000,000은 미수금</div>
+          </div>
+          <div class="p-3 bg-white border rounded-xl space-y-1.5">
+            <p class="font-bold text-slate-800 text-xs">② 현금은 움직였지만 이익과는 무관</p>
+            <div class="p-1.5 bg-slate-50 rounded">비품 구입 <strong>−3,000,000</strong> — 자산 취득(비용은 감가상각으로 나눠 인식)</div>
+            <div class="p-1.5 bg-slate-50 rounded">차입금 상환 <strong>−2,000,000</strong> — 빌린 돈 원금은 비용이 아님</div>
+            <div class="p-1.5 bg-slate-50 rounded">배당금 지급 <strong>−1,000,000</strong> — 이익의 분배, 비용이 아님</div>
+            <div class="p-1.5 bg-slate-50 rounded">유상증자 <strong>+2,000,000</strong> — 주주가 넣은 돈, 수익이 아님</div>
+          </div>
+        </div>
+        <div class="p-3 bg-teal-50 border border-teal-200 rounded-xl text-xs text-slate-700 leading-relaxed">
+          💡 3주차에 배운 <strong>발생기준</strong>은 "현금이 언제 오갔나"가 아니라 "수익·비용이 언제 생겼나"로 이익을 잽니다. 그래서 발생기준 재무제표만으로는 <strong>현금이 실제로 어디서 와서 어디로 갔는지</strong> 알 수 없습니다.
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3">
+        선급보험료 증가(+400,000), 재고자산 증가(+800,000), 매입채무 증가(+1,000,000)도 차이의 원인입니다. 3차시에 모두 맞춰 봅니다.
+      </div>
+    </div>
+
+    <!-- Slide 5: 현금흐름표가 필요한 이유 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-5">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 05 / 10</span>
+        <span>현금흐름표가 필요한 이유</span>
+      </div>
+      <div class="my-auto space-y-3">
+        <h3 class="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
+          <i class="fa-solid fa-triangle-exclamation text-teal-600"></i> 흑자도산 — 이익이 나도 망할 수 있다
+        </h3>
+        <div class="grid sm:grid-cols-5 gap-3">
+          <div class="sm:col-span-3 p-4 bg-rose-50 border border-rose-200 rounded-xl text-xs leading-relaxed space-y-1.5">
+            <p><strong>흑자도산</strong>: 손익계산서에는 이익이 나는데, 돌아오는 어음·차입금·급여를 갚을 현금이 없어 부도가 나는 것.</p>
+            <p>예) 외상 판매가 크게 늘면 매출과 이익은 커지지만 매출채권으로 묶여 현금은 들어오지 않습니다. 그 사이 매입대금 만기가 먼저 돌아오면 지급할 돈이 없습니다.</p>
+            <p class="font-bold text-rose-800">회사는 이익이 없어서가 아니라 현금이 없어서 망합니다.</p>
+          </div>
+          <div class="sm:col-span-2 p-4 bg-white border rounded-xl text-[11px] space-y-1.5">
+            <p class="font-bold text-slate-800 text-xs">정보이용자가 현금흐름표로 묻는 것</p>
+            <div>🏦 <strong>채권자</strong> — 빌려준 돈과 이자를 갚을 수 있나?</div>
+            <div>📈 <strong>주주</strong> — 배당을 줄 여력이 있나?</div>
+            <div>🏭 <strong>경영자</strong> — 투자 자금을 벌어서 대나, 빌려서 대나?</div>
+            <div>🔎 <strong>분석가</strong> — 이익의 질: 이익만큼 현금이 들어오나?</div>
+          </div>
+        </div>
+        <p class="text-[11px] text-slate-500">K-IFRS 제1007호 「현금흐름표」: 기업의 <strong>현금및현금성자산 창출 능력</strong>과 그 <strong>사용 필요성</strong>을 평가하는 데 필요한 정보를 제공하는 것이 목적입니다. 현금흐름표는 전체 재무제표의 하나입니다(2주차).</p>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3">
+        2주차에 본 재무제표: 재무상태표, 포괄손익계산서, 자본변동표, 현금흐름표, 주석.
+      </div>
+    </div>
+
+    <!-- Slide 6: 현금및현금성자산 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-6">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 06 / 10</span>
+        <span>현금및현금성자산</span>
+      </div>
+      <div class="my-auto space-y-2.5">
+        <h3 class="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
+          <i class="fa-solid fa-wallet text-teal-600"></i> 현금흐름표의 "현금" = 현금및현금성자산
+        </h3>
+        <div class="p-3 bg-teal-50 border border-teal-300 rounded-xl text-xs leading-relaxed">
+          <strong>현금성자산</strong>: ① 큰 거래비용 없이 확정된 금액의 현금으로 쉽게 바꿀 수 있고 ② 가치 변동 위험이 경미하며 ③ <strong>취득일부터 만기(상환일)가 3개월 이내</strong>인 투자자산
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-[11px] border-collapse border border-slate-200">
+            <thead class="bg-slate-100 text-center"><tr><th class="border p-1.5">항목</th><th class="border p-1.5 w-12">포함</th><th class="border p-1.5">이유</th></tr></thead>
+            <tbody><tr><td class="border p-1.5">지폐·동전(통화), 거래처가 발행한 당좌수표·자기앞수표</td><td class="border p-1.5 text-center font-bold text-emerald-700">O</td><td class="border p-1.5 text-slate-600">통화 및 통화대용증권</td></tr><tr><td class="border p-1.5">보통예금·당좌예금 (요구불예금)</td><td class="border p-1.5 text-center font-bold text-emerald-700">O</td><td class="border p-1.5 text-slate-600">언제든 꺼내 쓸 수 있음</td></tr><tr><td class="border p-1.5">취득 당시 만기가 2개월인 정기예금·양도성예금증서(CD)</td><td class="border p-1.5 text-center font-bold text-emerald-700">O</td><td class="border p-1.5 text-slate-600">현금성자산 (3개월 이내)</td></tr><tr><td class="border p-1.5">1년 만기 정기예금 — 결산일 현재 만기까지 1개월 남음</td><td class="border p-1.5 text-center font-bold text-rose-700">X</td><td class="border p-1.5 text-slate-600">취득일 기준 3개월 초과 → 단기금융상품</td></tr><tr><td class="border p-1.5">주식시장에서 산 상장주식</td><td class="border p-1.5 text-center font-bold text-rose-700">X</td><td class="border p-1.5 text-slate-600">가격 변동 위험이 큼</td></tr><tr><td class="border p-1.5">거래처가 발행한 선일자수표(날짜가 미래)</td><td class="border p-1.5 text-center font-bold text-rose-700">X</td><td class="border p-1.5 text-slate-600">매출채권(받을어음)</td></tr><tr><td class="border p-1.5">우표·수입인지</td><td class="border p-1.5 text-center font-bold text-rose-700">X</td><td class="border p-1.5 text-slate-600">비용 또는 소모품</td></tr></tbody>
+          </table>
+        </div>
+        <p class="text-[11px] text-slate-500">* 3개월은 <strong>결산일</strong>이 아니라 <strong>취득일</strong>부터 셉니다. * 현금 ↔ 현금성자산 사이의 이동(보통예금으로 CD 매입 등)은 현금흐름이 아닙니다 — 같은 주머니 안의 이동입니다.</p>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3">
+        은행 당좌차월은 일반적으로 차입금(재무활동)으로 봅니다. 수시로 갚고 빌리는 당좌차월을 현금의 차감으로 보는 예외는 중급회계에서 다룹니다.
+      </div>
+    </div>
+
+    <!-- Slide 7: 세 가지 활동 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-7">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 07 / 10</span>
+        <span>세 가지 활동</span>
+      </div>
+      <div class="my-auto space-y-3">
+        <h3 class="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
+          <i class="fa-solid fa-layer-group text-teal-600"></i> 현금은 세 가지 활동으로 나눠서 보여 준다
+        </h3>
+        <div class="grid sm:grid-cols-3 gap-3 text-[11px]">
+          <div class="p-3 bg-emerald-50 border border-emerald-300 rounded-xl space-y-1.5">
+            <div class="font-bold text-emerald-900 text-sm"><i class="fa-solid fa-store mr-1"></i> 영업활동</div>
+            <p>회사의 <strong>주된 수익 창출 활동</strong> — 상품을 사서 팔고, 직원에게 급여를 주는 일</p>
+            <p class="text-slate-500">광교유통: 고객에게 대금 회수, 상품 대금·급여·보험료 지급</p>
+            <p class="p-1.5 bg-white rounded">👤 나라면: 아르바이트 월급, 식비·교통비</p>
+          </div>
+          <div class="p-3 bg-sky-50 border border-sky-300 rounded-xl space-y-1.5">
+            <div class="font-bold text-sky-900 text-sm"><i class="fa-solid fa-industry mr-1"></i> 투자활동</div>
+            <p><strong>장기 자산</strong>과 영업 외 투자의 취득·처분 — 설비를 사고팔고, 돈을 빌려주는 일</p>
+            <p class="text-slate-500">광교유통: 비품 구입</p>
+            <p class="p-1.5 bg-white rounded">👤 나라면: 노트북 구입, 쓰던 자전거 판매</p>
+          </div>
+          <div class="p-3 bg-violet-50 border border-violet-300 rounded-xl space-y-1.5">
+            <div class="font-bold text-violet-900 text-sm"><i class="fa-solid fa-building-columns mr-1"></i> 재무활동</div>
+            <p><strong>자금 조달과 상환</strong> — 돈을 빌리고 갚고, 주주에게 받고 돌려주는 일</p>
+            <p class="text-slate-500">광교유통: 유상증자, 차입금 상환, 배당금 지급</p>
+            <p class="p-1.5 bg-white rounded">👤 나라면: 학자금 대출 받기·갚기</p>
+          </div>
+        </div>
+        <div class="p-3 bg-slate-50 border rounded-xl text-xs text-slate-700 text-center">
+          영업활동으로 <strong>번 현금</strong>으로 → 투자활동에 <strong>쓰고</strong> → 모자라면 재무활동으로 <strong>조달</strong>하고, 남으면 <strong>갚거나 돌려준다</strong>
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3">
+        각 활동의 자세한 구분 기준은 2차시에 다룹니다.
+      </div>
+    </div>
+
+    <!-- Slide 8: 현금흐름표의 모양 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-8">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 08 / 10</span>
+        <span>현금흐름표의 모양</span>
+      </div>
+      <div class="my-auto space-y-3">
+        <h3 class="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
+          <i class="fa-solid fa-diagram-project text-teal-600"></i> 현금흐름표의 뼈대와 재무상태표 연결
+        </h3>
+        <div class="grid sm:grid-cols-5 gap-3">
+          <div class="sm:col-span-3">
+            <p class="text-[11px] font-bold text-slate-700 mb-1">(주)광교유통 현금흐름표 (2026.1.1~12.31) — 요약 (단위: 원)</p>
+            <table class="tb w-full text-[11px]"><tr class="bg-emerald-50"><td>Ⅰ. 영업활동 현금흐름</td><td class="n">3,400,000</td></tr><tr class="bg-sky-50"><td>Ⅱ. 투자활동 현금흐름</td><td class="n">(3,000,000)</td></tr><tr class="bg-violet-50"><td>Ⅲ. 재무활동 현금흐름</td><td class="n">(1,000,000)</td></tr><tr class="font-bold"><td>Ⅳ. 현금및현금성자산의 순증감 (Ⅰ+Ⅱ+Ⅲ)</td><td class="n">(600,000)</td></tr><tr class=""><td>Ⅴ. 기초 현금및현금성자산</td><td class="n">6,600,000</td></tr><tr class="bg-slate-800 text-white font-bold"><td>Ⅵ. 기말 현금및현금성자산 (Ⅳ+Ⅴ)</td><td class="n">6,000,000</td></tr></table>
+            <p class="text-[10px] text-slate-500 mt-1">( ) = 현금 유출. 활동별 금액이 어떻게 나오는지는 3차시에 직접 계산합니다.</p>
+          </div>
+          <div class="sm:col-span-2 space-y-2 text-[11px]">
+            <div class="p-2.5 bg-white border rounded-lg"><strong>기간 보고서</strong> — 손익계산서처럼 "1월 1일부터 12월 31일까지"의 흐름(유량)을 보여 줍니다.</div>
+            <div class="p-2.5 bg-white border rounded-lg"><strong>재무상태표와 연결</strong> — 맨 아래 기말 현금 6,000,000은 2026년 말 재무상태표의 현금및현금성자산과 <strong>반드시 일치</strong>합니다.</div>
+            <div class="p-2.5 bg-teal-50 border border-teal-200 rounded-lg"><strong>저수지 비유</strong>(1주차) — 재무상태표가 두 시점의 수위라면, 현금흐름표는 그 사이 수도꼭지 세 개로 들어오고 나간 물의 양입니다.</div>
+          </div>
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3">
+        영업활동 3,400,000 < 당기순이익 3,600,000. 현금 감소 600,000의 원인은 영업이 아니라 투자(비품 구입)와 재무(상환·배당)에 있습니다.
+      </div>
+    </div>
+
+    <!-- Slide 9: 1차시 핵심 요약 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-9">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 09 / 10</span>
+        <span>핵심 요약 (Takeaways)</span>
+      </div>
+      <div class="my-auto space-y-3.5">
+        <h3 class="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
+          <i class="fa-solid fa-bookmark text-blue-600"></i> 1차시 핵심 정리
+        </h3>
+        <div class="space-y-2 text-xs sm:text-sm">
+          <div class="p-3 bg-slate-50 border rounded-xl flex items-start gap-2.5">
+            <span class="bg-teal-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs shrink-0 mt-0.5 font-bold">1</span>
+            <div>
+              <strong>이익 ≠ 현금:</strong> 발생기준 이익에는 외상 매출·감가상각 같은 비현금 항목이 들어가고, 자산 구입·차입·상환·배당 같은 현금 이동은 빠집니다. 광교유통은 순이익 3,600,000인데 현금은 600,000 감소.
+            </div>
+          </div>
+          <div class="p-3 bg-slate-50 border rounded-xl flex items-start gap-2.5">
+            <span class="bg-teal-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs shrink-0 mt-0.5 font-bold">2</span>
+            <div>
+              <strong>현금및현금성자산:</strong> 통화·요구불예금 + 취득일부터 만기 3개월 이내이고 가치 변동이 작은 투자자산. 3개월은 취득일 기준, 주식은 제외.
+            </div>
+          </div>
+          <div class="p-3 bg-slate-50 border rounded-xl flex items-start gap-2.5">
+            <span class="bg-teal-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs shrink-0 mt-0.5 font-bold">3</span>
+            <div>
+              <strong>구조:</strong> 영업 + 투자 + 재무 = 순증감, 기초 현금 + 순증감 = 기말 현금(재무상태표와 일치). 이익이 나도 현금이 없으면 흑자도산할 수 있습니다.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3">
+        다음 2차시: 거래를 영업·투자·재무활동으로 구분하기
+      </div>
+    </div>
+
+    <!-- Slide 10: 인터랙티브 퀴즈 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-10">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded border border-emerald-200">SLIDE 10 / 10 · 퀴즈</span>
+        <span>1차시 점검</span>
+      </div>
+      <div class="my-auto">
+        <h3 class="text-base sm:text-lg font-bold text-slate-900 mb-2 flex items-center gap-2">
+          <i class="fa-solid fa-circle-question text-emerald-600"></i> [자가진단 퀴즈]
+        </h3>
+        <div class="bg-slate-50 p-4 rounded-xl border mb-3">
+          <p class="text-xs sm:text-sm font-bold text-slate-800 mb-2">
+            Q. 12월 31일 결산일 현재 다음 중 현금흐름표의 <strong>현금및현금성자산</strong>에 포함되는 것은?
+          </p>
+          <div class="space-y-1.5">
+            <button onclick="checkQuiz(1, 'A', this)" class="q-btn-1 w-full text-left p-2.5 bg-white border rounded text-xs hover:bg-slate-100 transition">
+              A) 11월 1일 취득한 만기 6개월 정기예금
+            </button>
+            <button onclick="checkQuiz(1, 'B', this)" class="q-btn-1 w-full text-left p-2.5 bg-white border rounded text-xs hover:bg-slate-100 transition">
+              B) 12월 10일 취득한 만기 2개월 양도성예금증서(CD)
+            </button>
+            <button onclick="checkQuiz(1, 'C', this)" class="q-btn-1 w-full text-left p-2.5 bg-white border rounded text-xs hover:bg-slate-100 transition">
+              C) 12월 20일 취득한 상장주식
+            </button>
+          </div>
+          <div id="q-feedback-1" class="hidden mt-2 p-2 rounded text-xs"></div>
+        </div>
+        <div class="p-3 bg-amber-50 border border-amber-200 rounded-xl text-center text-xs text-amber-950">
+          🎉 1차시 수고하셨습니다! 잠시 휴식 후 <strong>[2차시: 영업·투자·재무활동 구분]</strong>으로 이어집니다.
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3 flex justify-between">
+        <span>11주차 1차시 완료</span><a href="202602_11_02.html" class="text-blue-600 font-bold hover:underline flex items-center gap-1"><span>2차시 이동</span> <i class="fa-solid fa-arrow-right"></i></a>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- 하단 푸터 -->
+  <footer class="text-center py-3 text-slate-400 text-xs border-t bg-white no-print">
+    수원대학교 경영공학대학 회계원리 © 2026
+  </footer>
+
+  <script>
+    let currentPage = 1;
+    const totalPages = 10;
+
+    function goToPage(page) {
+      if (page < 1 || page > totalPages) return;
+      document.querySelectorAll('.slide-page').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.page-btn').forEach(d => d.classList.remove('active'));
+
+      const target = document.getElementById(`page-${page}`);
+      if (target) target.classList.add('active');
+
+      const btns = document.querySelectorAll('.page-btn');
+      if (btns[page - 1]) btns[page - 1].classList.add('active');
+
+      currentPage = page;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function nextPage() { if (currentPage < totalPages) goToPage(currentPage + 1); }
+    function prevPage() { if (currentPage > 1) goToPage(currentPage - 1); }
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === 'PageDown') nextPage();
+      if (e.key === 'ArrowLeft' || e.key === 'PageUp') prevPage();
+    });
+
+    const quizAnswers = {"1": {"ans": "B", "exp": "CD는 취득일(12/10)부터 만기까지 2개월이므로 현금성자산입니다. A는 취득일부터 만기가 6개월이라 3개월을 넘고(단기금융상품), C는 가격 변동 위험이 커서 현금성자산이 아닙니다."}};
+
+    function checkQuiz(qNum, choice, btn) {
+      const btns = document.querySelectorAll(`.q-btn-${qNum}`);
+      const fb = document.getElementById(`q-feedback-${qNum}`);
+      btns.forEach(b => { b.className = `q-btn-${qNum} w-full text-left p-2.5 bg-white border rounded text-xs transition`; });
+      fb.classList.remove('hidden');
+
+      if (choice === quizAnswers[qNum].ans) {
+        btn.classList.add('bg-emerald-100', 'border-emerald-500', 'text-emerald-900', 'font-bold');
+        fb.className = "text-xs mt-2 p-2 rounded bg-emerald-50 text-emerald-900 border border-emerald-200 block";
+        fb.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-600 mr-1"></i> <strong>정답입니다!</strong> ${quizAnswers[qNum].exp}`;
+      } else {
+        btn.classList.add('bg-rose-100', 'border-rose-500', 'text-rose-900');
+        fb.className = "text-xs mt-2 p-2 rounded bg-rose-50 text-rose-900 border border-rose-200 block";
+        fb.innerHTML = `<i class="fa-solid fa-circle-xmark text-rose-600 mr-1"></i> <strong>오답입니다!</strong> ${quizAnswers[qNum].exp}`;
+      }
+    }
+  </script>
+</body>
+</html>
