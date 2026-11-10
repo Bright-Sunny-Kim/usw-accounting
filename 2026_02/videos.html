@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>동영상 강의실 | 수원대학교 회계원리</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Noto Sans KR', sans-serif; -webkit-tap-highlight-color: transparent; }
+        video { background: #0f172a; }
+        .speed.active { background: #0f172a; color: #fff; border-color: #0f172a; }
+        section, article { scroll-margin-top: 92px; }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-800 min-h-screen flex flex-col antialiased">
+
+    <header class="bg-gradient-to-r from-blue-950 via-indigo-900 to-slate-900 text-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 py-3.5 flex justify-between items-center gap-3">
+            <div class="flex items-center gap-3 min-w-0">
+                <div class="bg-blue-600 p-2 rounded-xl shadow-md"><i class="fa-solid fa-circle-play text-xl"></i></div>
+                <div class="min-w-0">
+                    <span class="text-[11px] bg-blue-500/30 text-blue-200 px-2 py-0.5 rounded font-semibold border border-blue-400/30">2026학년도 2학기</span>
+                    <h1 class="text-base sm:text-lg font-bold tracking-tight truncate">회계원리 동영상 강의실</h1>
+                </div>
+            </div>
+            <a href="../index.html" class="shrink-0 text-xs sm:text-sm font-semibold bg-white/10 hover:bg-white/20 border border-white/20 px-3 py-2 rounded-lg transition">
+                <i class="fa-solid fa-house mr-1"></i> 강의 홈
+            </a>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 py-6 sm:py-8 flex-1 w-full space-y-8">
+
+        <!-- 주차 바로가기 -->
+        <nav class="flex flex-wrap gap-2" id="weekNav"></nav>
+
+        <div id="weeks" class="space-y-8"></div>
+
+        <p class="text-xs text-slate-500 leading-relaxed">
+            <i class="fa-solid fa-circle-info mr-1"></i>
+            썸네일의 ▶ 버튼을 누르면 그 자리에서 재생됩니다. 배속 버튼으로 재생 속도를 바꿀 수 있고, 다른 영상을 재생하면 앞의 영상은 자동으로 멈춥니다.
+            데이터 요금제에서는 Wi-Fi 환경에서 시청하기를 권합니다.
+        </p>
+    </main>
+
+    <footer class="text-center text-xs text-slate-500 py-6">수원대학교 경영공학대학 회계원리 © 2026</footer>
+
+<script>
+(function () {
+    // ── 영상 목록: 새 주차는 여기에 추가 ──────────────────────────────
+    const WEEKS = [
+        { week: 9, color: "teal", title: "Ch.05 상품매매회사의 회계순환과정 (1) : 매입·매출 거래와 재고기록법", exercise: "exercise_09.html",
+          items: [
+            { p: 1, title: "상품매매회사의 손익구조와 재고기록법", dur: "29:33", size: "26.6MB" },
+            { p: 2, title: "매입·매출 거래의 기록", dur: "19:18", size: "17.7MB" },
+            { p: 3, title: "환입·에누리·할인과 순매출액", dur: "20:37", size: "19.0MB" } ] },
+        { week: 10, color: "cyan", title: "Ch.05 상품매매회사의 회계순환과정 (2) : 결산·마감과 매출총이익률", exercise: "exercise_10.html",
+          items: [
+            { p: 1, title: "상품매매회사의 결산과 재무제표", dur: "17:13", size: "16.6MB" },
+            { p: 2, title: "상품매매회사의 마감과 실지재고조사법", dur: "21:15", size: "21.1MB" },
+            { p: 3, title: "매출총이익률과 Ch.05 종합", dur: "16:33", size: "15.7MB" } ] }
+    ];
+    // Tailwind CDN이 동적 클래스를 인식하도록 색상별 클래스를 미리 적어 둠
+    const C = {
+        teal: { badge: "bg-teal-600", chip: "text-teal-700 bg-teal-100", link: "text-teal-700 hover:text-teal-900", ring: "hover:border-teal-500" },
+        cyan: { badge: "bg-cyan-600", chip: "text-cyan-700 bg-cyan-100", link: "text-cyan-700 hover:text-cyan-900", ring: "hover:border-cyan-500" }
+    };
+    const pad = n => String(n).padStart(2, "0");
+    const toSec = d => d.split(":").reduce((a, v) => a * 60 + Number(v), 0);
+    const fmtTotal = s => Math.floor(s / 60) + "분";
+
+    const nav = document.getElementById("weekNav");
+    const root = document.getElementById("weeks");
+
+    WEEKS.forEach(w => {
+        const c = C[w.color], id = "w" + pad(w.week);
+        const total = w.items.reduce((a, it) => a + toSec(it.dur), 0);
+
+        nav.insertAdjacentHTML("beforeend",
+            `<a href="#${id}" class="text-sm font-bold px-4 py-2 rounded-xl text-white ${c.badge} hover:opacity-90 shadow-sm">
+                <i class="fa-solid fa-play mr-1 text-xs"></i>${w.week}주차</a>`);
+
+        const cards = w.items.map(it => {
+            const base = `202602_${pad(w.week)}_${pad(it.p)}`;
+            return `
+            <article id="${id}-${it.p}" class="bg-white rounded-2xl border border-slate-200 ${c.ring} shadow-sm overflow-hidden flex flex-col transition">
+                <div class="player relative w-full aspect-video bg-slate-900">
+                    <button type="button" class="poster group absolute inset-0 w-full h-full" data-src="video/${base}.mp4" aria-label="${w.week}주차 ${it.p}교시 동영상 재생">
+                        <img src="video/${base}.jpg" alt="" loading="lazy" class="w-full h-full object-cover">
+                        <span class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition"></span>
+                        <span class="absolute right-[6%] bottom-[9%] w-14 h-14 rounded-full bg-red-600 group-hover:bg-red-500 group-hover:scale-110 shadow-xl ring-4 ring-white/70 flex items-center justify-center transition">
+                            <i class="fa-solid fa-play text-xl text-white ml-1"></i>
+                        </span>
+                    </button>
+                </div>
+                <div class="p-4 flex flex-col gap-2 flex-1">
+                    <div class="flex justify-between items-center">
+                        <span class="text-[11px] font-bold ${c.chip} px-2 py-0.5 rounded">${it.p}교시</span>
+                        <span class="text-[11px] text-slate-400"><i class="fa-regular fa-clock mr-1"></i>${it.dur} · ${it.size}</span>
+                    </div>
+                    <h4 class="text-sm font-bold text-slate-800">${it.title}</h4>
+                    <div class="mt-auto pt-2 border-t border-slate-100 flex flex-wrap items-center justify-between gap-2">
+                        <a href="${base}.html" class="text-xs font-semibold ${c.link}"><i class="fa-solid fa-book-open mr-1"></i>강의노트</a>
+                        <div class="flex gap-1" role="group" aria-label="재생 속도">
+                            ${[1, 1.25, 1.5].map(r => `<button type="button" data-rate="${r}" class="speed text-[11px] font-semibold border border-slate-300 text-slate-600 rounded px-1.5 py-0.5 ${r === 1 ? "active" : ""}">${r}x</button>`).join("")}
+                        </div>
+                    </div>
+                </div>
+            </article>`;
+        }).join("");
+
+        root.insertAdjacentHTML("beforeend", `
+        <section id="${id}" class="space-y-4">
+            <div class="flex flex-wrap items-end justify-between gap-2 border-b border-slate-200 pb-3">
+                <div class="flex items-center gap-2.5">
+                    <span class="${c.badge} shrink-0 whitespace-nowrap text-white text-sm font-bold px-3 py-1 rounded-lg">${w.week}주차</span>
+                    <h2 class="text-base sm:text-lg font-bold text-slate-900">${w.title}</h2>
+                </div>
+                <div class="text-xs text-slate-500 flex items-center gap-3">
+                    <span><i class="fa-solid fa-film mr-1"></i>${w.items.length}편 · 약 ${fmtTotal(total)}</span>
+                    <a href="${w.exercise}" class="font-semibold text-amber-700 hover:text-amber-900"><i class="fa-solid fa-pen-to-square mr-1"></i>${w.week}주차 실습과제</a>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">${cards}</div>
+        </section>`);
+    });
+
+    // 썸네일을 누르면 그 자리에 영상을 넣고 재생 (재생 전에는 영상 파일을 내려받지 않음)
+    const pauseOthers = cur => document.querySelectorAll("video").forEach(o => { if (o !== cur) o.pause(); });
+    document.querySelectorAll("article").forEach(card => {
+        const btn = card.querySelector(".poster");
+        const speeds = card.querySelectorAll(".speed");
+        let rate = 1;
+        const mark = r => speeds.forEach(x => x.classList.toggle("active", Number(x.dataset.rate) === r));
+        btn.addEventListener("click", () => {
+            const v = document.createElement("video");
+            v.className = "absolute inset-0 w-full h-full";
+            v.controls = true; v.playsInline = true; v.preload = "auto";
+            v.poster = btn.querySelector("img").src;
+            v.src = btn.dataset.src;
+            v.addEventListener("play", () => pauseOthers(v));
+            v.addEventListener("ratechange", () => { rate = v.playbackRate; mark(rate); });
+            v.addEventListener("loadedmetadata", () => { v.playbackRate = rate; });
+            btn.replaceWith(v);
+            v.play().catch(() => {});
+        });
+        speeds.forEach(b => b.addEventListener("click", () => {
+            rate = Number(b.dataset.rate); mark(rate);
+            const v = card.querySelector("video"); if (v) v.playbackRate = rate;
+        }));
+    });
+
+    // 주소의 #w09-2 처럼 특정 교시로 들어오면 해당 카드로 이동·강조
+    const h = location.hash.slice(1);
+    if (h) {
+        const el = document.getElementById(h);
+        if (el) {
+            el.scrollIntoView({ block: "start" });
+            if (el.tagName === "ARTICLE") el.classList.add("ring-4", "ring-amber-300");
+        }
+    }
+})();
+</script>
+</body>
+</html>

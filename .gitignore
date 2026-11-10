@@ -21,3 +21,8 @@ intermed*
 교수용_비공개/
 *.gs
 예상문제.html
+_build/
+README.md
+
+# Original lecture videos (Korean names) - web copies are in 2026_02/video/
+동영상강의/
