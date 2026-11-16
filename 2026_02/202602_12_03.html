@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>[12주차 3차시] 실제 현금흐름표 읽기 | 수원대학교 회계원리</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Noto Sans KR', sans-serif; }
+    .slide-page { display: none; }
+    .slide-page.active { display: flex; animation: fadeIn 0.25s ease-in-out; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+    .page-btn.active { background-color: #2563eb !important; color: white !important; font-weight: bold; border-color: #1d4ed8 !important; }
+    /* 장부·표 공통 */
+    .tb td, .tb th { border: 1px solid #e2e8f0; padding: 4px 6px; }
+    .tb td.n { text-align: right; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+    .ws td, .ws th { padding: 3px 3px; letter-spacing: -0.03em; }
+    .ws td.n { font-size: 9.5px; }
+    @media print { .ws { font-size: 8px !important; } }
+    .tacc { border-collapse: collapse; width: 100%; font-size: 11px; }
+    .tacc caption { font-weight: 700; padding-bottom: 2px; border-bottom: 2px solid #334155; }
+    .tacc td { padding: 2px 6px; vertical-align: top; }
+    .tacc td.l { border-right: 2px solid #334155; }
+    .tacc td.n { text-align: right; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+    .tacc tr.sum td { border-top: 1px solid #94a3b8; font-weight: 700; }
+    .je { border-collapse: collapse; width: 100%; font-size: 11px; }
+    .je td { padding: 2px 6px; }
+    .je td.n { text-align: right; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; white-space: nowrap; }
+    .je td.cr { padding-left: 22px; }
+    .je tr.sep td { border-top: 1px dashed #cbd5e1; }
+
+    @media print {
+      @page { size: A4 landscape; margin: 10mm 12mm; }
+      body { background-color: #ffffff !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; padding: 0 !important; }
+      header, .no-print, #top-nav-controller { display: none !important; }
+      main { max-width: 100% !important; padding: 0 !important; margin: 0 !important; }
+      .slide-page { display: block !important; opacity: 1 !important; page-break-after: always !important; break-after: page !important; min-height: 180mm !important; margin-bottom: 0 !important; border: 1px solid #cbd5e1 !important; border-radius: 12px !important; padding: 24px 28px !important; }
+    }
+  </style>
+</head>
+<body class="bg-slate-100 text-slate-800 antialiased min-h-screen flex flex-col justify-between">
+
+  <!-- 1. 고정 상단 헤더 & 슬라이드 네비게이션 바 -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm no-print">
+    <div class="max-w-5xl mx-auto px-4 flex justify-between items-center h-12">
+      <div class="flex items-center gap-2">
+        <a href="../index.html" class="bg-blue-900 text-white text-[11px] px-2 py-0.5 rounded-full font-bold hover:bg-blue-800">수원대 회계원리</a>
+        <h1 class="font-bold text-slate-800 text-xs sm:text-sm">12주차 3차시: 실제 현금흐름표 읽기</h1>
+      </div>
+      <div class="flex items-center gap-2">
+        <button onclick="window.print()" class="text-[11px] bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold px-2.5 py-1 rounded border border-slate-300 transition flex items-center gap-1">
+          <i class="fa-solid fa-print"></i> PDF/인쇄
+        </button>
+      </div>
+    </div>
+
+    <!-- 상단 1~10 퀵 이동 버튼 바 -->
+    <div id="top-nav-controller" class="border-t border-slate-100 bg-slate-50/95 py-2 px-4 shadow-inner">
+      <div class="max-w-5xl mx-auto flex items-center justify-between gap-2">
+        <button onclick="prevPage()" class="px-3 py-1.5 bg-white hover:bg-slate-100 text-slate-700 text-xs font-bold rounded-lg border border-slate-300 transition flex items-center gap-1 shrink-0">
+          <i class="fa-solid fa-chevron-left text-[10px]"></i> <span class="hidden sm:inline">이전</span>
+        </button>
+
+        <div class="flex items-center gap-1.5 overflow-x-auto py-0.5 px-1 max-w-full">
+          <button onclick="goToPage(1)" class="page-btn active w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">1</button>
+          <button onclick="goToPage(2)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">2</button>
+          <button onclick="goToPage(3)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">3</button>
+          <button onclick="goToPage(4)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">4</button>
+          <button onclick="goToPage(5)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">5</button>
+          <button onclick="goToPage(6)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">6</button>
+          <button onclick="goToPage(7)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">7</button>
+          <button onclick="goToPage(8)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">8</button>
+          <button onclick="goToPage(9)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">9</button>
+          <button onclick="goToPage(10)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">10</button>
+        </div>
+
+        <button onclick="nextPage()" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-lg transition flex items-center gap-1 shrink-0">
+          <span class="hidden sm:inline">다음</span> <i class="fa-solid fa-chevron-right text-[10px]"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- 2. 슬라이드 본문 컨테이너 -->
+  <main class="flex-1 max-w-4xl w-full mx-auto px-4 py-4 flex flex-col justify-center">
+
+    <!-- Slide 1: 표지 -->
+    <div class="slide-page active bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-1">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 01 / 10</span>
+        <span>수원대학교 경영공학대학</span>
+      </div>
+      <div class="text-center my-auto py-6">
+        <div class="inline-block p-4 bg-cyan-50 text-cyan-700 rounded-2xl mb-3 shadow-inner">
+          <i class="fa-solid fa-magnifying-glass-chart text-4xl"></i>
+        </div>
+        <span class="text-xs font-bold text-cyan-700 tracking-wider block mb-1">CH.14 현금흐름표 (2)</span>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mb-3">3차시: 실제 현금흐름표 읽기: 이익의 질과 잉여현금흐름</h2>
+        <p class="text-slate-600 text-xs sm:text-sm max-w-lg mx-auto leading-relaxed">
+          상장회사의 간접법 현금흐름표는 교과서 모양과 조금 다릅니다. <strong>이자·배당·법인세</strong>를 따로 보여 주기 때문입니다.<br>DART에 공시된 <strong>이마트</strong>의 2024·2025년 간접법 조정 내역을 직접 읽고, <strong>이익의 질</strong>과 <strong>잉여현금흐름(FCF)</strong>으로 회사를 진단해 봅니다.
+        </p>
+      </div>
+      <div class="text-center text-xs text-slate-400 border-t pt-3">
+        상단 퀵 버튼(1~10) 또는 키보드 방향키(←, →)로 이동할 수 있습니다.
+      </div>
+    </div>
+
+    <!-- Slide 2: 학습 목표 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-2">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 02 / 10</span>
+        <span>학습 목표 (50분 설계)</span>
+      </div>
+      <div class="my-auto">
+        <h3 class="text-lg sm:text-xl font-bold text-slate-900 mb-5 flex items-center gap-2">
+          <i class="fa-solid fa-bullseye text-blue-600"></i> 이번 3차시 핵심 학습 목표
+        </h3>
+        <div class="grid sm:grid-cols-3 gap-3.5">
+          <div class="p-4 bg-slate-50 border rounded-xl hover:border-blue-400 transition">
+            <span class="w-6 h-6 rounded bg-cyan-600 text-white font-bold flex items-center justify-center text-xs mb-2">1</span>
+            <h4 class="font-bold text-slate-800 text-xs sm:text-sm mb-1">실무 서식 이해</h4>
+            <p class="text-xs text-slate-600 leading-relaxed">"영업에서 창출된 현금"과 이자·배당·법인세를 따로 표시하는 K-IFRS 실무 서식의 구조를 설명한다.</p>
+          </div>
+          <div class="p-4 bg-slate-50 border rounded-xl hover:border-blue-400 transition">
+            <span class="w-6 h-6 rounded bg-cyan-600 text-white font-bold flex items-center justify-center text-xs mb-2">2</span>
+            <h4 class="font-bold text-slate-800 text-xs sm:text-sm mb-1">이마트 간접법 읽기</h4>
+            <p class="text-xs text-slate-600 leading-relaxed">DART 주석의 조정 항목과 자산·부채 변동에서 이익과 현금이 달라진 주된 원인을 찾는다.</p>
+          </div>
+          <div class="p-4 bg-slate-50 border rounded-xl hover:border-blue-400 transition">
+            <span class="w-6 h-6 rounded bg-cyan-600 text-white font-bold flex items-center justify-center text-xs mb-2">3</span>
+            <h4 class="font-bold text-slate-800 text-xs sm:text-sm mb-1">이익의 질·FCF</h4>
+            <p class="text-xs text-slate-600 leading-relaxed">영업현금흐름 ÷ 당기순이익과 잉여현금흐름을 계산하고 그 의미와 한계를 해석한다.</p>
+          </div>
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3 flex justify-between">
+        <span>현금흐름표 분석</span><span>교재 Ch.14</span>
+      </div>
+    </div>
+
+    <!-- Slide 3: 실무 서식: 영업에서 창출된 현금 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-3">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 03 / 10</span>
+        <span>실무 서식: 영업에서 창출된 현금</span>
+      </div>
+      <div class="my-auto space-y-2.5">
+        <h3 class="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
+          <i class="fa-solid fa-layer-group text-cyan-600"></i> 상장회사 서식으로 다시 쓴 광교유통 영업활동
+        </h3>
+        <div class="grid sm:grid-cols-5 gap-3">
+          <div class="sm:col-span-3">
+            <table class="tb w-full text-[11px]">
+              <tr class="font-bold"><td>당기순이익</td><td class="n">3,600,000</td></tr>
+              <tr class="bg-cyan-50"><td colspan="2" class="font-bold text-cyan-900">당기순이익 조정을 위한 가감</td></tr>
+              <tr><td>　감가상각비</td><td class="n">700,000</td></tr>
+              <tr><td>　유형자산처분이익</td><td class="n">(200,000)</td></tr>
+              <tr class="bg-amber-50"><td>　<strong>이자비용</strong> (발생액 되돌리기)</td><td class="n">500,000</td></tr>
+              <tr class="bg-amber-50"><td>　<strong>이자수익</strong> (발생액 되돌리기)</td><td class="n">(100,000)</td></tr>
+              <tr class="bg-cyan-50"><td class="font-bold text-cyan-900">영업활동으로 인한 자산·부채의 변동</td><td class="n">(700,000)</td></tr>
+              <tr class="font-bold bg-slate-100"><td>영업에서 창출된 현금</td><td class="n">3,800,000</td></tr>
+              <tr class="bg-amber-50"><td>　이자의 수취 (실제 받은 돈)</td><td class="n">100,000</td></tr>
+              <tr class="bg-amber-50"><td>　이자의 지급 (실제 낸 돈)</td><td class="n">(500,000)</td></tr>
+              <tr class="bg-slate-800 text-white font-bold"><td>영업활동 현금흐름</td><td class="n">3,400,000</td></tr>
+            </table>
+          </div>
+          <div class="sm:col-span-2 space-y-2 text-[11px]">
+            <div class="p-2.5 bg-white border rounded-lg"><strong>왜 이렇게 쓸까?</strong> K-IFRS 제1007호는 이자·배당금의 수취·지급과 법인세 현금흐름을 <strong>별도로 공시</strong>하게 합니다(11주차 2차시).</div>
+            <div class="p-2.5 bg-white border rounded-lg"><strong>방법</strong> ① 손익계산서의 이자비용·이자수익·법인세비용(발생액)을 위에서 <strong>되돌리고</strong>, ② 아래에서 <strong>실제 주고받은 현금</strong>을 다시 적습니다.</div>
+            <div class="p-2.5 bg-emerald-50 border border-emerald-300 rounded-lg"><strong>결과는 같다 ✔</strong> 3,400,000. 광교유통은 미수이자·미지급이자가 없어 발생액 = 현금이라 위아래가 상쇄됩니다.</div>
+          </div>
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3">
+        실제 기업은 법인세비용을 되돌리고(가산) 아래에서 "법인세의 납부"를 뺍니다. 광교유통은 법인세를 고려하지 않았습니다.
+      </div>
+    </div>
+
+    <!-- Slide 4: [실제 기업] 이마트 2025 간접법 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-4">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 04 / 10</span>
+        <span>[실제 기업] 이마트 2025 간접법</span>
+      </div>
+      <div class="my-auto space-y-2">
+        <h3 class="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
+          <i class="fa-solid fa-cart-shopping text-cyan-600"></i> 이마트 연결 영업활동 현금흐름 (간접법) · 2025년 · 단위: 억원
+        </h3>
+        <div class="grid sm:grid-cols-5 gap-3">
+          <div class="sm:col-span-3"><table class="tb w-full text-[10.5px]"><tr class="font-bold"><td>당기순이익</td><td class="n">2,463</td></tr><tr class="bg-cyan-50 font-bold"><td>당기순이익 조정을 위한 가감</td><td class="n">21,018</td></tr><tr><td>　감가상각비 (유형자산)</td><td class="n">8,405</td></tr><tr><td>　사용권자산 감가상각비 (리스)</td><td class="n">4,947</td></tr><tr><td>　무형자산상각비</td><td class="n">1,540</td></tr><tr><td>　이자비용 (아래에서 실제 지급액 차감)</td><td class="n">5,180</td></tr><tr><td>　퇴직급여</td><td class="n">2,290</td></tr><tr><td>　법인세비용</td><td class="n">1,300</td></tr><tr><td>　종속기업처분이익 (투자활동 손익)</td><td class="n">(3,967)</td></tr><tr><td>　이자수익</td><td class="n">(1,203)</td></tr><tr class="text-slate-500"><td>　기타 조정 (대손상각비·손상차손·사업양도이익 등)</td><td class="n">2,526</td></tr><tr class="bg-cyan-50 font-bold"><td>영업활동으로 인한 자산·부채의 변동</td><td class="n">(6,324)</td></tr><tr><td>　재고자산의 증가</td><td class="n">(2,469)</td></tr><tr><td>　순확정급여부채의 감소</td><td class="n">(4,524)</td></tr><tr><td>　상품권의 증가</td><td class="n">1,411</td></tr><tr><td>　매출채권의 증가</td><td class="n">(492)</td></tr><tr><td>　매입채무의 감소</td><td class="n">(473)</td></tr><tr class="text-slate-500"><td>　기타 자산·부채의 변동</td><td class="n">223</td></tr><tr class="font-bold bg-slate-100"><td>영업에서 창출된 현금흐름</td><td class="n">17,157</td></tr><tr><td>　이자의 지급</td><td class="n">(5,118)</td></tr><tr><td>　이자의 수취</td><td class="n">692</td></tr><tr><td>　배당금의 수취</td><td class="n">1,412</td></tr><tr><td>　법인세의 납부</td><td class="n">(954)</td></tr><tr class="bg-slate-800 text-white font-bold"><td>영업활동 현금흐름</td><td class="n">13,189</td></tr></table>
+            <p class="text-[10px] text-slate-500 mt-1">자료: (주)이마트 2025 사업보고서 연결재무제표 주석 40 「현금흐름표」 및 연결현금흐름표(DART, 2026.3.18 공시). 백만원 단위 공시액을 억원으로 반올림, '기타'는 차액.</p>
+          </div>
+          <div class="sm:col-span-2 space-y-2 text-[11px]">
+            <div class="p-2.5 bg-white border rounded-lg"><strong>상각비 3종 14,893억</strong> — 순이익 2,463억의 약 6배입니다. 매장·물류센터·리스 매장이 많은 유통업의 특징입니다.</div>
+            <div class="p-2.5 bg-white border rounded-lg"><strong>종속기업처분이익 (3,967)억</strong> — 자회사를 판 이익은 투자활동 손익이므로 뺍니다(1차시 조정 ②). 처분대금은 투자활동 "종속기업 처분으로 인한 현금의 증가"에 있습니다.</div>
+            <div class="p-2.5 bg-cyan-50 border border-cyan-300 rounded-lg"><strong>상품권 증가 +1,411억</strong> — 상품권을 팔고 아직 상품을 주지 않은 것은 선수금 같은 <strong>부채</strong>입니다. 현금이 먼저 들어와 더합니다(2차시 영통마트 선수금과 같은 원리).</div>
+          </div>
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3">
+        이자비용 5,180억을 위에서 더하고 아래에서 실제 이자 지급 5,118억을 뺍니다. 3번 슬라이드의 광교유통과 같은 구조입니다.
+      </div>
+    </div>
+
+    <!-- Slide 5: 이마트 2024 vs 2025 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-5">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 05 / 10</span>
+        <span>이마트 2024 vs 2025</span>
+      </div>
+      <div class="my-auto space-y-2.5">
+        <h3 class="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
+          <i class="fa-solid fa-scale-balanced text-cyan-600"></i> 순손실 5,734억인데 영업현금흐름은 +1조 4,598억 — 어디서 왔나?
+        </h3>
+        <div class="grid sm:grid-cols-5 gap-3">
+          <div class="sm:col-span-3">
+            <table class="tb w-full text-[11px]"><thead class="bg-slate-100"><tr><th>억원</th><th>2024</th><th>2025</th></tr></thead><tbody><tr class="font-bold"><td>당기순이익</td><td class="n">(5,734)</td><td class="n">2,463</td></tr><tr class=""><td>　상각비 3종 (유형·사용권·무형)</td><td class="n">16,282</td><td class="n">14,893</td></tr><tr class=""><td>　손상차손</td><td class="n">3,053</td><td class="n">805</td></tr><tr class="bg-cyan-50 font-bold"><td>당기순이익 조정 합계</td><td class="n">27,746</td><td class="n">21,018</td></tr><tr class="bg-cyan-50 font-bold"><td>자산·부채의 변동 합계</td><td class="n">(3,722)</td><td class="n">(6,324)</td></tr><tr class=""><td>　재고자산의 증가</td><td class="n">(2,098)</td><td class="n">(2,469)</td></tr><tr class="bg-slate-100 font-bold"><td>영업에서 창출된 현금흐름</td><td class="n">18,290</td><td class="n">17,157</td></tr><tr class=""><td>이자·배당·법인세 (순액)</td><td class="n">(3,692)</td><td class="n">(3,968)</td></tr><tr class="bg-slate-800 text-white font-bold"><td>영업활동 현금흐름</td><td class="n">14,598</td><td class="n">13,189</td></tr></tbody></table>
+            <p class="text-[10px] text-slate-500 mt-1">자료: 이마트 2025 사업보고서 연결재무제표 주석 40(전기·당기). 반올림 차이 ±1억.</p>
+          </div>
+          <div class="sm:col-span-2 space-y-2 text-[11px]">
+            <div class="p-2.5 bg-rose-50 border border-rose-200 rounded-lg"><strong>2024년</strong> 상각비 16,282억과 손상차손 3,053억이 순이익을 크게 깎았지만 <strong>현금은 나가지 않았습니다.</strong> 간접법에서 모두 다시 더해져 순손실이 큰 영업현금 유입으로 바뀝니다.</div>
+            <div class="p-2.5 bg-white border rounded-lg"><strong>2025년</strong> 흑자로 돌아섰지만 영업현금흐름은 오히려 줄었습니다. 자산·부채 변동이 (3,722)억 → (6,324)억으로 커졌기 때문입니다(재고 증가, 퇴직금 관련 유출 등).</div>
+            <div class="p-2.5 bg-amber-50 border border-amber-200 rounded-lg"><strong>교훈</strong> 당기순이익만 보면 "2024 적자 → 2025 흑자, 좋아졌다"이지만, 현금의 눈으로 보면 이야기가 다릅니다. 두 표를 <strong>함께</strong> 봐야 합니다.</div>
+          </div>
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3">
+        손상차손: 자산(영업권·매장 등)의 가치가 장부금액보다 떨어졌을 때 인식하는 비용. 감가상각비처럼 현금 유출이 없습니다.
+      </div>
+    </div>
+
+    <!-- Slide 6: 이익의 질과 위험 신호 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-6">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 06 / 10</span>
+        <span>이익의 질과 위험 신호</span>
+      </div>
+      <div class="my-auto space-y-3">
+        <h3 class="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
+          <i class="fa-solid fa-stethoscope text-cyan-600"></i> 이익의 질 = 영업활동 현금흐름 ÷ 당기순이익
+        </h3>
+        <div class="grid sm:grid-cols-3 gap-2 text-[11px] text-center">
+          <div class="p-3 bg-white border rounded-xl"><strong>광교유통 2026</strong><br><span class="font-mono">3,400,000 ÷ 3,600,000</span><br><strong class="text-lg text-cyan-800">≈ 0.94</strong><br>이익의 대부분이 현금으로 들어옴</div>
+          <div class="p-3 bg-white border rounded-xl"><strong>이마트 2025</strong><br><span class="font-mono">13,189 ÷ 2,463</span><br><strong class="text-lg text-cyan-800">≈ 5.4배</strong><br>상각비가 큰 업종이라 1보다 훨씬 큼</div>
+          <div class="p-3 bg-white border rounded-xl"><strong>이마트 2024</strong><br>당기순이익이 음수<br><strong class="text-lg text-slate-500">계산 의미 없음</strong><br>분모가 음수·0에 가까우면 비율을 쓰지 않음</div>
+        </div>
+        <div class="grid sm:grid-cols-2 gap-2 text-[11px]">
+          <div class="p-3 bg-rose-50 border border-rose-200 rounded-xl"><strong class="text-rose-800">위험 신호</strong><br>① 순이익은 매년 느는데 영업현금흐름은 줄거나 음수<br>② 매출채권·재고가 매출보다 빠르게 증가 → 간접법의 "자산 증가" 줄이 커짐<br>③ 영업현금흐름이 처분이익 같은 일회성 항목에 기대는 경우</div>
+          <div class="p-3 bg-white border rounded-xl"><strong>한계</strong><br>비율이 1보다 크다고 무조건 좋은 것은 아닙니다. 상각비가 큰 회사는 언젠가 설비를 <strong>다시 사야</strong> 합니다. 그래서 투자까지 뺀 <strong>잉여현금흐름</strong>을 함께 봅니다 → 다음 슬라이드.</div>
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3">
+        이익의 질은 한 해가 아니라 여러 해의 추세로 봅니다. 13·14주차 재무제표분석에서 다른 비율과 함께 다룹니다.
+      </div>
+    </div>
+
+    <!-- Slide 7: 잉여현금흐름 (FCF) -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-7">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 07 / 10</span>
+        <span>잉여현금흐름 (FCF)</span>
+      </div>
+      <div class="my-auto space-y-3">
+        <h3 class="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
+          <i class="fa-solid fa-piggy-bank text-cyan-600"></i> 잉여현금흐름 = 영업활동 현금흐름 − 유형자산 취득(설비투자)
+        </h3>
+        <div class="grid sm:grid-cols-2 gap-3">
+          <div class="overflow-x-auto">
+            <table class="w-full text-[11px] border-collapse border border-slate-200">
+              <thead class="bg-slate-100 text-center"><tr><th class="border p-1.5">구분</th><th class="border p-1.5">광교유통 2026<br>(원)</th><th class="border p-1.5">이마트 2024<br>(억원)</th><th class="border p-1.5">이마트 2025<br>(억원)</th></tr></thead>
+              <tbody class="text-right font-mono">
+                <tr><td class="border p-1.5 text-left font-sans">영업활동 현금흐름</td><td class="border p-1.5">3,400,000</td><td class="border p-1.5">14,598</td><td class="border p-1.5">13,189</td></tr>
+                <tr><td class="border p-1.5 text-left font-sans">− 유형자산 취득</td><td class="border p-1.5">(3,000,000)</td><td class="border p-1.5">(6,507)</td><td class="border p-1.5">(7,227)</td></tr>
+                <tr class="bg-cyan-50 font-bold"><td class="border p-1.5 text-left font-sans">잉여현금흐름</td><td class="border p-1.5">400,000</td><td class="border p-1.5">8,091</td><td class="border p-1.5">5,962</td></tr>
+                <tr class="text-slate-500"><td class="border p-1.5 text-left font-sans">(참고) − 리스부채 상환</td><td class="border p-1.5">—</td><td class="border p-1.5">(5,255)</td><td class="border p-1.5">(5,338)</td></tr>
+                <tr class="text-slate-500"><td class="border p-1.5 text-left font-sans">(참고) 리스까지 뺀 FCF</td><td class="border p-1.5">—</td><td class="border p-1.5">2,836</td><td class="border p-1.5">624</td></tr>
+              </tbody>
+            </table>
+            <p class="text-[10px] text-slate-500 mt-1">자료: 이마트 2025 사업보고서 연결현금흐름표(DART). 리스부채 상환은 재무활동 항목.</p>
+          </div>
+          <div class="space-y-2 text-[11px]">
+            <div class="p-2.5 bg-white border rounded-lg"><strong>의미</strong> 영업으로 번 현금에서 사업 유지·성장에 필요한 설비투자를 하고 <strong>남은 돈</strong>. 빚 상환·배당·새 투자에 자유롭게 쓸 수 있는 여력입니다.</div>
+            <div class="p-2.5 bg-white border rounded-lg"><strong>광교유통</strong> FCF 400,000으로는 차입금 상환 2,000,000과 배당 1,000,000을 다 못 댑니다. 유상증자 2,000,000과 기존 현금 600,000으로 메웠습니다.</div>
+            <div class="p-2.5 bg-amber-50 border border-amber-200 rounded-lg"><strong>정의는 하나가 아닙니다.</strong> 무형자산·투자부동산 취득을 더 빼기도 하고, 매장을 빌려 쓰는 유통업은 <strong>리스부채 상환</strong>까지 빼 보기도 합니다. 이마트는 리스까지 빼면 여유가 크게 줄어듭니다. 어떤 정의를 썼는지 꼭 밝힙니다.</div>
+          </div>
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3">
+        FCF는 K-IFRS가 정한 항목이 아니라 분석가가 계산하는 지표입니다. 13주차 재무비율 분석에서 다시 씁니다.
+      </div>
+    </div>
+
+    <!-- Slide 8: DART에서 직접 찾아보기 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-8">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 08 / 10</span>
+        <span>DART에서 직접 찾아보기</span>
+      </div>
+      <div class="my-auto space-y-3">
+        <h3 class="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
+          <i class="fa-solid fa-route text-cyan-600"></i> 관심 기업의 간접법 조정 내역 찾기 (4단계)
+        </h3>
+        <div class="grid sm:grid-cols-4 gap-2 text-[11px]">
+          <div class="p-3 bg-white border rounded-xl"><span class="w-6 h-6 rounded bg-cyan-600 text-white font-bold flex items-center justify-center text-xs mb-1.5">1</span><strong>dart.fss.or.kr</strong>에서 회사 이름 검색 → 최근 <strong>사업보고서</strong> 열기</div>
+          <div class="p-3 bg-white border rounded-xl"><span class="w-6 h-6 rounded bg-cyan-600 text-white font-bold flex items-center justify-center text-xs mb-1.5">2</span>왼쪽 목차 <strong>Ⅲ. 재무에 관한 사항 → 2. 연결재무제표 → 연결 현금흐름표</strong></div>
+          <div class="p-3 bg-white border rounded-xl"><span class="w-6 h-6 rounded bg-cyan-600 text-white font-bold flex items-center justify-center text-xs mb-1.5">3</span>본문 첫 줄 <strong>"영업으로부터 창출된 현금흐름"</strong> 확인 — 본문에는 합계만 있음</div>
+          <div class="p-3 bg-white border rounded-xl"><span class="w-6 h-6 rounded bg-cyan-600 text-white font-bold flex items-center justify-center text-xs mb-1.5">4</span><strong>3. 연결재무제표 주석 → "현금흐름표"</strong> 주석에 당기순이익·조정·자산부채 변동 세부 내역</div>
+        </div>
+        <div class="grid sm:grid-cols-2 gap-2 text-[11px]">
+          <div class="p-3 bg-cyan-50 border border-cyan-300 rounded-xl"><strong>읽을 때 체크리스트</strong><br>① 순이익과 영업현금흐름의 크기·부호 비교 ② 가장 큰 조정 항목 3개 ③ 자산·부채 변동 중 큰 유출 ④ 영업현금흐름 − 유형자산 취득</div>
+          <div class="p-3 bg-amber-50 border border-amber-200 rounded-xl"><strong>연결 vs 별도</strong> 사업보고서에는 자회사를 합친 <strong>연결</strong>과 회사 하나만의 <strong>별도</strong> 재무제표가 모두 있습니다. 비교할 때는 같은 기준끼리 봅니다. 오늘 본 이마트 숫자는 모두 연결입니다.</div>
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3">
+        이마트 2025 사업보고서 주석 번호: 「40. 현금흐름표」. 회사마다 번호는 다르므로 "현금흐름표"라는 제목으로 찾으세요.
+      </div>
+    </div>
+
+    <!-- Slide 9: 3차시 핵심 요약 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-9">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 09 / 10</span>
+        <span>핵심 요약 (Takeaways)</span>
+      </div>
+      <div class="my-auto space-y-3.5">
+        <h3 class="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
+          <i class="fa-solid fa-bookmark text-blue-600"></i> 3차시 핵심 정리
+        </h3>
+        <div class="space-y-2 text-xs sm:text-sm">
+          <div class="p-3 bg-slate-50 border rounded-xl flex items-start gap-2.5">
+            <span class="bg-cyan-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs shrink-0 mt-0.5 font-bold">1</span>
+            <div>
+              <strong>실무 서식:</strong> 당기순이익 → 조정(이자비용·법인세비용 등 발생액 되돌리기 포함) → 자산·부채 변동 → 영업에서 창출된 현금 → 이자·배당·법인세 실제 현금. 결과는 교과서 간접법과 같습니다.
+            </div>
+          </div>
+          <div class="p-3 bg-slate-50 border rounded-xl flex items-start gap-2.5">
+            <span class="bg-cyan-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs shrink-0 mt-0.5 font-bold">2</span>
+            <div>
+              <strong>이마트:</strong> 2025 순이익 2,463억 + 조정 21,018억 − 변동 6,324억 = 창출 17,157억 → 영업현금흐름 13,189억. 2024년 순손실에도 상각비·손상차손 덕분에 영업현금흐름이 컸습니다.
+            </div>
+          </div>
+          <div class="p-3 bg-slate-50 border rounded-xl flex items-start gap-2.5">
+            <span class="bg-cyan-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs shrink-0 mt-0.5 font-bold">3</span>
+            <div>
+              <strong>진단 지표:</strong> 이익의 질(영업현금흐름 ÷ 순이익)과 잉여현금흐름(영업현금흐름 − 유형자산 취득). 이마트 FCF는 2024 8,091억 → 2025 5,962억입니다.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3">
+        다음 13주차: Ch.15 재무제표분석(1) — 수익성·안정성·활동성 비율
+      </div>
+    </div>
+
+    <!-- Slide 10: 인터랙티브 퀴즈 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-10">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded border border-emerald-200">SLIDE 10 / 10 · 퀴즈</span>
+        <span>3차시 점검</span>
+      </div>
+      <div class="my-auto">
+        <h3 class="text-base sm:text-lg font-bold text-slate-900 mb-2 flex items-center gap-2">
+          <i class="fa-solid fa-circle-question text-emerald-600"></i> [자가진단 퀴즈]
+        </h3>
+        <div class="bg-slate-50 p-4 rounded-xl border mb-3">
+          <p class="text-xs sm:text-sm font-bold text-slate-800 mb-2">
+            Q. 영업활동 현금흐름 8,000억원, 유형자산 취득 5,000억원, 차입금 차입 3,000억원이다. <strong>잉여현금흐름(영업활동 현금흐름 − 유형자산 취득)</strong>은?
+          </p>
+          <div class="space-y-1.5">
+            <button onclick="checkQuiz(1, 'A', this)" class="q-btn-1 w-full text-left p-2.5 bg-white border rounded text-xs hover:bg-slate-100 transition">
+              A) 3,000억원
+            </button>
+            <button onclick="checkQuiz(1, 'B', this)" class="q-btn-1 w-full text-left p-2.5 bg-white border rounded text-xs hover:bg-slate-100 transition">
+              B) 6,000억원
+            </button>
+            <button onclick="checkQuiz(1, 'C', this)" class="q-btn-1 w-full text-left p-2.5 bg-white border rounded text-xs hover:bg-slate-100 transition">
+              C) 11,000억원
+            </button>
+          </div>
+          <div id="q-feedback-1" class="hidden mt-2 p-2 rounded text-xs"></div>
+        </div>
+        <div class="p-3 bg-amber-50 border border-amber-200 rounded-xl text-center text-xs text-amber-950">
+          🎉 12주차를 모두 마쳤습니다! <strong>[12주차 실습과제]</strong>를 풀고 구글 시트로 제출하세요.
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3 flex justify-between">
+        <span>12주차 3차시 완료</span><a href="exercise_12.html" class="text-blue-600 font-bold hover:underline flex items-center gap-1"><span>실습과제 이동</span> <i class="fa-solid fa-arrow-right"></i></a>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- 하단 푸터 -->
+  <footer class="text-center py-3 text-slate-400 text-xs border-t bg-white no-print">
+    수원대학교 경영공학대학 회계원리 © 2026
+  </footer>
+
+  <script>
+    let currentPage = 1;
+    const totalPages = 10;
+
+    function goToPage(page) {
+      if (page < 1 || page > totalPages) return;
+      document.querySelectorAll('.slide-page').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.page-btn').forEach(d => d.classList.remove('active'));
+
+      const target = document.getElementById(`page-${page}`);
+      if (target) target.classList.add('active');
+
+      const btns = document.querySelectorAll('.page-btn');
+      if (btns[page - 1]) btns[page - 1].classList.add('active');
+
+      currentPage = page;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function nextPage() { if (currentPage < totalPages) goToPage(currentPage + 1); }
+    function prevPage() { if (currentPage > 1) goToPage(currentPage - 1); }
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === 'PageDown') nextPage();
+      if (e.key === 'ArrowLeft' || e.key === 'PageUp') prevPage();
+    });
+
+    const quizAnswers = {"1": {"ans": "A", "exp": "8,000 − 5,000 = 3,000억원. 차입금은 재무활동이므로 잉여현금흐름에 넣지 않습니다. B는 차입금까지 더하고 설비투자를 뺀 경우(8,000 + 3,000 − 5,000), C는 차입금을 더하기만 한 경우입니다."}};
+
+    function checkQuiz(qNum, choice, btn) {
+      const btns = document.querySelectorAll(`.q-btn-${qNum}`);
+      const fb = document.getElementById(`q-feedback-${qNum}`);
+      btns.forEach(b => { b.className = `q-btn-${qNum} w-full text-left p-2.5 bg-white border rounded text-xs transition`; });
+      fb.classList.remove('hidden');
+
+      if (choice === quizAnswers[qNum].ans) {
+        btn.classList.add('bg-emerald-100', 'border-emerald-500', 'text-emerald-900', 'font-bold');
+        fb.className = "text-xs mt-2 p-2 rounded bg-emerald-50 text-emerald-900 border border-emerald-200 block";
+        fb.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-600 mr-1"></i> <strong>정답입니다!</strong> ${quizAnswers[qNum].exp}`;
+      } else {
+        btn.classList.add('bg-rose-100', 'border-rose-500', 'text-rose-900');
+        fb.className = "text-xs mt-2 p-2 rounded bg-rose-50 text-rose-900 border border-rose-200 block";
+        fb.innerHTML = `<i class="fa-solid fa-circle-xmark text-rose-600 mr-1"></i> <strong>오답입니다!</strong> ${quizAnswers[qNum].exp}`;
+      }
+    }
+  </script>
+</body>
+</html>

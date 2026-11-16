@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>[12주차 2차시] 직접법과 간접법의 대조 | 수원대학교 회계원리</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Noto Sans KR', sans-serif; }
+    .slide-page { display: none; }
+    .slide-page.active { display: flex; animation: fadeIn 0.25s ease-in-out; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+    .page-btn.active { background-color: #2563eb !important; color: white !important; font-weight: bold; border-color: #1d4ed8 !important; }
+    /* 장부·표 공통 */
+    .tb td, .tb th { border: 1px solid #e2e8f0; padding: 4px 6px; }
+    .tb td.n { text-align: right; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+    .ws td, .ws th { padding: 3px 3px; letter-spacing: -0.03em; }
+    .ws td.n { font-size: 9.5px; }
+    @media print { .ws { font-size: 8px !important; } }
+    .tacc { border-collapse: collapse; width: 100%; font-size: 11px; }
+    .tacc caption { font-weight: 700; padding-bottom: 2px; border-bottom: 2px solid #334155; }
+    .tacc td { padding: 2px 6px; vertical-align: top; }
+    .tacc td.l { border-right: 2px solid #334155; }
+    .tacc td.n { text-align: right; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+    .tacc tr.sum td { border-top: 1px solid #94a3b8; font-weight: 700; }
+    .je { border-collapse: collapse; width: 100%; font-size: 11px; }
+    .je td { padding: 2px 6px; }
+    .je td.n { text-align: right; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; white-space: nowrap; }
+    .je td.cr { padding-left: 22px; }
+    .je tr.sep td { border-top: 1px dashed #cbd5e1; }
+
+    @media print {
+      @page { size: A4 landscape; margin: 10mm 12mm; }
+      body { background-color: #ffffff !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; padding: 0 !important; }
+      header, .no-print, #top-nav-controller { display: none !important; }
+      main { max-width: 100% !important; padding: 0 !important; margin: 0 !important; }
+      .slide-page { display: block !important; opacity: 1 !important; page-break-after: always !important; break-after: page !important; min-height: 180mm !important; margin-bottom: 0 !important; border: 1px solid #cbd5e1 !important; border-radius: 12px !important; padding: 24px 28px !important; }
+    }
+  </style>
+</head>
+<body class="bg-slate-100 text-slate-800 antialiased min-h-screen flex flex-col justify-between">
+
+  <!-- 1. 고정 상단 헤더 & 슬라이드 네비게이션 바 -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm no-print">
+    <div class="max-w-5xl mx-auto px-4 flex justify-between items-center h-12">
+      <div class="flex items-center gap-2">
+        <a href="../index.html" class="bg-blue-900 text-white text-[11px] px-2 py-0.5 rounded-full font-bold hover:bg-blue-800">수원대 회계원리</a>
+        <h1 class="font-bold text-slate-800 text-xs sm:text-sm">12주차 2차시: 직접법과 간접법의 대조</h1>
+      </div>
+      <div class="flex items-center gap-2">
+        <button onclick="window.print()" class="text-[11px] bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold px-2.5 py-1 rounded border border-slate-300 transition flex items-center gap-1">
+          <i class="fa-solid fa-print"></i> PDF/인쇄
+        </button>
+      </div>
+    </div>
+
+    <!-- 상단 1~10 퀵 이동 버튼 바 -->
+    <div id="top-nav-controller" class="border-t border-slate-100 bg-slate-50/95 py-2 px-4 shadow-inner">
+      <div class="max-w-5xl mx-auto flex items-center justify-between gap-2">
+        <button onclick="prevPage()" class="px-3 py-1.5 bg-white hover:bg-slate-100 text-slate-700 text-xs font-bold rounded-lg border border-slate-300 transition flex items-center gap-1 shrink-0">
+          <i class="fa-solid fa-chevron-left text-[10px]"></i> <span class="hidden sm:inline">이전</span>
+        </button>
+
+        <div class="flex items-center gap-1.5 overflow-x-auto py-0.5 px-1 max-w-full">
+          <button onclick="goToPage(1)" class="page-btn active w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">1</button>
+          <button onclick="goToPage(2)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">2</button>
+          <button onclick="goToPage(3)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">3</button>
+          <button onclick="goToPage(4)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">4</button>
+          <button onclick="goToPage(5)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">5</button>
+          <button onclick="goToPage(6)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">6</button>
+          <button onclick="goToPage(7)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">7</button>
+          <button onclick="goToPage(8)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">8</button>
+          <button onclick="goToPage(9)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">9</button>
+          <button onclick="goToPage(10)" class="page-btn w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 transition shrink-0">10</button>
+        </div>
+
+        <button onclick="nextPage()" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-lg transition flex items-center gap-1 shrink-0">
+          <span class="hidden sm:inline">다음</span> <i class="fa-solid fa-chevron-right text-[10px]"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- 2. 슬라이드 본문 컨테이너 -->
+  <main class="flex-1 max-w-4xl w-full mx-auto px-4 py-4 flex flex-col justify-center">
+
+    <!-- Slide 1: 표지 -->
+    <div class="slide-page active bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-1">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 01 / 10</span>
+        <span>수원대학교 경영공학대학</span>
+      </div>
+      <div class="text-center my-auto py-6">
+        <div class="inline-block p-4 bg-cyan-50 text-cyan-700 rounded-2xl mb-3 shadow-inner">
+          <i class="fa-solid fa-table-columns text-4xl"></i>
+        </div>
+        <span class="text-xs font-bold text-cyan-700 tracking-wider block mb-1">CH.14 현금흐름표 (2)</span>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mb-3">2차시: 직접법과 간접법의 대조, 작성 연습</h2>
+        <p class="text-slate-600 text-xs sm:text-sm max-w-lg mx-auto leading-relaxed">
+          1차시에 광교유통의 영업활동 현금흐름 3,400,000원을 간접법으로 구했습니다. 직접법으로 구한 값과 <strong>왜 똑같을까요?</strong><br>두 방법을 한 줄씩 맞춰 본 뒤, 부호가 반대로 나오는 새 사례 <strong>(주)영통마트</strong>로 직접 작성해 봅니다.
+        </p>
+      </div>
+      <div class="text-center text-xs text-slate-400 border-t pt-3">
+        상단 퀵 버튼(1~10) 또는 키보드 방향키(←, →)로 이동할 수 있습니다.
+      </div>
+    </div>
+
+    <!-- Slide 2: 학습 목표 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-2">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 02 / 10</span>
+        <span>학습 목표 (50분 설계)</span>
+      </div>
+      <div class="my-auto">
+        <h3 class="text-lg sm:text-xl font-bold text-slate-900 mb-5 flex items-center gap-2">
+          <i class="fa-solid fa-bullseye text-blue-600"></i> 이번 2차시 핵심 학습 목표
+        </h3>
+        <div class="grid sm:grid-cols-3 gap-3.5">
+          <div class="p-4 bg-slate-50 border rounded-xl hover:border-blue-400 transition">
+            <span class="w-6 h-6 rounded bg-cyan-600 text-white font-bold flex items-center justify-center text-xs mb-2">1</span>
+            <h4 class="font-bold text-slate-800 text-xs sm:text-sm mb-1">두 방법이 같은 이유</h4>
+            <p class="text-xs text-slate-600 leading-relaxed">직접법의 각 항목이 손익계산서 금액과 간접법의 조정 항목으로 나뉜다는 것을 대조표로 확인한다.</p>
+          </div>
+          <div class="p-4 bg-slate-50 border rounded-xl hover:border-blue-400 transition">
+            <span class="w-6 h-6 rounded bg-cyan-600 text-white font-bold flex items-center justify-center text-xs mb-2">2</span>
+            <h4 class="font-bold text-slate-800 text-xs sm:text-sm mb-1">간접법 작성</h4>
+            <p class="text-xs text-slate-600 leading-relaxed">두 시점 재무상태표에서 계정 증감을 구하고, 처분손실·자산 감소·부채 감소처럼 부호가 반대인 경우를 처리한다.</p>
+          </div>
+          <div class="p-4 bg-slate-50 border rounded-xl hover:border-blue-400 transition">
+            <span class="w-6 h-6 rounded bg-cyan-600 text-white font-bold flex items-center justify-center text-xs mb-2">3</span>
+            <h4 class="font-bold text-slate-800 text-xs sm:text-sm mb-1">오류 피하기</h4>
+            <p class="text-xs text-slate-600 leading-relaxed">처분손익·비영업 계정·감가상각누계액 등 자주 틀리는 항목을 구분하고 간접법 현금흐름표 전체를 완성한다.</p>
+          </div>
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3 flex justify-between">
+        <span>직접법·간접법 대조</span><span>교재 Ch.14</span>
+      </div>
+    </div>
+
+    <!-- Slide 3: 한 줄씩 맞춰 보기 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-3">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 03 / 10</span>
+        <span>한 줄씩 맞춰 보기</span>
+      </div>
+      <div class="my-auto space-y-2">
+        <h3 class="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
+          <i class="fa-solid fa-table-cells text-cyan-600"></i> 손익계산서 금액 ± 조정 = 직접법 현금 (광교유통 2026)
+        </h3>
+        <div class="overflow-x-auto">
+          <table class="w-full text-[11px] border-collapse border border-slate-200">
+            <thead class="bg-slate-100 text-center"><tr><th class="border p-1.5">손익계산서 항목 → 직접법 항목</th><th class="border p-1.5">손익계산서</th><th class="border p-1.5">조정 (간접법)</th><th class="border p-1.5">현금 (직접법)</th></tr></thead>
+            <tbody><tr><td class="border p-1.5">매출액 → 고객으로부터의 수취</td><td class="border p-1.5 text-right font-mono">40,000,000</td><td class="border p-1.5">매출채권 증가 <strong>(1,000,000)</strong></td><td class="border p-1.5 text-right font-mono font-bold">39,000,000</td></tr><tr><td class="border p-1.5">매출원가 → 공급자에 대한 지급</td><td class="border p-1.5 text-right font-mono">(25,200,000)</td><td class="border p-1.5">재고자산 증가 <strong>(800,000)</strong><br>매입채무 증가 <strong>1,000,000</strong></td><td class="border p-1.5 text-right font-mono font-bold">(25,000,000)</td></tr><tr><td class="border p-1.5">급여 → 종업원에 대한 지급</td><td class="border p-1.5 text-right font-mono">(6,500,000)</td><td class="border p-1.5">미지급급여 증가 <strong>500,000</strong></td><td class="border p-1.5 text-right font-mono font-bold">(6,000,000)</td></tr><tr><td class="border p-1.5">보험료·임차료·운송비 → 지급</td><td class="border p-1.5 text-right font-mono">(3,800,000)</td><td class="border p-1.5">선급보험료 증가 <strong>(400,000)</strong></td><td class="border p-1.5 text-right font-mono font-bold">(4,200,000)</td></tr><tr><td class="border p-1.5">이자수익 → 이자의 수취</td><td class="border p-1.5 text-right font-mono">100,000</td><td class="border p-1.5"><span class="text-slate-400">조정 없음</span></td><td class="border p-1.5 text-right font-mono font-bold">100,000</td></tr><tr><td class="border p-1.5">이자비용 → 이자의 지급</td><td class="border p-1.5 text-right font-mono">(500,000)</td><td class="border p-1.5"><span class="text-slate-400">조정 없음</span></td><td class="border p-1.5 text-right font-mono font-bold">(500,000)</td></tr><tr><td class="border p-1.5">감가상각비 → (현금 없음)</td><td class="border p-1.5 text-right font-mono">(700,000)</td><td class="border p-1.5">감가상각비 가산 <strong>700,000</strong></td><td class="border p-1.5 text-right font-mono font-bold">0</td></tr><tr><td class="border p-1.5">유형자산처분이익 → (투자활동)</td><td class="border p-1.5 text-right font-mono">200,000</td><td class="border p-1.5">처분이익 차감 <strong>(200,000)</strong></td><td class="border p-1.5 text-right font-mono font-bold">0</td></tr>
+              <tr class="bg-slate-800 text-white font-bold"><td class="p-1.5">합계</td><td class="p-1.5 text-right font-mono">당기순이익 3,600,000</td><td class="p-1.5 text-center">조정 합계 (200,000)</td><td class="p-1.5 text-right font-mono">3,400,000</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3">
+        매출원가 25,200,000 + 재고 증가 800,000 − 매입채무 증가 1,000,000 = 공급자 지급 25,000,000 (11주차 4번 슬라이드).
+      </div>
+    </div>
+
+    <!-- Slide 4: 두 방법이 같은 이유 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-4">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 04 / 10</span>
+        <span>두 방법이 같은 이유</span>
+      </div>
+      <div class="my-auto space-y-3">
+        <h3 class="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
+          <i class="fa-solid fa-equals text-cyan-600"></i> 같은 표를 가로로 더하느냐, 세로로 더하느냐
+        </h3>
+        <div class="grid sm:grid-cols-2 gap-3 text-[11px]">
+          <div class="p-3 bg-white border rounded-xl space-y-1.5">
+            <p class="font-bold text-emerald-800 text-xs">직접법 = 맨 오른쪽 열을 위에서 아래로</p>
+            <p>각 줄(매출, 매출원가 …)마다 먼저 <strong>손익계산서 금액 ± 조정</strong>을 해서 현금을 구한 뒤, 그 현금들을 더합니다.</p>
+            <div class="p-1.5 bg-slate-50 rounded font-mono">39,000,000 − 25,000,000 − 6,000,000 − 4,200,000 + 100,000 − 500,000 + 0 + 0 = 3,400,000</div>
+          </div>
+          <div class="p-3 bg-cyan-50 border border-cyan-300 rounded-xl space-y-1.5">
+            <p class="font-bold text-cyan-800 text-xs">간접법 = 왼쪽 두 열을 각각 더한 뒤 합침</p>
+            <p>손익계산서 열을 다 더하면 <strong>당기순이익</strong>, 조정 열을 다 더하면 <strong>조정 합계</strong>입니다.</p>
+            <div class="p-1.5 bg-white rounded font-mono">3,600,000 + (200,000) = 3,400,000</div>
+          </div>
+        </div>
+        <div class="p-3 bg-amber-50 border border-amber-200 rounded-xl text-xs text-amber-950 leading-relaxed">
+          💡 덧셈 순서만 다를 뿐 <strong>같은 숫자들의 합</strong>이므로 결과가 반드시 같습니다. 그래서 간접법은 손익계산서와 재무상태표만 있으면 되고, 직접법은 "고객 수취액" 같은 정보를 보여 주는 대신 줄마다 계산이 필요합니다.
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3">
+        감가상각비와 처분이익은 손익계산서에는 있지만 직접법 영업활동에는 0이 됩니다. 간접법에서는 조정으로 지웁니다.
+      </div>
+    </div>
+
+    <!-- Slide 5: [연습] (주)영통마트 2026 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-5">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 05 / 10</span>
+        <span>[연습] (주)영통마트 2026</span>
+      </div>
+      <div class="my-auto space-y-2.5">
+        <h3 class="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
+          <i class="fa-solid fa-pencil text-cyan-600"></i> 직접 풀어 보세요 — (주)영통마트의 영업활동 현금흐름(간접법)
+        </h3>
+        <div class="grid sm:grid-cols-5 gap-3 text-[11px]">
+          <div class="sm:col-span-3">
+            <table class="tb w-full"><thead class="bg-slate-100"><tr><th>영업 관련 계정</th><th>2025.12.31</th><th>2026.12.31</th><th>조정액</th></tr></thead><tbody><tr><td>매출채권</td><td class="n">3,000,000</td><td class="n">2,400,000</td><td class="n text-slate-400">?</td></tr><tr><td>재고자산</td><td class="n">5,000,000</td><td class="n">5,700,000</td><td class="n text-slate-400">?</td></tr><tr><td>선급비용</td><td class="n">200,000</td><td class="n">100,000</td><td class="n text-slate-400">?</td></tr><tr><td>매입채무</td><td class="n">4,000,000</td><td class="n">3,200,000</td><td class="n text-slate-400">?</td></tr><tr><td>미지급비용</td><td class="n">300,000</td><td class="n">500,000</td><td class="n text-slate-400">?</td></tr><tr><td>선수금</td><td class="n">0</td><td class="n">400,000</td><td class="n text-slate-400">?</td></tr></tbody></table>
+            <p class="text-[10px] text-slate-500 mt-1">영통마트는 9주차에 광교유통에서 무선이어폰을 사 온 구매회사입니다. 금액은 연습용으로 새로 만들었습니다.</p>
+          </div>
+          <div class="sm:col-span-2 space-y-2">
+            <div class="p-3 bg-white border rounded-xl space-y-1">
+              <p class="font-bold text-slate-800 text-xs">2026년 손익계산서 자료</p>
+              <div>당기순이익 <strong>2,000,000</strong></div>
+              <div>감가상각비 <strong>500,000</strong></div>
+              <div>유형자산처분<strong>손실</strong> <strong>300,000</strong><br><span class="text-slate-500">(장부금액 1,100,000인 차량을 현금 800,000에 처분)</span></div>
+            </div>
+            <div class="p-3 bg-amber-50 border border-amber-200 rounded-xl">이번에는 <strong>감소한 자산</strong>, <strong>감소한 부채</strong>, <strong>처분손실</strong>이 나옵니다. 1차시 규칙을 그대로 적용해 보세요. <strong>선수금</strong>은 상품을 넘기기 전에 받은 돈(부채)입니다.</div>
+          </div>
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3">
+        먼저 각 계정의 조정액(+/−)을 채운 뒤 다음 슬라이드에서 맞춰 보세요.
+      </div>
+    </div>
+
+    <!-- Slide 6: [풀이] 영통마트 영업활동 현금흐름 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-6">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 06 / 10</span>
+        <span>[풀이] 영통마트 영업활동 현금흐름</span>
+      </div>
+      <div class="my-auto space-y-2">
+        <h3 class="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
+          <i class="fa-solid fa-square-check text-cyan-600"></i> 풀이 — 영업활동 현금흐름 (간접법) · (주)영통마트
+        </h3>
+        <div class="grid sm:grid-cols-5 gap-3">
+          <div class="sm:col-span-3">
+            <table class="tb w-full text-[11px]">
+              <thead class="bg-slate-100"><tr><th>항목</th><th>계정 증감</th><th>조정</th></tr></thead>
+              <tbody>
+                <tr class="font-bold"><td>당기순이익</td><td></td><td class="n">2,000,000</td></tr>
+                <tr><td>　감가상각비 (가산)</td><td></td><td class="n text-emerald-700 font-bold">500,000</td></tr>
+                <tr><td>　유형자산처분손실 (가산)</td><td></td><td class="n text-emerald-700 font-bold">300,000</td></tr>
+                <tr><td>　매출채권의 감소 (자산)</td><td class="n text-slate-500">−600,000</td><td class="n font-bold text-emerald-700">600,000</td></tr><tr><td>　재고자산의 증가 (자산)</td><td class="n text-slate-500">+700,000</td><td class="n font-bold text-rose-700">(700,000)</td></tr><tr><td>　선급비용의 감소 (자산)</td><td class="n text-slate-500">−100,000</td><td class="n font-bold text-emerald-700">100,000</td></tr><tr><td>　매입채무의 감소 (부채)</td><td class="n text-slate-500">−800,000</td><td class="n font-bold text-rose-700">(800,000)</td></tr><tr><td>　미지급비용의 증가 (부채)</td><td class="n text-slate-500">+200,000</td><td class="n font-bold text-emerald-700">200,000</td></tr><tr><td>　선수금의 증가 (부채)</td><td class="n text-slate-500">+400,000</td><td class="n font-bold text-emerald-700">400,000</td></tr>
+                <tr class="bg-slate-800 text-white font-bold"><td>영업활동 현금흐름</td><td></td><td class="n">2,600,000</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="sm:col-span-2 space-y-2 text-[11px]">
+            <div class="p-2.5 bg-white border rounded-lg"><strong>매출채권 감소 +600,000</strong> — 작년 외상까지 받아서 현금이 매출보다 많이 들어왔습니다.</div>
+            <div class="p-2.5 bg-white border rounded-lg"><strong>매입채무 감소 (800,000)</strong> — 작년 외상값까지 갚아서 현금이 더 나갔습니다.</div>
+            <div class="p-2.5 bg-white border rounded-lg"><strong>선수금 증가 +400,000</strong> — 아직 수익은 아니지만 현금은 먼저 들어왔습니다.</div>
+            <div class="p-2.5 bg-cyan-50 border border-cyan-300 rounded-lg"><strong>처분손실 +300,000</strong>을 되돌리고, 받은 <strong>800,000</strong>은 투자활동 유입으로 적습니다.</div>
+          </div>
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3">
+        2,000,000 + 500,000 + 300,000 + 600,000 − 700,000 + 100,000 − 800,000 + 200,000 + 400,000 = 2,600,000원.
+      </div>
+    </div>
+
+    <!-- Slide 7: 자주 틀리는 다섯 가지 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-7">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 07 / 10</span>
+        <span>자주 틀리는 다섯 가지</span>
+      </div>
+      <div class="my-auto space-y-2.5">
+        <h3 class="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
+          <i class="fa-solid fa-triangle-exclamation text-cyan-600"></i> 간접법에서 자주 틀리는 다섯 가지
+        </h3>
+        <div class="grid sm:grid-cols-2 gap-2 text-[11px]">
+          <div class="p-3 bg-white border rounded-xl"><strong class="text-rose-700">① 부호를 거꾸로</strong><br>자산 증가를 더하는 실수. "매출채권이 늘었다 = 못 받은 돈이 늘었다 = 현금이 적다 → 뺀다"로 매번 말로 확인하세요.</div>
+          <div class="p-3 bg-white border rounded-xl"><strong class="text-rose-700">② 처분손익을 그대로 두기</strong><br>처분이익을 빼지 않으면 영업활동이 부풀려집니다. 처분대금은 투자활동에 <strong>전액</strong> 적습니다.</div>
+          <div class="p-3 bg-white border rounded-xl"><strong class="text-rose-700">③ 영업과 무관한 계정을 넣기</strong><br>차입금·미지급배당금(재무), 미수금(유형자산 처분대금)·대여금(투자)은 운전자본 조정에 넣지 않습니다.</div>
+          <div class="p-3 bg-white border rounded-xl"><strong class="text-rose-700">④ 누계액 증감을 감가상각비로</strong><br>처분이 있으면 감가상각누계액 순증감 ≠ 감가상각비입니다. 손익계산서의 감가상각비를 씁니다.</div>
+          <div class="p-3 bg-white border rounded-xl sm:col-span-2"><strong class="text-rose-700">⑤ 투자·재무활동도 다르게 쓰기</strong><br>간접법은 <strong>영업활동만</strong> 당기순이익에서 출발합니다. 투자·재무활동은 11주차 직접법과 똑같이 총액으로 적습니다.</div>
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3">
+        시험 팁: 답을 구한 뒤 "현금이 매출보다 많을까, 적을까?"를 말로 따져 보면 부호 실수를 잡을 수 있습니다.
+      </div>
+    </div>
+
+    <!-- Slide 8: [완성] 광교유통 현금흐름표 (간접법) -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-8">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 08 / 10</span>
+        <span>[완성] 광교유통 현금흐름표 (간접법)</span>
+      </div>
+      <div class="my-auto space-y-2">
+        <h3 class="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
+          <i class="fa-solid fa-file-invoice-dollar text-cyan-600"></i> 현금흐름표 (간접법) · 2026.1.1~12.31 · (주)광교유통
+        </h3>
+        <div class="grid sm:grid-cols-5 gap-3">
+          <div class="sm:col-span-3"><table class="tb w-full text-[11px]"><tr class="bg-cyan-50 font-bold"><td>Ⅰ. 영업활동 현금흐름</td><td class="n">3,400,000</td></tr><tr class=""><td>　당기순이익</td><td class="n">3,600,000</td></tr><tr class=""><td>　감가상각비</td><td class="n">700,000</td></tr><tr class=""><td>　유형자산처분이익</td><td class="n">(200,000)</td></tr><tr class=""><td>　매출채권의 증가</td><td class="n">(1,000,000)</td></tr><tr class=""><td>　재고자산의 증가</td><td class="n">(800,000)</td></tr><tr class=""><td>　선급보험료의 증가</td><td class="n">(400,000)</td></tr><tr class=""><td>　매입채무의 증가</td><td class="n">1,000,000</td></tr><tr class=""><td>　미지급급여의 증가</td><td class="n">500,000</td></tr><tr class="bg-sky-50 font-bold"><td>Ⅱ. 투자활동 현금흐름</td><td class="n">(3,000,000)</td></tr><tr class=""><td>　비품의 취득</td><td class="n">(3,000,000)</td></tr><tr class="bg-violet-50 font-bold"><td>Ⅲ. 재무활동 현금흐름</td><td class="n">(1,000,000)</td></tr><tr class=""><td>　유상증자</td><td class="n">2,000,000</td></tr><tr class=""><td>　차입금의 상환</td><td class="n">(2,000,000)</td></tr><tr class=""><td>　배당금의 지급</td><td class="n">(1,000,000)</td></tr><tr class="font-bold"><td>Ⅳ. 현금및현금성자산의 순증감</td><td class="n">(600,000)</td></tr><tr class=""><td>Ⅴ. 기초 현금및현금성자산</td><td class="n">6,600,000</td></tr><tr class="bg-slate-800 text-white font-bold"><td>Ⅵ. 기말 현금및현금성자산</td><td class="n">6,000,000</td></tr></table></div>
+          <div class="sm:col-span-2 space-y-2 text-[11px]">
+            <div class="p-2.5 bg-white border rounded-lg"><strong>11주차 직접법 표와 비교</strong> Ⅱ·Ⅲ·Ⅳ·Ⅴ·Ⅵ은 한 글자도 다르지 않습니다. Ⅰ의 <strong>안쪽 줄</strong>만 바뀌었습니다.</div>
+            <div class="p-2.5 bg-white border rounded-lg"><strong>주석: 비현금거래</strong><br>비품(장부금액 800,000)을 1,000,000에 외상 처분 — 미수금 1,000,000</div>
+            <div class="p-2.5 bg-cyan-50 border border-cyan-300 rounded-lg">실제 상장회사 현금흐름표는 여기서 한 단계 더 나아가 <strong>이자·배당·법인세</strong>를 따로 보여 줍니다 → <strong>3차시</strong>.</div>
+          </div>
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3">
+        기말 현금 6,000,000 = 2026년 말 재무상태표 현금. 직접법이든 간접법이든 마지막 줄은 재무상태표와 맞아야 합니다.
+      </div>
+    </div>
+
+    <!-- Slide 9: 2차시 핵심 요약 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-9">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded">SLIDE 09 / 10</span>
+        <span>핵심 요약 (Takeaways)</span>
+      </div>
+      <div class="my-auto space-y-3.5">
+        <h3 class="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
+          <i class="fa-solid fa-bookmark text-blue-600"></i> 2차시 핵심 정리
+        </h3>
+        <div class="space-y-2 text-xs sm:text-sm">
+          <div class="p-3 bg-slate-50 border rounded-xl flex items-start gap-2.5">
+            <span class="bg-cyan-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs shrink-0 mt-0.5 font-bold">1</span>
+            <div>
+              <strong>대조:</strong> 직접법의 각 항목 = 손익계산서 금액 ± 관련 조정. 손익계산서 열의 합은 당기순이익, 조정 열의 합은 간접법 조정 합계입니다. 덧셈 순서만 달라 결과가 같습니다.
+            </div>
+          </div>
+          <div class="p-3 bg-slate-50 border rounded-xl flex items-start gap-2.5">
+            <span class="bg-cyan-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs shrink-0 mt-0.5 font-bold">2</span>
+            <div>
+              <strong>작성:</strong> 두 시점 재무상태표에서 영업 관련 계정의 증감을 구합니다. 자산 감소는 더하고 부채 감소는 빼며, 처분손실은 더합니다. 영통마트 영업활동 현금흐름은 2,600,000원입니다.
+            </div>
+          </div>
+          <div class="p-3 bg-slate-50 border rounded-xl flex items-start gap-2.5">
+            <span class="bg-cyan-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs shrink-0 mt-0.5 font-bold">3</span>
+            <div>
+              <strong>주의:</strong> 부호, 처분손익, 비영업 계정, 감가상각비 금액을 확인합니다. 투자·재무활동은 직접법과 같습니다.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3">
+        다음 3차시: 실제 기업(이마트)의 간접법 현금흐름표 읽기, 이익의 질과 잉여현금흐름
+      </div>
+    </div>
+
+    <!-- Slide 10: 인터랙티브 퀴즈 -->
+    <div class="slide-page bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm min-h-[460px] flex-col justify-between" id="page-10">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span class="font-bold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded border border-emerald-200">SLIDE 10 / 10 · 퀴즈</span>
+        <span>2차시 점검</span>
+      </div>
+      <div class="my-auto">
+        <h3 class="text-base sm:text-lg font-bold text-slate-900 mb-2 flex items-center gap-2">
+          <i class="fa-solid fa-circle-question text-emerald-600"></i> [자가진단 퀴즈]
+        </h3>
+        <div class="bg-slate-50 p-4 rounded-xl border mb-3">
+          <p class="text-xs sm:text-sm font-bold text-slate-800 mb-2">
+            Q. 당기순이익을 계산할 때 유형자산처분<strong>손실</strong> 200,000원이 있었다(처분대금 현금 800,000원). 간접법 현금흐름표에서 이 거래의 올바른 처리는?
+          </p>
+          <div class="space-y-1.5">
+            <button onclick="checkQuiz(1, 'A', this)" class="q-btn-1 w-full text-left p-2.5 bg-white border rounded text-xs hover:bg-slate-100 transition">
+              A) 영업활동에서 200,000원을 더하고, 투자활동에 800,000원 유입
+            </button>
+            <button onclick="checkQuiz(1, 'B', this)" class="q-btn-1 w-full text-left p-2.5 bg-white border rounded text-xs hover:bg-slate-100 transition">
+              B) 영업활동에서 200,000원을 빼고, 투자활동에 800,000원 유입
+            </button>
+            <button onclick="checkQuiz(1, 'C', this)" class="q-btn-1 w-full text-left p-2.5 bg-white border rounded text-xs hover:bg-slate-100 transition">
+              C) 영업활동은 조정 없이, 투자활동에 200,000원 유출
+            </button>
+          </div>
+          <div id="q-feedback-1" class="hidden mt-2 p-2 rounded text-xs"></div>
+        </div>
+        <div class="p-3 bg-amber-50 border border-amber-200 rounded-xl text-center text-xs text-amber-950">
+          🎉 2차시 완료! 3차시에서 실제 기업 현금흐름표를 읽어 봅니다.
+        </div>
+      </div>
+      <div class="text-xs text-slate-400 border-t pt-3 flex justify-between">
+        <span>12주차 2차시 완료</span><a href="202602_12_03.html" class="text-blue-600 font-bold hover:underline flex items-center gap-1"><span>3차시 이동</span> <i class="fa-solid fa-arrow-right"></i></a>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- 하단 푸터 -->
+  <footer class="text-center py-3 text-slate-400 text-xs border-t bg-white no-print">
+    수원대학교 경영공학대학 회계원리 © 2026
+  </footer>
+
+  <script>
+    let currentPage = 1;
+    const totalPages = 10;
+
+    function goToPage(page) {
+      if (page < 1 || page > totalPages) return;
+      document.querySelectorAll('.slide-page').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.page-btn').forEach(d => d.classList.remove('active'));
+
+      const target = document.getElementById(`page-${page}`);
+      if (target) target.classList.add('active');
+
+      const btns = document.querySelectorAll('.page-btn');
+      if (btns[page - 1]) btns[page - 1].classList.add('active');
+
+      currentPage = page;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function nextPage() { if (currentPage < totalPages) goToPage(currentPage + 1); }
+    function prevPage() { if (currentPage > 1) goToPage(currentPage - 1); }
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === 'PageDown') nextPage();
+      if (e.key === 'ArrowLeft' || e.key === 'PageUp') prevPage();
+    });
+
+    const quizAnswers = {"1": {"ans": "A", "exp": "처분손실은 현금이 나가지 않았는데 당기순이익을 200,000 줄였으므로 영업활동에서 되돌려 더합니다. 처분으로 실제 받은 800,000원은 투자활동 유입입니다. B는 손실과 이익의 부호를 바꾼 경우, C는 처분손익을 현금으로 착각한 경우입니다."}};
+
+    function checkQuiz(qNum, choice, btn) {
+      const btns = document.querySelectorAll(`.q-btn-${qNum}`);
+      const fb = document.getElementById(`q-feedback-${qNum}`);
+      btns.forEach(b => { b.className = `q-btn-${qNum} w-full text-left p-2.5 bg-white border rounded text-xs transition`; });
+      fb.classList.remove('hidden');
+
+      if (choice === quizAnswers[qNum].ans) {
+        btn.classList.add('bg-emerald-100', 'border-emerald-500', 'text-emerald-900', 'font-bold');
+        fb.className = "text-xs mt-2 p-2 rounded bg-emerald-50 text-emerald-900 border border-emerald-200 block";
+        fb.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-600 mr-1"></i> <strong>정답입니다!</strong> ${quizAnswers[qNum].exp}`;
+      } else {
+        btn.classList.add('bg-rose-100', 'border-rose-500', 'text-rose-900');
+        fb.className = "text-xs mt-2 p-2 rounded bg-rose-50 text-rose-900 border border-rose-200 block";
+        fb.innerHTML = `<i class="fa-solid fa-circle-xmark text-rose-600 mr-1"></i> <strong>오답입니다!</strong> ${quizAnswers[qNum].exp}`;
+      }
+    }
+  </script>
+</body>
+</html>
